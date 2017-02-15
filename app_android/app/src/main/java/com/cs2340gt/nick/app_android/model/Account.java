@@ -68,4 +68,15 @@ public class Account {
         return id;
     }
 
+    @Override
+    public boolean equals(Object account) {
+        Account a = (Account) account;
+        return a.getUsername().equals(username);
+    }
+
+    @Override
+    public String toString() {
+        return username;
+    }
+
 }
