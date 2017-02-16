@@ -12,10 +12,7 @@ public class Account {
     private Credential credential;
 
     public Account() {
-        this(0, "user",
-                "pass",
-                "example@gatech.edu",
-                Credential.USER);
+        this(0, "user", "pass", "example@gatech.edu", Credential.USER);
     }
 
     public Account(int id,
@@ -30,6 +27,7 @@ public class Account {
         this.credential = credential;
     }
 
+    // getters and setters
     public String getUsername() {
         return username;
     }
@@ -67,6 +65,7 @@ public class Account {
         return id;
     }
 
+    // override equals and toString
     @Override
     public boolean equals(Object account) {
         Account a = (Account) account;

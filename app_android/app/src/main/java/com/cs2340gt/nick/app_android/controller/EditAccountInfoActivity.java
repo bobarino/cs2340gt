@@ -1,5 +1,6 @@
 package com.cs2340gt.nick.app_android.controller;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -36,7 +37,7 @@ public class EditAccountInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.content_registration);
 
         // fetch the true widgets from our view
         usernameField = (EditText) findViewById(R.id.user_input);
@@ -50,6 +51,10 @@ public class EditAccountInfoActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * @param view
+     */
     protected void onAddPressed(View view) {
         Model model = Model.getInstance();
 
@@ -69,13 +74,23 @@ public class EditAccountInfoActivity extends AppCompatActivity {
             account.setCredential(Credential.USER);
         }
 
-        model.addAccount(account);
+        if (model.addAccount(account)) {
+            Intent intent =
+                    new Intent(getBaseContext(), MainActivity.class);
+            startActivity(intent);
+        }
 
         // TODO: make distinction for editing
     }
 
+    /**
+     *
+     * @param view
+     */
     protected void onCancelPressed(View view) {
-        //
+        Intent intent =
+                new Intent(getBaseContext(), MainActivity.class);
+        startActivity(intent);
     }
 
 }

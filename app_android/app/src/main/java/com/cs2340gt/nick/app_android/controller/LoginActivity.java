@@ -32,22 +32,18 @@ public class LoginActivity extends AppCompatActivity {
         error = (TextView) findViewById(R.id.error_text);
         error.setVisibility(TextView.INVISIBLE);
 
-        Button cancelButton = (Button) findViewById(R.id.cancel_button);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navigateUpTo(new Intent(getBaseContext(), MainActivity.class));
-            }
-        });
     }
 
     protected void onLoginPressed(View view) {
         Model model = Model.getInstance();
         Account cur_user = model.findAccountByUser(username.getText().toString());
-        if (cur_user.getCredential().identify() != "N" && cur_user.getPassword() == password.getText().toString()) {
+//        if (!(cur_user.getCredential().identify().equals("N"))
+//                && cur_user.getPassword().equals(password.getText().toString())) {
+        if (username.getText().toString().equals("user")
+                && password.getText().toString().equals("pass")) {
             model.setCurrentAcc(cur_user);
             Intent intent =
-                    new Intent(getBaseContext(), MainActivity.class);
+                    new Intent(getBaseContext(), LoggedInActivity.class);
             startActivity(intent);
         } else {
             username.setText("");
@@ -57,7 +53,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     protected void onCancelPressed(View view) {
-        //
+        Intent intent =
+                new Intent(getBaseContext(), MainActivity.class);
+        startActivity(intent);
     }
 
 }
