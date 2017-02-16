@@ -37,6 +37,13 @@
         android:id="@+id/login_button"
         android:onClick="onLoginPressed" />
 
+    <Button
+        android:text="Cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cancel_button"
+        android:onClick="onCancelPressed" />
+
     <TextView
         android:text="Error: Please Try Again"
         android:layout_width="match_parent"
