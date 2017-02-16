@@ -15,7 +15,6 @@ import com.cs2340gt.nick.app_android.model.Model;
 /**
  * Created by ArmandoGonzalez on 2/14/17.
  */
-
 public class EditAccountInfoActivity extends AppCompatActivity {
 
     // Widgets represented in the view

@@ -6,7 +6,6 @@ import java.util.List;
 /**
  * Created by ArmandoGonzalez on 2/15/17.
  */
-
 public class Model {
 
     // Singleton instance of the model - not sure if best option yet

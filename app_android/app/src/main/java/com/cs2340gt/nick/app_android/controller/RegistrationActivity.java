@@ -13,7 +13,6 @@ import com.cs2340gt.nick.app_android.R;
 /**
  * Created by ArmandoGonzalez on 2/14/17.
  */
-
 public class RegistrationActivity extends AppCompatActivity {
 
     @Override
