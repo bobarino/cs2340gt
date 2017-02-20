@@ -28,16 +28,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.cs2340gt.nick.app_android.controller.RegistrationActivity"
-            android:parentActivityName=".controller.MainActivity"
-            android:label="Registration">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name="com.cs2340gt.nick.app_android.controller.WelcomeDirectionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,8 +36,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.cs2340gt.nick.app_android.controller.EditAccountInfoActivity"
-            android:parentActivityName=".controller.RegistrationActivity">
+            android:name="com.cs2340gt.nick.app_android.controller.RegistrationActivity"
+            android:parentActivityName=".controller.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
