@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.cs2340gt.nick.app_android.R;
-import com.cs2340gt.nick.app_android.model.Model;
 
 public class MainActivity extends AppCompatActivity {
 
