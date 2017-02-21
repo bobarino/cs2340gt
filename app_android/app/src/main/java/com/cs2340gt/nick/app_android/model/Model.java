@@ -46,10 +46,7 @@ public class Model {
     public void setCurrentReport(WaterReport _currentReport) { currentReport = _currentReport; }
 
     // created for the case of an error
-    private final Account nullAcc =
-            new Account(0, "null",
-                    "null", "null",
-                    Credential.NULL);
+    private final Account nullAcc = new Account(9999);
 
     // created for case of an error
     private final WaterReport nullReport =
@@ -76,6 +73,22 @@ public class Model {
         }
         accountList.add(newAcc);
         return true;
+    }
+
+    public boolean editAccountInfo(Account account) {
+        Account existing = findAccountById(account.getId());
+
+        // TODO: remove this major error check from working code
+        if (existing != null) {
+            return false;
+        } else {
+            existing.setUsername(account.getUsername());
+            existing.setPassword(account.getPassword());
+            existing.setEmailAddress(account.getEmailAddress());
+            existing.setCredential(account.getCredential());
+            return true;
+        }
+
     }
 
     /**
