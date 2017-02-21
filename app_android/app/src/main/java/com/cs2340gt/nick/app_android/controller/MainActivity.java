@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent =
-                        new Intent(getBaseContext(), EditAccountInfoActivity.class);
+                        new Intent(getBaseContext(), RegistrationActivity.class);
                 startActivity(intent);
             }
         });
