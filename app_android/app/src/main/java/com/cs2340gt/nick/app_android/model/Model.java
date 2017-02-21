@@ -60,7 +60,7 @@ public class Model {
 
     /**
      * A method to add accounts to the application. Only adds if the account does not exist.
-     * TODO: add prompt in the event that the user tries to add a new account.
+     * TODO: add prompt in the event that the user tries to add an existing account.
      *
      * @param newAcc the candidate account.
      * @return whether or not addition was successful.

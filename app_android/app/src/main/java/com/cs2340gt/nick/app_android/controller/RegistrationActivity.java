@@ -30,9 +30,9 @@ public class RegistrationActivity extends AppCompatActivity {
     // Account that is being created / changed
     private Account account;
 
-    // A boolean telling whether or not an account is being edited
     // TODO: create and expose a service to allow editing to be set true
-    public static boolean editing;
+    // A boolean telling whether or not an account is being edited
+    public static boolean editing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
