@@ -23,17 +23,16 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText passwordField;
     private EditText emailField;
     private RadioGroup credentialsRadioGroup;
-    private RadioButton userRadioButton;
-    private RadioButton workerRadioButton;
-    private RadioButton managerRadioButton;
-    private RadioButton adminRadioButton;
     private RadioButton selectedRadioButton;
+//    private RadioButton userRadioButton;
+//    private RadioButton workerRadioButton;
+//    private RadioButton managerRadioButton;
+//    private RadioButton adminRadioButton;
 
     // Account that is being created / changed
     private Account account;
 
-    // A boolean telling whether or not an account is being edited
-    // TODO: create and expose a service to allow editing
+    // TODO: add modifications to process for 'editing'
     private boolean editing;
 
     @Override
@@ -46,25 +45,13 @@ public class RegistrationActivity extends AppCompatActivity {
         passwordField = (EditText) findViewById(R.id.pass_input);
         emailField = (EditText) findViewById(R.id.email_input);
         credentialsRadioGroup = (RadioGroup) findViewById(R.id.cred_group);
-        userRadioButton = (RadioButton) findViewById(R.id.cred_user);
-        workerRadioButton = (RadioButton) findViewById(R.id.cred_worker);
-        managerRadioButton = (RadioButton) findViewById(R.id.cred_manager);
-        adminRadioButton = (RadioButton) findViewById(R.id.cred_admin);
+        selectedRadioButton = (RadioButton) findViewById(credentialsRadioGroup
+                .getCheckedRadioButtonId());
+//        userRadioButton = (RadioButton) findViewById(R.id.cred_user);
+//        workerRadioButton = (RadioButton) findViewById(R.id.cred_worker);
+//        managerRadioButton = (RadioButton) findViewById(R.id.cred_manager);
+//        adminRadioButton = (RadioButton) findViewById(R.id.cred_admin);
 
-        if (workerRadioButton.isSelected()) {
-            selectedRadioButton = workerRadioButton;
-        } else if (managerRadioButton.isSelected()) {
-            selectedRadioButton = managerRadioButton;
-        } else if (adminRadioButton.isSelected()) {
-            selectedRadioButton = adminRadioButton;
-        } else {
-            selectedRadioButton = userRadioButton;
-        }
-
-        account = new Account(usernameField.getText().toString(),
-                passwordField.getText().toString(),
-                emailField.getText().toString(),
-                Credential.valueOf(selectedRadioButton.getText().toString()));
     }
 
     /**
@@ -73,16 +60,25 @@ public class RegistrationActivity extends AppCompatActivity {
      */
     protected void onAddPressed(View view) {
         Model model = Model.getInstance();
-        boolean successful;
 
-        if (editing) {
-            successful = model.editAccountInfo(account);
-        } else {
-            successful = model.addAccount(account);
-        }
+        account = new Account(0,
+                usernameField.getText().toString(),
+                passwordField.getText().toString(),
+                emailField.getText().toString(),
+                Credential.USER);
+//              Credential.valueOf(selectedRadioButton.getText().toString());
 
+//         TODO: make distinction for editing
+//        if (editing) {
+//            account.setUsername(usernameField.getText().toString());
+//            account.setPassword(passwordField.getText().toString());
+//            account.setEmailAddress(emailField.getText().toString());
+//            account.setCredential(Credential.valueOf(selectedRadioButton.getText().toString()));
+//        } else {
+//
+//        }
 
-        if (successful) {
+        if (model.addAccount(account)) {
             Intent intent =
                     new Intent(getBaseContext(), MainActivity.class);
             startActivity(intent);
