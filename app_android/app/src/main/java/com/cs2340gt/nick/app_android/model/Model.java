@@ -106,6 +106,4 @@ public class Model {
         return nullAcc;
     }
 
-    // TODO: distinction for editing an existing student
-
 }

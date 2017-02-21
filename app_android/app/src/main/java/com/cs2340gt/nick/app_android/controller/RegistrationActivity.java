@@ -33,13 +33,13 @@ public class RegistrationActivity extends AppCompatActivity {
     private Account account;
 
     // A boolean telling whether or not an account is being edited
-    // TODO: create and expose a service to allow editing
-    private boolean editing;
+    // TODO: create and expose a service to allow editing to be set true
+    public static boolean editing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_registration);
+        setContentView(R.layout.activity_registration);
 
         // fetch the true widgets from our view
         usernameField = (EditText) findViewById(R.id.user_input);
@@ -52,19 +52,26 @@ public class RegistrationActivity extends AppCompatActivity {
         adminRadioButton = (RadioButton) findViewById(R.id.cred_admin);
 
         if (workerRadioButton.isSelected()) {
-            selectedRadioButton = workerRadioButton;
+            account = new Account(usernameField.getText().toString(),
+                    passwordField.getText().toString(),
+                    emailField.getText().toString(),
+                    Credential.WORKER);
         } else if (managerRadioButton.isSelected()) {
-            selectedRadioButton = managerRadioButton;
+            account = new Account(usernameField.getText().toString(),
+                    passwordField.getText().toString(),
+                    emailField.getText().toString(),
+                    Credential.MANAGER);
         } else if (adminRadioButton.isSelected()) {
-            selectedRadioButton = adminRadioButton;
+            account = new Account(usernameField.getText().toString(),
+                    passwordField.getText().toString(),
+                    emailField.getText().toString(),
+                    Credential.ADMIN);
         } else {
-            selectedRadioButton = userRadioButton;
+            account = new Account(usernameField.getText().toString(),
+                    passwordField.getText().toString(),
+                    emailField.getText().toString(),
+                    Credential.USER);
         }
-
-        account = new Account(usernameField.getText().toString(),
-                passwordField.getText().toString(),
-                emailField.getText().toString(),
-                Credential.valueOf(selectedRadioButton.getText().toString()));
     }
 
     /**
@@ -83,9 +90,11 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
         if (successful) {
-            Intent intent =
-                    new Intent(getBaseContext(), MainActivity.class);
-            startActivity(intent);
+            setContentView(R.layout.logged_in);
+            System.out.println(model.getAccountList());
+//            Intent intent =
+//                    new Intent(getBaseContext(), MainActivity.class);
+//            startActivity(intent);
         }
 
     }
