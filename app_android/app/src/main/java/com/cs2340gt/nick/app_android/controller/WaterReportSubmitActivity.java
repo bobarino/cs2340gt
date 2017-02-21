@@ -45,6 +45,7 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.content_water_report_submit);
 
         waterSourceSpinner = (Spinner) findViewById(R.id.source_options);
         wasteButton = (RadioButton) findViewById(R.id.waste_button);
@@ -59,8 +60,8 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         waterSourceSpinner.setAdapter(adapter);
 
-        reportID.setText(Model.getCurrentReport().getId());
-        username.setText(Model.getCurrentAccount().getUsername());
+//        reportID.setText(Model.getCurrentReport().getNextNo());
+//        username.setText(Model.getCurrentAccount().getUsername());
     }
 
     /**
@@ -82,8 +83,11 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
         }
 
         waterReport.setSource((String) waterSourceSpinner.getSelectedItem());
+        waterReport.setReporter(model.getCurrentAccount());
 
-
+        Intent intent =
+                new Intent(getBaseContext(), LoggedInActivity.class);
+        startActivity(intent);
 
     //TODO: make distinction for editing a water report
     }

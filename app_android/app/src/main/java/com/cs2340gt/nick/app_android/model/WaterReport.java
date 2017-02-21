@@ -44,6 +44,8 @@ public class WaterReport {
         id = newID;
     }
 
+    public int getNextNo() {return nextNo; }
+
     public String getSource() {
         return source;
     }
