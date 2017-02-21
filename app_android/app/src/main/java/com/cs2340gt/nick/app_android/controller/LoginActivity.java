@@ -39,8 +39,8 @@ public class LoginActivity extends AppCompatActivity {
         Account cur_user = model.findAccountByUser(username.getText().toString());
 //        if (!(cur_user.getCredential().identify().equals("N"))
 //                && cur_user.getPassword().equals(password.getText().toString())) {
-        if (username.getText().toString().equals("user")
-                && password.getText().toString().equals("pass")) {
+        if (username.getText().toString().equals(cur_user.getUsername().toString())
+                && password.getText().toString().equals(cur_user.getPassword().toString())) {
             model.setCurrentAcc(cur_user);
             Intent intent =
                     new Intent(getBaseContext(), LoggedInActivity.class);

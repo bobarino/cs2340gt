@@ -23,11 +23,9 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText passwordField;
     private EditText emailField;
     private RadioGroup credentialsRadioGroup;
-    private RadioButton userRadioButton;
     private RadioButton workerRadioButton;
     private RadioButton managerRadioButton;
     private RadioButton adminRadioButton;
-    private RadioButton selectedRadioButton;
 
     // Account that is being created / changed
     private Account account;
@@ -46,7 +44,6 @@ public class RegistrationActivity extends AppCompatActivity {
         passwordField = (EditText) findViewById(R.id.pass_input);
         emailField = (EditText) findViewById(R.id.email_input);
         credentialsRadioGroup = (RadioGroup) findViewById(R.id.cred_group);
-        userRadioButton = (RadioButton) findViewById(R.id.cred_user);
         workerRadioButton = (RadioButton) findViewById(R.id.cred_worker);
         managerRadioButton = (RadioButton) findViewById(R.id.cred_manager);
         adminRadioButton = (RadioButton) findViewById(R.id.cred_admin);
@@ -72,6 +69,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     emailField.getText().toString(),
                     Credential.USER);
         }
+
     }
 
     /**
@@ -80,22 +78,26 @@ public class RegistrationActivity extends AppCompatActivity {
      */
     protected void onAddPressed(View view) {
         Model model = Model.getInstance();
+
         boolean successful;
 
         if (editing) {
             successful = model.editAccountInfo(account);
         } else {
-            successful = model.addAccount(account);
+            successful = model.addAccountInfo(account);
         }
 
-
+        // TESTING
         if (successful) {
             setContentView(R.layout.logged_in);
             System.out.println(model.getAccountList());
+        }
+
+//        if (successful) {
 //            Intent intent =
 //                    new Intent(getBaseContext(), MainActivity.class);
 //            startActivity(intent);
-        }
+//        }
 
     }
 

@@ -10,15 +10,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.cs2340gt.nick.app_android.controller.MainActivity">
 
-    <EditText
+    <Button
+        android:text="SUBMIT REPORT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:id="@+id/success_log_in_text"
-        android:text="LOGGED IN"
-        android:inputType="text|textCapCharacters"
-        android:gravity="center"
-        android:layout_centerVertical="true"
+        android:id="@+id/report_submit"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -28,4 +25,12 @@
         android:id="@+id/logout_button"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="LOGGED IN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/success_logged_in" />
 </RelativeLayout>
