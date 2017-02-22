@@ -12,6 +12,10 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import com.cs2340gt.nick.app_android.R;
 import com.cs2340gt.nick.app_android.model.Account;
 import com.cs2340gt.nick.app_android.model.Credential;
@@ -45,6 +49,7 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Model model = Model.getInstance();
         setContentView(R.layout.content_water_report_submit);
 
         waterSourceSpinner = (Spinner) findViewById(R.id.source_options);
@@ -60,6 +65,13 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         waterSourceSpinner.setAdapter(adapter);
 
+
+
+        username.setText(" " + model.getCurrentAccount().getUsername());
+
+        DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy, HH:mm");
+        String date = df.format(Calendar.getInstance().getTime());
+        date_time.setText(date);
 //        reportID.setText(Model.getCurrentReport().getNextNo());
 //        username.setText(Model.getCurrentAccount().getUsername());
     }
@@ -70,7 +82,7 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
      */
     protected void onAddPressed(View view) {
         Model model = Model.getInstance();
-
+        waterReport = new WaterReport(null, null, null, null);
         //set water condition based on radio group, user is default
         if (wasteButton.isSelected()) {
             waterReport.setCondition(WaterReport.waterCondition.get(0));
@@ -84,10 +96,12 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
 
         waterReport.setSource((String) waterSourceSpinner.getSelectedItem());
         waterReport.setReporter(model.getCurrentAccount());
-
-        Intent intent =
-                new Intent(getBaseContext(), LoggedInActivity.class);
-        startActivity(intent);
+        waterReport.setDate_time((String) date_time.getText());
+        if (model.addReport(waterReport)) {
+            Intent intent =
+                    new Intent(getBaseContext(), LoggedInActivity.class);
+            startActivity(intent);
+        }
 
     //TODO: make distinction for editing a water report
     }

@@ -10,6 +10,7 @@ public class WaterReport {
 
     private static int nextNo = 1;
     private Account reporter;
+    private String date_time;
     private int id;
     public static List<String> waterSources = Arrays.asList("Bottled", "Well",
             "Stream", "Lake", "Spring", "Other");
@@ -23,11 +24,12 @@ public class WaterReport {
     * need to figure out the date/time data
      */
 
-    public WaterReport(Account _reporter, String _source, String _condition) {
+    public WaterReport(Account _reporter, String _source, String _condition, String _dateTime) {
         reporter = _reporter;
         setCondition(_condition);
         setSource(_source);
         id = WaterReport.nextNo++;
+        date_time = _dateTime;
     }
 
     public Account getReporter() {
@@ -43,6 +45,9 @@ public class WaterReport {
     public void setId(int newID) {
         id = newID;
     }
+
+    public String getDate_time() { return date_time; }
+    public void setDate_time(String newDateTime) { date_time = newDateTime; }
 
     public int getNextNo() {return nextNo; }
 

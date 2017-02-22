@@ -53,7 +53,7 @@ public class Model {
 
     // created for case of an error
     private final WaterReport nullReport =
-            new WaterReport(null, null, null);
+            new WaterReport(null, null, null, null);
 
     // constructor for our model
     public Model() {
