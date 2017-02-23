@@ -19,10 +19,11 @@ import com.cs2340gt.nick.app_android.model.Model;
 public class RegistrationActivity extends AppCompatActivity {
 
     // Widgets represented in the view
-    private EditText usernameField;
-    private EditText passwordField;
-    private EditText emailField;
+    private EditText editTextUser;
+    private EditText editTextPass;
+    private EditText editTextEmail;
     private RadioGroup credentialsRadioGroup;
+    private RadioButton userRadioButton;
     private RadioButton workerRadioButton;
     private RadioButton managerRadioButton;
     private RadioButton adminRadioButton;
@@ -30,43 +31,47 @@ public class RegistrationActivity extends AppCompatActivity {
     // Account that is being created / changed
     private Account account;
 
-    // TODO: create and expose a service to allow editing to be set true
     // A boolean telling whether or not an account is being edited
     public static boolean editing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
+        if (editing) {
+            setContentView(R.layout.content_edit_account);
+        } else {
+            setContentView(R.layout.content_register_account);
+        }
 
         // fetch the true widgets from our view
-        usernameField = (EditText) findViewById(R.id.user_input);
-        passwordField = (EditText) findViewById(R.id.pass_input);
-        emailField = (EditText) findViewById(R.id.email_input);
+        editTextUser = (EditText) findViewById(R.id.user_input);
+        editTextPass = (EditText) findViewById(R.id.pass_input);
+        editTextEmail = (EditText) findViewById(R.id.email_input);
         credentialsRadioGroup = (RadioGroup) findViewById(R.id.cred_group);
+        userRadioButton = (RadioButton) findViewById(R.id.cred_user);
         workerRadioButton = (RadioButton) findViewById(R.id.cred_worker);
         managerRadioButton = (RadioButton) findViewById(R.id.cred_manager);
         adminRadioButton = (RadioButton) findViewById(R.id.cred_admin);
 
         if (workerRadioButton.isSelected()) {
-            account = new Account(usernameField.getText().toString(),
-                    passwordField.getText().toString(),
-                    emailField.getText().toString(),
+            account = new Account(editTextUser.getText().toString(),
+                    editTextPass.getText().toString(),
+                    editTextEmail.getText().toString(),
                     Credential.WORKER);
         } else if (managerRadioButton.isSelected()) {
-            account = new Account(usernameField.getText().toString(),
-                    passwordField.getText().toString(),
-                    emailField.getText().toString(),
+            account = new Account(editTextUser.getText().toString(),
+                    editTextPass.getText().toString(),
+                    editTextEmail.getText().toString(),
                     Credential.MANAGER);
         } else if (adminRadioButton.isSelected()) {
-            account = new Account(usernameField.getText().toString(),
-                    passwordField.getText().toString(),
-                    emailField.getText().toString(),
+            account = new Account(editTextUser.getText().toString(),
+                    editTextPass.getText().toString(),
+                    editTextEmail.getText().toString(),
                     Credential.ADMIN);
         } else {
-            account = new Account(usernameField.getText().toString(),
-                    passwordField.getText().toString(),
-                    emailField.getText().toString(),
+            account = new Account(editTextUser.getText().toString(),
+                    editTextPass.getText().toString(),
+                    editTextEmail.getText().toString(),
                     Credential.USER);
         }
 
@@ -93,6 +98,7 @@ public class RegistrationActivity extends AppCompatActivity {
             System.out.println(model.getAccountList());
         }
 
+        // ACTUAL
 //        if (successful) {
 //            Intent intent =
 //                    new Intent(getBaseContext(), MainActivity.class);

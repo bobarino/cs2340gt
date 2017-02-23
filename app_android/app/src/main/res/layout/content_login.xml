@@ -4,30 +4,31 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:text="Username:"
+        android:text="Email:"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView2" />
+        android:id="@+id/textViewEmail" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Username"
+        android:inputType="textEmailAddress"
+        android:hint="Enter email"
         android:ems="10"
-        android:id="@+id/username_input"
+        android:id="@+id/email_input"
         android:gravity="center_vertical|center_horizontal" />
 
     <TextView
         android:text="Password:"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView3" />
+        android:id="@+id/textViewPass" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
+        android:hint="Enter Password"
         android:ems="10"
         android:id="@+id/password_input"
         android:gravity="center_vertical|center_horizontal" />
@@ -48,8 +49,23 @@
 
     <TextView
         android:text="Error: Please Try Again"
+        android:layout_margin="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/error_text" />
+
+    <TextView
+        android:text="Not Registered? Register here:"
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewRegisterNotice" />
+
+    <Button
+        android:text="REGISTER NEW USER"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/register_button"
+        android:onClick="onRegistrationPressed" />
 
 </LinearLayout>

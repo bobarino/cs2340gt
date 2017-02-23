@@ -10,6 +10,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.cs2340gt.nick.app_android.controller.MainActivity">
 
+    <TextView
+        android:text="WELCOME"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/textViewWelcome" />
+
     <Button
         android:text="SUBMIT REPORT"
         android:layout_width="wrap_content"

@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".controller.RegistrationActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
-
-    <include layout="@layout/content_registration"/>
+    <include layout="@layout/content_register_account"/>
 
 </android.support.design.widget.CoordinatorLayout>
