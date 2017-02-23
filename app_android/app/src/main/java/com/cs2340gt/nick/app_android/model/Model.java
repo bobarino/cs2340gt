@@ -88,13 +88,11 @@ public class Model {
         if (existing == null) {
             return false;
         } else {
-            existing.setUsername(account.getUsername());
-            existing.setPassword(account.getPassword());
             existing.setEmailAddress(account.getEmailAddress());
+            existing.setPassword(account.getPassword());
             existing.setCredential(account.getCredential());
             return true;
         }
-
     }
 
     /**
@@ -132,12 +130,12 @@ public class Model {
      * A method to find an account by its username, using an O(n)
      * linear search.
      *
-     * @param username the username being searched by.
+     * @param email the email address being searched by.
      * @return the account, if found, or the null account.
      */
-    public Account findAccountByUser(String username) {
+    public Account findAccountByEmail(String email) {
         for (Account account: accountList) {
-            if (account.getUsername().equals(username)) {
+            if (account.getEmailAddress().equals(email)) {
                 return account;
             }
         }
