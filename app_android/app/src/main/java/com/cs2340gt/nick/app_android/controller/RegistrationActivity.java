@@ -22,6 +22,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -29,6 +31,7 @@ import com.cs2340gt.nick.app_android.R;
 import com.cs2340gt.nick.app_android.model.Account;
 import com.cs2340gt.nick.app_android.model.Credential;
 import com.cs2340gt.nick.app_android.model.Model;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by ArmandoGonzalez on 2/14/17.
@@ -37,10 +40,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     // Widgets represented in the view
     private EditText editTextEmail, editTextPass;
-    private TextView textViewID;
 
-    private Button addButton, editButton,
-            cancelButton, switchButton;
+    private Button addButton, editButton, cancelButton;
 
     private RadioGroup credentialsRadioGroup;
     private RadioButton userRadioButton, workerRadioButton,
@@ -50,9 +51,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private ProgressDialog progressDialog;
     private AlertDialog.Builder alertDialogBuilder;
     private AlertDialog optionsDialog;
+    private String alertEmailRef = "The email you entered ";
+    private String alertPassRef = "";
 
-    // Firebase Authorization Obj
-    private FirebaseAuth firebaseAuth;
+    // Firebase Authorization
+    private FirebaseAuth auth;
+    private FirebaseUser currentUser;
+    private FirebaseAuth.AuthStateListener authStateListener;
 
     // Database
     private DatabaseReference dbRef;
@@ -66,25 +71,50 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.activity_register_account);
 
         // authorization and database
-        firebaseAuth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                authStateListener = new FirebaseAuth.AuthStateListener() {
+                    @Override
+                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                        currentUser = firebaseAuth.getCurrentUser();
+                    }
+                };
+            }
+        };
         dbRef = FirebaseDatabase.getInstance().getReference();
+        dbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // this is called twice, once with initial value and again whenever changed
+                Account account = dataSnapshot.getValue(Account.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // failed to read value
+                // could be useful in differentiating different users' credentials?
+            }
+        });
 
         // progress and alert dialogs
         progressDialog = new ProgressDialog(this);
         alertDialogBuilder = new AlertDialog.Builder(this);
-
-        // set title
-        alertDialogBuilder.setTitle("Trying to edit instead?");
-
-        // set dialog message
         alertDialogBuilder
-                .setMessage("The email you entered is already registered to an account. "
+                .setTitle("Trying to edit instead?")
+                .setMessage(alertEmailRef + "is already registered to an account. "
                         + "Select EDIT to edit this account's info, or CANCEL to cancel.")
                 .setCancelable(false)
                 .setPositiveButton("EDIT",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
+                        Intent intent = new Intent(getApplicationContext(), EditExistingActivity.class);
+                        intent.putExtra("email", "password");
+                        intent.putExtra(alertEmailRef, alertPassRef);
+                        auth.signInWithEmailAndPassword(alertEmailRef, alertPassRef);
+
                         finish();
-                        startActivity(new Intent(getBaseContext(), EditExistingActivity.class));
+                        startActivity(intent);
                     }
                 })
                 .setNegativeButton("CANCEL",new DialogInterface.OnClickListener() {
@@ -97,12 +127,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPass = (EditText) findViewById(R.id.editTextPass);
 
-        textViewID = (TextView) findViewById(R.id.textViewID);
-
         addButton = (Button) findViewById(R.id.add_button);
         cancelButton = (Button) findViewById(R.id.cancel_button);
-        switchButton = (Button) findViewById(R.id.switch_button);
-
         addButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
 
@@ -114,6 +140,20 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        auth.addAuthStateListener(authStateListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (authStateListener != null) {
+            auth.removeAuthStateListener(authStateListener);
+        }
+    }
+
     /**
      *
      * @param view
@@ -121,58 +161,51 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     protected void onAddPressed(View view) {
         Model model = Model.getInstance();
 
-        boolean successful;
+        final String email = editTextEmail.getText().toString();
+        alertEmailRef = email;
+        final String pass = editTextPass.getText().toString();
+        alertPassRef = pass;
 
         // check if necessary fields are filled in
-        if (TextUtils.isEmpty(editTextEmail.getText().toString())) {
-            Toast.makeText(this, "Please enter in an email.", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(pass)) {
+            Toast.makeText(this, "Please enter in all relevant fields.", Toast.LENGTH_SHORT).show();
             return;
-        } else if (!TextUtils.isEmpty(editTextEmail.getText().toString())
-                && TextUtils.isEmpty(editTextPass.getText().toString())) {
+        } else if (!model.findAccountByEmail(email).equals(new Account(9999))) {
             optionsDialog = alertDialogBuilder.create();
             optionsDialog.show();
         } else {
-            String email = editTextEmail.getText().toString();
-            String pass = editTextPass.getText().toString();
-
+            Credential credential;
             if (workerRadioButton.isSelected()) {
                 account = new Account(editTextEmail.getText().toString(),
-                        editTextPass.getText().toString(),
-                        Credential.WORKER);
+                        editTextPass.getText().toString(), Credential.WORKER);
             } else if (managerRadioButton.isSelected()) {
                 account = new Account(editTextEmail.getText().toString(),
-                        editTextPass.getText().toString(),
-                        Credential.MANAGER);
+                        editTextPass.getText().toString(), Credential.MANAGER);
             } else if (adminRadioButton.isSelected()) {
                 account = new Account(editTextEmail.getText().toString(),
-                        editTextPass.getText().toString(),
-                        Credential.ADMIN);
+                        editTextPass.getText().toString(), Credential.ADMIN);
             } else {
                 account = new Account(editTextEmail.getText().toString(),
-                        editTextPass.getText().toString(),
-                        Credential.USER);
+                        editTextPass.getText().toString(), Credential.USER);
             }
 
             progressDialog.setMessage("Registering user...");
             progressDialog.show();
 
-            firebaseAuth.createUserWithEmailAndPassword(email, pass)
+            auth
+                    .createUserWithEmailAndPassword(email, pass)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
+                            progressDialog.dismiss();
                             if (task.isSuccessful()) {
-                                // user is successfully registered
-
-                                FirebaseUser current = firebaseAuth.getCurrentUser();
-                                dbRef.child(current.getUid()).setValue(account);
-
+                                dbRef.child("accounts").child("" + account.getId()).setValue(account);
                                 Toast.makeText(
                                         RegistrationActivity.this,
                                         "Registration Successful",
                                         Toast.LENGTH_SHORT).show();
-
                                 finish();
-                                startActivity(new Intent(getBaseContext(), MainActivity.class));
+                                startActivity(new Intent(getApplicationContext(), LoggedInActivity.class));
                             } else {
                                 Toast.makeText(
                                         RegistrationActivity.this,
@@ -181,8 +214,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             }
                         }
                     });
-
-            progressDialog.dismiss();
         }
     }
 
@@ -191,7 +222,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
         if (view == cancelButton) {
             finish();
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
 
         if (view == addButton) {
