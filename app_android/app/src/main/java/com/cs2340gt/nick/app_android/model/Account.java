@@ -1,8 +1,15 @@
 package com.cs2340gt.nick.app_android.model;
 
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by ArmandoGonzalez on 2/14/17.
  */
+@IgnoreExtraProperties
 public class Account {
 
     public static final int MAX_PASSWORD_LENGTH = 10;
@@ -12,6 +19,10 @@ public class Account {
     private String emailAddress;
     private String password;
     private Credential credential;
+
+    public Account() {
+        // default for firebase database updates
+    }
 
     // constructor for general use with proper indexing
     public Account(String emailAddress, String password, Credential credential) {
@@ -69,6 +80,16 @@ public class Account {
     @Override
     public String toString() {
         return emailAddress;
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        Map<String, Object> result = new HashMap<>();
+        result.put("id", id);
+        result.put("email", emailAddress);
+        result.put("pass", password);
+        result.put("credential", credential);
+        return result;
     }
 
 }
