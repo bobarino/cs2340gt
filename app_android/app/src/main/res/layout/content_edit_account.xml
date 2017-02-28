@@ -91,16 +91,14 @@
         android:id="@+id/edit_button"
         android:text="Edit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onAddPressed" />
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/cancel_button"
         android:text="Cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:onClick="onCancelPressed"/>
+        android:layout_gravity="bottom"/>
 
 
 </LinearLayout>

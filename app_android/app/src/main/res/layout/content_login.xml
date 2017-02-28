@@ -37,15 +37,13 @@
         android:text="Login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/login_button"
-        android:onClick="onLoginPressed" />
+        android:id="@+id/login_button"/>
 
     <Button
         android:text="Cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/cancel_button"
-        android:onClick="onCancelPressed" />
+        android:id="@+id/cancel_button"/>
 
     <TextView
         android:text="Error: Please Try Again"
@@ -65,7 +63,6 @@
         android:text="REGISTER NEW USER"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/register_button"
-        android:onClick="onRegistrationPressed" />
+        android:id="@+id/register_button"/>
 
 </LinearLayout>
