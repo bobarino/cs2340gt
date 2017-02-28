@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cs2340gt.nick.app_android.controller.EditUserInfoActivity"
+    >
+
+    <Button
+        android:text="ADD"
+        android:onClick="onAddPressed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/add_button" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Password"
+        android:ems="10"
+        android:layout_below="@+id/editText2"
+        android:layout_alignEnd="@+id/editText2"
+        android:id="@+id/editText3"
+        android:gravity="center_vertical|center_horizontal" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Email"
+        android:ems="10"
+        android:layout_marginTop="77dp"
+        android:id="@+id/editText"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/cancel_button"
+        android:gravity="center_vertical|center_horizontal" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Username"
+        android:ems="10"
+        android:id="@+id/editText2"
+        android:layout_below="@+id/editText"
+        android:layout_alignStart="@+id/editText"
+        android:gravity="center_vertical|center_horizontal" />
+
+    <RadioButton
+        android:text="Admin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/manager_button"
+        android:layout_alignStart="@+id/manager_button"
+        android:id="@+id/admin_button"
+        android:gravity="center_vertical|center_horizontal|start" />
+
+    <TextView
+        android:text="Credentials:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/worker_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="42dp"
+        android:id="@+id/creds_text" />
+
+    <RadioButton
+        android:text="Worker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/worker_button"
+        android:gravity="center_vertical|fill_horizontal|start"
+        android:layout_below="@+id/user_button"
+        android:layout_alignStart="@+id/user_button" />
+
+    <RadioButton
+        android:text="Manager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/manager_button"
+        android:gravity="center_vertical|center_horizontal|start"
+        android:layout_below="@+id/worker_button"
+        android:layout_alignStart="@+id/creds_text" />
+
+    <RadioButton
+        android:text="User"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
+        android:id="@+id/user_button"
+        android:gravity="center_vertical|center_horizontal|start"
+        android:layout_below="@+id/editText3"
+        android:layout_alignStart="@+id/creds_text" />
+
+    <Button
+        android:text="CANCEL"
+        android:onClick="onCancelPressed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cancel_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+</RelativeLayout>

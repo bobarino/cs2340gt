@@ -45,15 +45,15 @@ public class Model {
     public static WaterReport getCurrentReport() { return currentReport; }
     public void setCurrentReport(WaterReport _currentReport) { currentReport = _currentReport; }
 
-    // created for the case of an error
-    private final Account nullAcc =
-            new Account(0, "null",
-                    "null", "null",
-                    Credential.NULL);
-
-    // created for case of an error
-    private final WaterReport nullReport =
-            new WaterReport(null, null, null, null);
+//    // created for the case of an error
+//    private final Account nullAcc =
+//            new Account("null",
+//                    "null", "null",
+//                    Credential.NULL);
+//
+//    // created for case of an error
+//    private final WaterReport nullReport =
+//            new WaterReport(null, null, null, null, null);
 
     // constructor for our model
     public Model() {
@@ -106,7 +106,7 @@ public class Model {
                 return account;
             }
         }
-        return nullAcc;
+        return null;
     }
 
     /**
@@ -122,7 +122,7 @@ public class Model {
                 return account;
             }
         }
-        return nullAcc;
+        return null;
     }
 
     /*

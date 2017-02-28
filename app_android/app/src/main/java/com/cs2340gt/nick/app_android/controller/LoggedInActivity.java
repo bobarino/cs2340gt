@@ -39,5 +39,15 @@ public class LoggedInActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button editInfoButton = (Button) findViewById(R.id.edit_user);
+        editInfoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =
+                        new Intent(getBaseContext(), EditUserInfoActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

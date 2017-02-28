@@ -10,17 +10,17 @@ public class Account {
     private String password;
     private String emailAddress;
     private Credential credential;
+    private static int nextNo = 0;
 
     public Account() {
-        this(0, "user", "pass", "example@gatech.edu", Credential.USER);
+        this("user", "pass", "example@gatech.edu", Credential.USER);
     }
 
-    public Account(int id,
-                   String username,
+    public Account(String username,
                    String password,
                    String emailAddress,
                    Credential credential) {
-        this.id = id;
+        this.id = nextNo++;
         this.username = username;
         this.password = password;
         this.emailAddress = emailAddress;
@@ -74,7 +74,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return username;
+        return id + " " + username + " " + emailAddress + " " + credential;
     }
 
 }

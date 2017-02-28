@@ -39,6 +39,7 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
     private RadioButton treatMudButton;
     private RadioButton treatClearButton;
     private RadioButton potableButton;
+    private EditText location;
 
     // water report currently being created/changed
     private WaterReport waterReport;
@@ -60,12 +61,14 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
         reportID = (TextView) findViewById(R.id.id_field);
         username = (TextView) findViewById(R.id.name_field);
         date_time = (TextView) findViewById(R.id.date_time_field);
+        location = (EditText) findViewById(R.id.location_field);
 
         ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, WaterReport.waterSources);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         waterSourceSpinner.setAdapter(adapter);
 
-
+        waterReport = new WaterReport(null, null, null, null, null);
+        reportID.setText(" " + waterReport.getId());
 
         username.setText(" " + model.getCurrentAccount().getUsername());
 
@@ -82,7 +85,6 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
      */
     protected void onAddPressed(View view) {
         Model model = Model.getInstance();
-        waterReport = new WaterReport(null, null, null, null);
         //set water condition based on radio group, user is default
         if (wasteButton.isSelected()) {
             waterReport.setCondition(WaterReport.waterCondition.get(0));
@@ -90,10 +92,13 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
             waterReport.setCondition(WaterReport.waterCondition.get(1));
         } else if (treatClearButton.isSelected()) {
             waterReport.setCondition(WaterReport.waterCondition.get(2));
-        } else {
+        } else if (potableButton.isSelected()){
             waterReport.setCondition(WaterReport.waterCondition.get(3));
+        } else {
+            waterReport.setCondition(WaterReport.waterCondition.get(0));
         }
 
+        waterReport.setLocation(location.getText().toString());
         waterReport.setSource((String) waterSourceSpinner.getSelectedItem());
         waterReport.setReporter(model.getCurrentAccount());
         waterReport.setDate_time((String) date_time.getText());
@@ -102,6 +107,8 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
                     new Intent(getBaseContext(), LoggedInActivity.class);
             startActivity(intent);
         }
+
+        System.out.println(waterReport);
 
     //TODO: make distinction for editing a water report
     }

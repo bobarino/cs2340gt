@@ -42,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         if (username.getText().toString().equals(cur_user.getUsername().toString())
                 && password.getText().toString().equals(cur_user.getPassword().toString())) {
             model.setCurrentAcc(cur_user);
+            System.out.println(model.getCurrentAccount());
             Intent intent =
                     new Intent(getBaseContext(), LoggedInActivity.class);
             startActivity(intent);
