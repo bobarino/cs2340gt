@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Created by nick on 2/14/17.
@@ -33,7 +34,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private Button loginButton, cancelButton, registerButton, editButton;
 
-    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth auth;
+    private FirebaseAuth.AuthStateListener authStateListener;
     private ProgressDialog progressDialog;
 
     @Override
@@ -41,7 +43,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_login);
 
-        firebaseAuth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // user signed in
+                } else {
+                    // no user signed in
+                }
+            }
+        };
 
         error = (TextView) findViewById(R.id.error_text);
         error.setVisibility(TextView.INVISIBLE);
@@ -54,20 +67,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginButton = (Button) findViewById(R.id.login_button);
         cancelButton = (Button) findViewById(R.id.cancel_button);
         registerButton = (Button) findViewById(R.id.register_button);
-
-        // button listeners
         loginButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
         registerButton.setOnClickListener(this);
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        auth.addAuthStateListener(authStateListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (authStateListener != null) {
+            auth.removeAuthStateListener(authStateListener);
+        }
+    }
+
     /**
      *
      */
     protected void onLoginPressed() {
-        Model model = Model.getInstance();
-
+        final Model model = Model.getInstance();
 
         if (TextUtils.isEmpty(editTextEmail.toString())
                 || TextUtils.isEmpty(editTextPass.toString())) {
@@ -76,11 +100,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
 
         } else {
-
-            String email = editTextEmail.getText().toString();
+            final String email = editTextEmail.getText().toString();
             String pass = editTextPass.getText().toString();
 
-            firebaseAuth.signInWithEmailAndPassword(email, pass)
+            progressDialog.setMessage("Logging in...");
+            progressDialog.show();
+
+            auth.signInWithEmailAndPassword(email, pass)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -88,6 +114,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             if (task.isSuccessful()) {
                                 Toast.makeText(LoginActivity.this, "Login Successful",
                                         Toast.LENGTH_SHORT).show();
+                                model.setCurrentAcc(model.findAccountByEmail(email));
                                 finish();
                                 startActivity(new Intent(getApplicationContext(),
                                         LoggedInActivity.class));
@@ -98,58 +125,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             }
                         }
                     });
-
         }
-
-//        Account cur_user = model.findAccountByUser(username.getText().toString());
-////        if (!(cur_user.getCredential().identify().equals("N"))
-////                && cur_user.getPassword().equals(password.getText().toString())) {
-//        if (username.getText().toString().equals(cur_user.getUsername().toString())
-//                && password.getText().toString().equals(cur_user.getPassword().toString())) {
-//            model.setCurrentAcc(cur_user);
-//            Intent intent =
-//                    new Intent(getBaseContext(), LoggedInActivity.class);
-//            startActivity(intent);
-//        } else {
-//            username.setText("");
-//            password.setText("");
-//            error.setVisibility(TextView.VISIBLE);
-//        }
-    }
-
-    /**
-     *
-     * @param view
-     */
-    protected void onCancelPressed(View view) {
-        Intent intent =
-                new Intent(getBaseContext(), MainActivity.class);
-        startActivity(intent);
-    }
-
-    protected void onRegistrationPressed(View view) {
-        Intent intent =
-                new Intent(getBaseContext(), RegistrationActivity.class);
-        startActivity(intent);
     }
 
     @Override
     public void onClick(View view) {
-
         if (view == loginButton) {
             onLoginPressed();
         }
-
         if (view == cancelButton) {
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }
-
         if (view == registerButton) {
             finish();
             startActivity(new Intent(this, RegistrationActivity.class));
         }
-
     }
 
 }
