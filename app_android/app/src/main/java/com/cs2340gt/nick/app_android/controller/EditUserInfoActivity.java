@@ -36,6 +36,13 @@ public class EditUserInfoActivity extends AppCompatActivity {
     // TODO: add modifications to process for 'editing'
     private boolean editing;
 
+
+    /**
+     * updates the model based on the information in the current InstanceState
+     * upon creation of the screen/activity object
+     * @param savedInstanceState the instance state to be used to create the new
+     *                           view/activity object
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,25 +61,12 @@ public class EditUserInfoActivity extends AppCompatActivity {
         System.out.println(model.getCurrentAccount());
         Account current = model.getCurrentAccount();
         System.out.println(current);
-//        usernameField.setText(current.getUsername().toString());
-//        passwordField.setText(model.getCurrentAccount().getPassword());
-//        emailField.setText(model.getCurrentAccount().getEmailAddress());
-//
-//        Credential cred = model.getCurrentAccount().getCredential();
-//        if (cred.equals("USER")) {
-//            userRadioButton.setSelected(true);
-//        } else if (cred.equals("WORKER")) {
-//            workerRadioButton.setSelected(true);
-//        } else if (cred.equals("MANAGER")) {
-//            managerRadioButton.setSelected(true);
-//        } else if (cred.equals("ADMIN")) {
-//            adminRadioButton.setSelected(true);
-//        }
     }
 
     /**
-     *
-     * @param view
+     * update the model when the user presses the "ADD" button
+     * update to update the updated user's information
+     * @param view the button
      */
     protected void onAddPressed(View view) {
         Model model = Model.getInstance();
@@ -93,19 +87,19 @@ public class EditUserInfoActivity extends AppCompatActivity {
 
         System.out.println(update);
         System.out.println(model.getCurrentAccount());
-//        if (model.addAccount(account)) {
-//            Intent intent =
-//                    new Intent(getBaseContext(), LoggedInActivity.class);
-//            startActivity(intent);
-//        }
+
+        /**
+         * display the new view (the logged in state screen)
+         */
         Intent intent =
                 new Intent(getBaseContext(), LoggedInActivity.class);
         startActivity(intent);
     }
 
     /**
-     *
-     * @param view
+     * boot the user back out to the logged in screen without updating their information
+     * at all if they press the cancel button
+     * @param view the button
      */
     protected void onCancelPressed(View view) {
         Intent intent =

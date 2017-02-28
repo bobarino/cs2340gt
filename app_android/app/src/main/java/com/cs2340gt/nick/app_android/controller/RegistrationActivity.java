@@ -55,12 +55,17 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     /**
-     *
-     * @param view
+     * update the model and the view upon pressing hte add button
+     * @param view the button
      */
     protected void onAddPressed(View view) {
         Model model = Model.getInstance();
-        account = new Account();
+        if (model.getCurrentAccount() != null) {
+            account = model.getCurrentAccount();
+            editing = true;
+        } else {
+            account = new Account();
+        }
 
         account.setUsername(usernameField.getText().toString());
         account.setPassword(passwordField.getText().toString());
@@ -85,23 +90,41 @@ public class RegistrationActivity extends AppCompatActivity {
 //        } else {
 //
 //        }
+        System.out.println(account);
+        System.out.println(model.getCurrentAccount());
+        System.out.println(model.getAccountList());
+        if (editing == true) {
+            Intent intent = new Intent(getBaseContext(), LoggedInActivity.class);
+            startActivity(intent);
+        } else {
+            if (model.addAccount(account)) {
+                System.out.println(model.getAccountList());
+                Intent intent =
+                        new Intent(getBaseContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        }
 
-        if (model.addAccount(account)) {
+
+    }
+
+    /**
+     * update the model and the view upon pressing the cancel button
+     * @param view the button
+     */
+    protected void onCancelPressed(View view) {
+        Model model = Model.getInstance();
+        System.out.println(account);
+        System.out.println(model.getAccountList());
+        if (model.getCurrentAccount() != null) {
+            Intent intent = new Intent(getBaseContext(), LoggedInActivity.class);
+            startActivity(intent);
+        } else {
             Intent intent =
                     new Intent(getBaseContext(), MainActivity.class);
             startActivity(intent);
         }
 
-    }
-
-    /**
-     *
-     * @param view
-     */
-    protected void onCancelPressed(View view) {
-        Intent intent =
-                new Intent(getBaseContext(), MainActivity.class);
-        startActivity(intent);
     }
 
 }
