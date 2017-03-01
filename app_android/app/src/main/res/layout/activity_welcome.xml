@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.cs2340gt.nick.app_android.controller.MainActivity">
+    tools:context="com.cs2340gt.nick.app_android.controller.WelcomeDirectionActivity">
 
 
     <Button
@@ -20,7 +20,8 @@
         android:elevation="0dp"
         android:visibility="visible"
         android:layout_below="@+id/textView2"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="onLoginPressed"/>
 
     <Button
         android:text="Register"
@@ -29,7 +30,8 @@
         android:layout_below="@+id/loginButton"
         android:layout_alignStart="@+id/loginButton"
         android:layout_marginTop="26dp"
-        android:id="@+id/registerButton" />
+        android:id="@+id/registerButton"
+        android:onClick="onRegistrationPressed"/>
 
     <TextView
         android:text="Welcome to Clean Water Report"
