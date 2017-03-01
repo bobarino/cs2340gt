@@ -55,5 +55,15 @@ public class LoggedInActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button showReportList = (Button) findViewById(R.id.show_reports_button);
+        showReportList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =
+                        new Intent(getBaseContext(), WaterReportListActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

@@ -85,6 +85,7 @@ public class WaterReport {
     }
 
     @Override
-    public String toString() { return (reporter + " " + condition + " " + source +
-            "\nLocation: " + location); }
+    public String toString() { return ("Report No.: " + id + " " + reporter.getUsername() + "\n"
+            + " - " + condition + " - " + source
+            + "\nLocation: " + location); }
 }
