@@ -75,26 +75,6 @@ public class Model {
     }
 
     /**
-     * A method to edit the info of an existing account.
-     *
-     * @param account the account being edited.
-     * @return a boolean telling the success of editing.
-     */
-    public boolean editAccountInfo(Account account) {
-        Account existing = findAccountById(account.getId());
-
-        // TODO: remove major error check once code works
-        if (existing == null) {
-            return false;
-        } else {
-            existing.setEmailAddress(account.getEmailAddress());
-            existing.setPassword(account.getPassword());
-            existing.setCredential(account.getCredential());
-            return true;
-        }
-    }
-
-    /**
      * a method to add water reports to the application
      * will check first to see if a report already exists
      *
@@ -117,12 +97,16 @@ public class Model {
      * @return the account, if found, or the null account.
      */
     public Account findAccountById(int id) {
-        for (Account account: accountList) {
-            if (account.getId() == id) {
-                return account;
+        if (accountList.size() == 0) {
+            return nullAcc;
+        } else {
+            for (Account account: accountList) {
+                if (account.getId() == id) {
+                    return account;
+                }
             }
+            return nullAcc;
         }
-        return nullAcc;
     }
 
     /**
@@ -133,12 +117,16 @@ public class Model {
      * @return the account, if found, or the null account.
      */
     public Account findAccountByEmail(String email) {
-        for (Account account: accountList) {
-            if (account.getEmailAddress().equals(email)) {
-                return account;
+        if (accountList.size() == 0) {
+            return nullAcc;
+        } else {
+            for (Account account: accountList) {
+                if (account.getEmailAddress().equals(email)) {
+                    return account;
+                }
             }
+            return nullAcc;
         }
-        return nullAcc;
     }
 
     /*
