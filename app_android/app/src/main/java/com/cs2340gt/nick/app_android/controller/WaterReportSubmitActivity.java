@@ -12,6 +12,10 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import com.cs2340gt.nick.app_android.R;
 import com.cs2340gt.nick.app_android.model.Account;
 import com.cs2340gt.nick.app_android.model.Credential;
@@ -35,6 +39,7 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
     private RadioButton treatMudButton;
     private RadioButton treatClearButton;
     private RadioButton potableButton;
+    private EditText location;
 
     // water report currently being created/changed
     private WaterReport waterReport;
@@ -45,6 +50,7 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Model model = Model.getInstance();
         setContentView(R.layout.content_water_report_submit);
 
         waterSourceSpinner = (Spinner) findViewById(R.id.source_options);
@@ -55,11 +61,20 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
         reportID = (TextView) findViewById(R.id.id_field);
         username = (TextView) findViewById(R.id.name_field);
         date_time = (TextView) findViewById(R.id.date_time_field);
+        location = (EditText) findViewById(R.id.location_field);
 
         ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, WaterReport.waterSources);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         waterSourceSpinner.setAdapter(adapter);
 
+        waterReport = new WaterReport(null, null, null, null, null);
+        reportID.setText(" " + waterReport.getId());
+
+        username.setText(" " + model.getCurrentAccount().getEmailAddress());
+
+        DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy, HH:mm");
+        String date = df.format(Calendar.getInstance().getTime());
+        date_time.setText(date);
 //        reportID.setText(Model.getCurrentReport().getNextNo());
 //        username.setText(Model.getCurrentAccount().getUsername());
     }
@@ -70,7 +85,6 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
      */
     protected void onAddPressed(View view) {
         Model model = Model.getInstance();
-
         //set water condition based on radio group, user is default
         if (wasteButton.isSelected()) {
             waterReport.setCondition(WaterReport.waterCondition.get(0));
@@ -78,16 +92,23 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
             waterReport.setCondition(WaterReport.waterCondition.get(1));
         } else if (treatClearButton.isSelected()) {
             waterReport.setCondition(WaterReport.waterCondition.get(2));
-        } else {
+        } else if (potableButton.isSelected()){
             waterReport.setCondition(WaterReport.waterCondition.get(3));
+        } else {
+            waterReport.setCondition(WaterReport.waterCondition.get(0));
         }
 
+        waterReport.setLocation(location.getText().toString());
         waterReport.setSource((String) waterSourceSpinner.getSelectedItem());
         waterReport.setReporter(model.getCurrentAccount());
+        waterReport.setDate_time((String) date_time.getText());
+        if (model.addReport(waterReport)) {
+            Intent intent =
+                    new Intent(getBaseContext(), LoggedInActivity.class);
+            startActivity(intent);
+        }
 
-        Intent intent =
-                new Intent(getBaseContext(), LoggedInActivity.class);
-        startActivity(intent);
+        System.out.println(waterReport);
 
     //TODO: make distinction for editing a water report
     }

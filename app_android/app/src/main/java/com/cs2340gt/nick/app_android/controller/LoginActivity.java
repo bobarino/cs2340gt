@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText editTextPass;
     private TextView error;
 
-    private Button loginButton, cancelButton, registerButton, editButton;
+    private Button loginButton, cancelButton, registerButton;
 
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
@@ -56,8 +56,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         };
 
-        error = (TextView) findViewById(R.id.error_text);
-        error.setVisibility(TextView.INVISIBLE);
         editTextEmail = (EditText) findViewById(R.id.email_input);
         editTextPass = (EditText) findViewById(R.id.password_input);
 
@@ -88,7 +86,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     /**
-     *
+     * Attempts to log in a user. Only starts log in process if all fields are filled in,
+     * and verifies with Firebase if this account can be logged in.
      */
     protected void onLoginPressed() {
         final Model model = Model.getInstance();
@@ -98,7 +97,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             Toast.makeText(this, "Please fill all relevant fields.", Toast.LENGTH_SHORT).show();
             return;
-
         } else {
             final String email = editTextEmail.getText().toString();
             String pass = editTextPass.getText().toString();

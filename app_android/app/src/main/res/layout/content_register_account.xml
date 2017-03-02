@@ -35,14 +35,6 @@
         android:layout_centerHorizontal="true" />
 
     <TextView
-        android:id="@+id/textViewID"
-        android:layout_gravity="right"
-        android:layout_margin="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Your Id #\n" />
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"

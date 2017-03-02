@@ -6,11 +6,10 @@ import android.os.Bundle;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-
 import com.cs2340gt.nick.app_android.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.cs2340gt.nick.app_android.model.Model;
 
 /*
 * created by SeanBills on 2/14/17.
@@ -25,7 +24,6 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
 
     private Button submitReportButton;
     private Button logoutButton;
-//    private TextView textViewWelcome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +34,17 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (firebaseAuth.getCurrentUser() == null) {
-                    // no one is being shown as logged in
-                } else {
-                    //
-                }
+                authStateListener = new FirebaseAuth.AuthStateListener() {
+                    @Override
+                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                        currentUser = auth.getCurrentUser();
+                        if (currentUser == null) {
+                            // no user is signed in
+                        } else {
+                            // some user is signed in
+                        }
+                    }
+                };
             }
         };
 
@@ -50,8 +54,6 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
         submitReportButton.setOnClickListener(this);
         logoutButton.setOnClickListener(this);
 
-//        textViewWelcome = (TextView) findViewById(R.id.textViewWelcome);
-//        textViewWelcome.setText("WELCOME " + currentUser.getEmail());
 
     }
 
@@ -71,6 +73,7 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
+        Model model = Model.getInstance();
 
         if (view == submitReportButton) {
             finish();
@@ -79,9 +82,44 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
 
         if (view == logoutButton) {
             auth.getInstance().signOut();
+            model.setCurrentAcc(null);
             finish();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
 
+        if (view == submitReportButton)
+
+        // the controller for the logout button
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Model model = Model.getInstance();
+                model.setCurrentAcc(null);
+                Intent intent =
+                        new Intent(getBaseContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // controller for the edit user information button
+        Button editInfoButton = (Button) findViewById(R.id.edit_user);
+        editInfoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =
+                        new Intent(getBaseContext(), RegistrationActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button showReportList = (Button) findViewById(R.id.show_reports_button);
+        showReportList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =
+                        new Intent(getBaseContext(), WaterReportListActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

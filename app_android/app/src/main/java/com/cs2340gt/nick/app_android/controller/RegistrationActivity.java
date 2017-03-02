@@ -51,8 +51,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private ProgressDialog progressDialog;
     private AlertDialog.Builder alertDialogBuilder;
     private AlertDialog optionsDialog;
-    private String alertEmailRef = "The email you entered ";
-    private String alertPassRef = "";
 
     // Firebase Authorization
     private FirebaseAuth auth;
@@ -81,6 +79,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     @Override
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                         currentUser = auth.getCurrentUser();
+                        if (currentUser == null) {
+                            // no user is signed in
+                        } else {
+                            // some user is signed in
+                        }
                     }
                 };
             }
@@ -233,7 +236,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             startActivity(new Intent(getApplicationContext(),
                                     LoggedInActivity.class));
                         } else {
-                            progressDialog.dismiss();
                             optionsDialog = alertDialogBuilder.create();
                             optionsDialog.show();
                         }
@@ -265,16 +267,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View view) {
-
         if (view == cancelButton) {
             finish();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
-
         if (view == addButton) {
             onAddPressed(view);
         }
-
     }
 
 }

@@ -38,7 +38,11 @@ public class Model {
         return currentAccount;
     }
     public void setCurrentAcc(Account currentAccount) {
-        this.currentAccount = currentAccount;
+        if (currentAccount == null) {
+            this.currentAccount = nullAcc;
+        } else {
+            this.currentAccount = currentAccount;
+        }
     }
 
     // current report getter and setter
@@ -50,7 +54,7 @@ public class Model {
 
     // created for case of an error
     private final WaterReport nullReport =
-            new WaterReport(null, null, null);
+            new WaterReport(nullAcc, "null", "null", "null", "null");
 
     // constructor for our model
     public Model() {
@@ -107,6 +111,7 @@ public class Model {
             }
             return nullAcc;
         }
+
     }
 
     /**
@@ -210,6 +215,5 @@ public class Model {
             return conditionMatches;
         }
     }
-    // TODO: distinction for editing
 
 }

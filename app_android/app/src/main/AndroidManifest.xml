@@ -41,7 +41,7 @@
         </activity>
         <activity
             android:name="com.cs2340gt.nick.app_android.controller.EditExistingActivity"
-            android:label="Edit Account"
+            android:label="Editing"
             android:parentActivityName=".controller.RegistrationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -60,6 +60,14 @@
             </intent-filter>
         </activity>
         <activity android:name="com.cs2340gt.nick.app_android.controller.WaterReportSubmitActivity"
+            android:parentActivityName=".controller.LoggedInActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="com.cs2340gt.nick.app_android.controller.WaterReportListActivity"
             android:parentActivityName=".controller.LoggedInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

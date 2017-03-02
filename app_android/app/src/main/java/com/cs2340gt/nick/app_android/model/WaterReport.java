@@ -8,8 +8,9 @@ import java.util.Arrays;
 
 public class WaterReport {
 
-    private static int nextNo = 1;
+    private static int nextNo = 0;
     private Account reporter;
+    private String date_time;
     private int id;
     public static List<String> waterSources = Arrays.asList("Bottled", "Well",
             "Stream", "Lake", "Spring", "Other");
@@ -17,17 +18,22 @@ public class WaterReport {
     public static List<String> waterCondition = Arrays.asList("Waste", "Treatable - Muddy",
             "Treatable - Clear", "Potable");
     private String condition;
+    private String location;
 
     /*
+    // TODO: resolve the following
     * need to figure out the location information
     * need to figure out the date/time data
      */
 
-    public WaterReport(Account _reporter, String _source, String _condition) {
+    public WaterReport(Account _reporter, String _source, String _condition, String _dateTime,
+                       String place) {
         reporter = _reporter;
         setCondition(_condition);
         setSource(_source);
         id = WaterReport.nextNo++;
+        date_time = _dateTime;
+        location = place;
     }
 
     public Account getReporter() {
@@ -43,6 +49,12 @@ public class WaterReport {
     public void setId(int newID) {
         id = newID;
     }
+
+    public String getDate_time() { return date_time; }
+    public void setDate_time(String newDateTime) { date_time = newDateTime; }
+
+    public String getLocation() { return location; }
+    public void setLocation(String newLoc) { location = newLoc; }
 
     public int getNextNo() {return nextNo; }
 
@@ -74,5 +86,7 @@ public class WaterReport {
     }
 
     @Override
-    public String toString() { return (reporter + " " + condition + " " + source); }
+    public String toString() { return ("Report No.: " + id + " " + reporter.getEmailAddress() + "\n"
+            + " - " + condition + " - " + source
+            + "\nLocation: " + location); }
 }

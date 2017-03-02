@@ -12,7 +12,6 @@ import java.util.Map;
 @IgnoreExtraProperties
 public class Account {
 
-    public static final int MAX_PASSWORD_LENGTH = 10;
     public static int Next_Id = 0;
 
     private int id;
@@ -26,7 +25,13 @@ public class Account {
 
     // constructor for general use with proper indexing
     public Account(String emailAddress, String password, Credential credential) {
-        id = Next_Id++;
+        this(Next_Id++, "user", "pass", "example@gatech.edu", Credential.USER);
+    }
+
+    public Account(int id, String username,
+                   String password,
+                   String emailAddress,
+                   Credential credential) {
         this.emailAddress = emailAddress;
         this.password = password;
         this.credential = credential;

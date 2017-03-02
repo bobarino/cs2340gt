@@ -114,7 +114,7 @@
         android:id="@+id/water_source_text" />
 
     <TextView
-        android:text="Location:"
+        android:text="Location (enter address):"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/location_text"
@@ -139,5 +139,17 @@
         android:id="@+id/add_button"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPostalAddress"
+        android:ems="10"
+        android:layout_below="@+id/location_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:id="@+id/location_field"
+        android:text="Enter Address"
+        android:gravity="center_vertical|center_horizontal" />
 
 </RelativeLayout>

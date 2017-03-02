@@ -4,57 +4,55 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/textViewEmail"
         android:text="Email:"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textViewEmail" />
+        android:layout_margin="10dp"/>
 
     <EditText
+        android:id="@+id/email_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:hint="Enter email"
         android:ems="10"
-        android:id="@+id/email_input"
-        android:gravity="center_vertical|center_horizontal" />
+        android:gravity="center_vertical|center_horizontal"/>
 
     <TextView
+        android:id="@+id/textViewPass"
         android:text="Password:"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textViewPass" />
+        android:layout_margin="10dp"/>
 
     <EditText
+        android:id="@+id/password_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:hint="Enter Password"
         android:ems="10"
-        android:id="@+id/password_input"
         android:gravity="center_vertical|center_horizontal" />
 
     <Button
         android:text="Login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="75dp"
+        android:layout_margin="16dp"
+
         android:id="@+id/login_button"/>
 
     <Button
+        android:id="@+id/cancel_button"
         android:text="Cancel"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/cancel_button"/>
-
-    <TextView
-        android:text="Error: Please Try Again"
-        android:layout_margin="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/error_text" />
+        android:layout_height="75dp"
+        android:layout_margin="16dp"/>
 
     <TextView
         android:text="Not Registered? Register here:"
-        android:layout_margin="20dp"
+        android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textViewRegisterNotice" />
@@ -62,7 +60,7 @@
     <Button
         android:text="REGISTER NEW USER"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="75dp"
         android:id="@+id/register_button"/>
 
 </LinearLayout>
