@@ -12,144 +12,142 @@
     android:gravity="center_vertical|center_horizontal">
 
     <Button
+        android:id="@+id/buttonCancelReport"
         android:text="CANCEL"
-        android:onClick="onCancelPressed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/cancel_button"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"/>
 
     <TextView
+        android:id="@+id/labelTextId"
         android:text="Report ID#:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/id_text" />
+        android:layout_alignParentStart="true"/>
 
     <TextView
+        android:id="@+id/displayTextId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/id_text"
-        android:id="@+id/id_field" />
+        android:layout_toEndOf="@+id/labelTextId"/>
 
     <TextView
+        android:id="@+id/labelTextUser"
         android:text="User:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/id_text"
-        android:layout_alignParentStart="true"
-        android:id="@+id/username_text" />
+        android:layout_below="@+id/labelTextId"
+        android:layout_alignParentStart="true"/>
 
     <TextView
+        android:id="@+id/displayTextUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/username_text"
-        android:layout_toEndOf="@+id/username_text"
-        android:id="@+id/name_field" />
+        android:layout_alignBottom="@+id/labelTextUser"
+        android:layout_toEndOf="@+id/labelTextUser"/>
 
     <TextView
+        android:id="@+id/labelTextDateTime"
         android:text="Date/Time:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/username_text"
-        android:layout_alignParentStart="true"
-        android:id="@+id/date_time_text" />
+        android:layout_below="@+id/labelTextUser"
+        android:layout_alignParentStart="true"/>
 
     <TextView
+        android:id="@+id/displayTextDateTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/date_time_text"
-        android:layout_toEndOf="@+id/id_field"
-        android:id="@+id/date_time_field" />
+        android:layout_alignBottom="@+id/labelTextDateTime"
+        android:layout_toEndOf="@+id/displayTextId"/>
 
     <RadioButton
+        android:id="@+id/rButtonTreatableClear"
         android:text="Treatable - Clear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/treatable_clear_button"
-        android:layout_below="@+id/treatable_muddy_button"
-        android:layout_alignStart="@+id/treatable_muddy_button" />
+        android:layout_below="@+id/rButtonTreatableMuddy"
+        android:layout_alignStart="@+id/rButtonTreatableMuddy"/>
 
     <RadioButton
+        android:id="@+id/rButtonPotable"
         android:text="Potable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/potable_button"
-        android:layout_below="@+id/treatable_clear_button"
-        android:layout_alignStart="@+id/treatable_clear_button" />
+        android:layout_below="@+id/rButtonTreatableClear"
+        android:layout_alignStart="@+id/rButtonTreatableClear"/>
 
     <TextView
+        android:id="@+id/labelRGroupQuality"
         android:text="Water Quality:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/treatable_muddy_button"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/water_quality_text" />
+        android:layout_above="@+id/rButtonTreatableMuddy"
+        android:layout_centerHorizontal="true"/>
 
     <RadioButton
+        android:id="@+id/rButtonWaste"
         android:text="Waste"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="104dp"
-        android:id="@+id/waste_button"
-        android:layout_above="@+id/cancel_button"
-        android:layout_alignStart="@+id/treatable_muddy_button" />
+        android:layout_above="@+id/buttonCancelReport"
+        android:layout_alignStart="@+id/rButtonTreatableMuddy"/>
 
     <Spinner
+        android:id="@+id/SpinnerSource"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/source_options" />
+        android:layout_centerHorizontal="true"/>
 
     <TextView
+        android:id="@+id/labelSpinnerSource"
         android:text="Water Source:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/source_options"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/water_source_text" />
+        android:layout_above="@+id/SpinnerSource"
+        android:layout_centerHorizontal="true"/>
 
     <TextView
-        android:text="Location (enter address):"
+        android:id="@+id/labelTextLocation"
+        android:text="Location:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/location_text"
-        android:layout_below="@+id/date_time_field"
+        android:layout_below="@+id/displayTextDateTime"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="27dp" />
+        android:layout_marginTop="27dp"/>
 
     <RadioButton
+        android:id="@+id/rButtonTreatableMuddy"
         android:text="Treatable - Muddy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="31dp"
-        android:id="@+id/treatable_muddy_button"
-        android:layout_alignTop="@+id/waste_button"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignTop="@+id/rButtonWaste"
+        android:layout_centerHorizontal="true"/>
 
     <Button
+        android:id="@+id/buttonAddReport"
         android:text="ADD"
-        android:onClick="onAddPressed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/add_button"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"/>
 
     <EditText
+        android:id="@+id/editLocation"
+        android:hint="Please Enter Address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPostalAddress"
         android:ems="10"
-        android:layout_below="@+id/location_text"
+        android:layout_below="@+id/labelTextLocation"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:id="@+id/location_field"
-        android:text="Enter Address"
-        android:gravity="center_vertical|center_horizontal" />
+        android:gravity="center_vertical|center_horizontal"/>
 
 </RelativeLayout>

@@ -15,7 +15,7 @@
     tools:context="com.cs2340gt.nick.app_android.controller.EditExistingActivity">
 
     <EditText
-        android:id="@+id/editTextEmail"
+        android:id="@+id/editEmail"
         android:hint="Reenter email"
         android:layout_margin="5dp"
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
         android:layout_centerHorizontal="true"/>
 
     <EditText
-        android:id="@+id/editTextPass"
+        android:id="@+id/editPassword"
         android:hint="Enter new password"
         android:layout_margin="5dp"
         android:layout_width="match_parent"
@@ -42,7 +42,7 @@
         android:text="Select new Credentials:"/>
 
     <RadioGroup
-        android:id="@+id/cred_group"
+        android:id="@+id/rGroupCred"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -50,28 +50,28 @@
         android:gravity="center_vertical|center_horizontal">
 
         <RadioButton
-            android:id="@+id/cred_user"
+            android:id="@+id/rButtonUser"
             android:text="User"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
 
         <RadioButton
-            android:id="@+id/cred_worker"
+            android:id="@+id/rButtonWorker"
             android:text="Worker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <RadioButton
-            android:id="@+id/cred_manager"
+            android:id="@+id/rButtonManager"
             android:text="Manager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <RadioButton
-            android:id="@+id/cred_admin"
+            android:id="@+id/rButtonAdmin"
             android:text="Admin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -79,13 +79,13 @@
     </RadioGroup>
 
     <Button
-        android:id="@+id/edit_button"
+        android:id="@+id/buttonEditAcc"
         android:text="Edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/cancel_button"
+        android:id="@+id/buttonCancelEdit"
         android:text="Cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
