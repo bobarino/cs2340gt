@@ -64,6 +64,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     // Account that is being created / changed
     private Account account;
+    private String emailString;
+    private String passwordString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +80,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 authStateListener = new FirebaseAuth.AuthStateListener() {
                     @Override
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                        currentUser = firebaseAuth.getCurrentUser();
+                        currentUser = auth.getCurrentUser();
                     }
                 };
             }
@@ -101,28 +103,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         // progress and alert dialogs
         progressDialog = new ProgressDialog(this);
         alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder
-                .setTitle("Trying to edit instead?")
-                .setMessage(alertEmailRef + "is already registered to an account. "
-                        + "Select EDIT to edit this account's info, or CANCEL to cancel.")
-                .setCancelable(false)
-                .setPositiveButton("EDIT",new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id) {
-                        Intent intent = new Intent(getApplicationContext(), EditExistingActivity.class);
-                        intent.putExtra("email", "password");
-                        intent.putExtra(alertEmailRef, alertPassRef);
-                        auth.signInWithEmailAndPassword(alertEmailRef, alertPassRef);
-
-                        finish();
-                        startActivity(intent);
-                    }
-                })
-                .setNegativeButton("CANCEL",new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id) {
-                        // if this button is clicked, just close dialog and do nothing
-                        dialog.cancel();
-                    }
-                });
 
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPass = (EditText) findViewById(R.id.editTextPass);
@@ -155,66 +135,132 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
     /**
+     * Attempts to add a new account to the model. If account exists,
+     * tries to reroute persons to edit this existing account; disallows any
+     * persons from registering preexisting accounts.
      *
-     * @param view
+     * @param view a View object included as convention
      */
     protected void onAddPressed(View view) {
         Model model = Model.getInstance();
 
-        final String email = editTextEmail.getText().toString();
-        alertEmailRef = email;
-        final String pass = editTextPass.getText().toString();
-        alertPassRef = pass;
+        emailString = editTextEmail.getText().toString();
+        passwordString = editTextPass.getText().toString();
+
+        setUpAlertDialogBuilder(emailString, passwordString);
 
         // check if necessary fields are filled in
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(pass)) {
-            Toast.makeText(this, "Please enter in all relevant fields.", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(emailString) || TextUtils.isEmpty(passwordString)) {
+            Toast.makeText(this,
+                    "Please enter in all relevant fields.",
+                    Toast.LENGTH_SHORT).show();
             return;
-        } else if (!model.findAccountByEmail(email).equals(new Account(9999))) {
-            optionsDialog = alertDialogBuilder.create();
-            optionsDialog.show();
         } else {
-            Credential credential;
-            if (workerRadioButton.isSelected()) {
-                account = new Account(editTextEmail.getText().toString(),
-                        editTextPass.getText().toString(), Credential.WORKER);
-            } else if (managerRadioButton.isSelected()) {
-                account = new Account(editTextEmail.getText().toString(),
-                        editTextPass.getText().toString(), Credential.MANAGER);
-            } else if (adminRadioButton.isSelected()) {
-                account = new Account(editTextEmail.getText().toString(),
-                        editTextPass.getText().toString(), Credential.ADMIN);
-            } else {
-                account = new Account(editTextEmail.getText().toString(),
-                        editTextPass.getText().toString(), Credential.USER);
-            }
-
             progressDialog.setMessage("Registering user...");
             progressDialog.show();
-
-            auth
-                    .createUserWithEmailAndPassword(email, pass)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            progressDialog.dismiss();
-                            if (task.isSuccessful()) {
-                                dbRef.child("accounts").child("" + account.getId()).setValue(account);
-                                Toast.makeText(
-                                        RegistrationActivity.this,
-                                        "Registration Successful",
-                                        Toast.LENGTH_SHORT).show();
-                                finish();
-                                startActivity(new Intent(getApplicationContext(), LoggedInActivity.class));
-                            } else {
-                                Toast.makeText(
-                                        RegistrationActivity.this,
-                                        "Registration Failed. Please try again.",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+            account = new Account(editTextEmail.getText().toString(),
+                    editTextPass.getText().toString(), determineCredential());
+            register(model, account);
         }
+    }
+
+    /**
+     * A helper to set up the alert dialog based on the String values obtained from the
+     * view which represent an email and password used to attempt registration of an
+     * existing account. Alert Dialog is not always created/shown.
+     *
+     * @param emailRef a String representing the existing account's email address
+     * @param passRef a String representing the existing account's password
+     */
+    private void setUpAlertDialogBuilder(final String emailRef, final String passRef) {
+        alertDialogBuilder
+                .setView(R.layout.dialog_options_registration)
+                .setTitle("Trying to edit?")
+                .setPositiveButton("EDIT",new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, int id) {
+                        progressDialog.setMessage("Verifying password...");
+                        auth
+                                .signInWithEmailAndPassword(emailString, passwordString)
+                                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    progressDialog.dismiss();
+                                    finish();
+                                    startActivity(new Intent(getApplicationContext(), EditExistingActivity.class));
+                                } else {
+                                    Toast.makeText(
+                                            RegistrationActivity.this,
+                                            "Wrong password. Please try again.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton("CANCEL",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        // if this button is clicked, just close dialog and do nothing
+                        dialog.cancel();
+                    }
+                });
+    }
+
+    /**
+     * A helper to consolidate the registration of new accounts. Takes in
+     * an Account object and registers to the model based on whether or not Firebase
+     * authentication approves this new registration to occur.
+     *
+     * @param model the model which the account is being added to.
+     * @param newAccount the new account being registered.
+     */
+    private void register(final Model model, final Account newAccount) {
+        auth
+                .createUserWithEmailAndPassword(emailString, passwordString)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressDialog.dismiss();
+                        if (task.isSuccessful()) {
+                            model.addAccountInfo(account);
+                            dbRef.child("accounts").child("" + newAccount.getId())
+                                    .setValue(newAccount);
+                            Toast.makeText(
+                                    RegistrationActivity.this,
+                                    "Registration Successful",
+                                    Toast.LENGTH_SHORT).show();
+                            finish();
+                            startActivity(new Intent(getApplicationContext(),
+                                    LoggedInActivity.class));
+                        } else {
+                            progressDialog.dismiss();
+                            optionsDialog = alertDialogBuilder.create();
+                            optionsDialog.show();
+                        }
+                    }
+                });
+    }
+
+    /**
+     * Intended to determine the credential level selected for the new user. Should determine
+     * the credential level based on the radio buttons that are pushed.
+     *
+     * @return the Credential value that has been selected on this screen.
+     */
+    private Credential determineCredential() {
+        if (userRadioButton.isSelected()) {
+            return Credential.USER;
+        }
+        if (workerRadioButton.isSelected()) {
+            return Credential.WORKER;
+        }
+        if (managerRadioButton.isSelected()) {
+            return Credential.MANAGER;
+        }
+        if (adminRadioButton.isSelected()) {
+            return Credential.ADMIN;
+        }
+        return Credential.NULL;
     }
 
     @Override

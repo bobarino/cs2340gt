@@ -50,19 +50,9 @@ public class EditExistingActivity extends AppCompatActivity implements View.OnCl
     private RadioButton userRadioButton, workerRadioButton,
             managerRadioButton, adminRadioButton;
 
-    // Fancy progress bar and dialogs
-    private ProgressDialog progressDialog;
-    private AlertDialog.Builder alertDialogBuilder;
-    private AlertDialog optionsDialog;
-    private int wrongCount;
-
     private FirebaseAuth auth;
-    private FirebaseUser currentUser;
     private FirebaseAuth.AuthStateListener authStateListener;
     private DatabaseReference dbRef;
-
-    // Account that is being edited
-    private Account existing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +66,12 @@ public class EditExistingActivity extends AppCompatActivity implements View.OnCl
                 authStateListener = new FirebaseAuth.AuthStateListener() {
                     @Override
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                        currentUser = firebaseAuth.getCurrentUser();
+                        FirebaseUser user = auth.getCurrentUser();
+                        if (user == null) {
+                            // no user is signed in
+                        } else {
+                            // some user is signed in
+                        }
                     }
                 };
             }
@@ -97,7 +92,6 @@ public class EditExistingActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
-        progressDialog = new ProgressDialog(this);
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPass = (EditText) findViewById(R.id.editTextPass);
 
@@ -130,11 +124,14 @@ public class EditExistingActivity extends AppCompatActivity implements View.OnCl
     }
 
     /**
+     * Attempts to start the edit process based on the required fields being filled in and being
+     * filled in correctly.
      *
-     * @param view
+     * @param view a view being passed in by convention.
      */
     protected void onEditPressed(View view) {
         Model model = Model.getInstance();
+        final Account existing = model.findAccountByEmail(editTextEmail.getText().toString());
         final String newPass = editTextPass.getText().toString();
 
         if (TextUtils.isEmpty(newPass)) {
@@ -145,73 +142,57 @@ public class EditExistingActivity extends AppCompatActivity implements View.OnCl
             return;
         } else {
             // all clear
-            progressDialog.setMessage("Editing user...");
-            progressDialog.show();
-
-            existing = model.findAccountByEmail(editTextEmail.getText().toString());
-
-            currentUser.updatePassword(newPass).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (!task.isSuccessful()) {
-                        Toast.makeText(EditExistingActivity.this,
-                                "Something went very wrong.",
-                                Toast.LENGTH_SHORT).show();
-                        return;
-                    } else {
-                        existing.setPassword(newPass);
-                    }
-                }
-            });
-            Credential newCred;
-            if (workerRadioButton.isSelected()) {
-                newCred = Credential.WORKER;
-            } else if (managerRadioButton.isSelected()) {
-                newCred = Credential.MANAGER;
-            } else if (adminRadioButton.isSelected()) {
-                newCred = Credential.ADMIN;
-            } else {
-                newCred = Credential.USER;
-            }
-            existing.setCredential(newCred);
+            editAccountInfo(existing, newPass, determineCredential());
 
             Map<String, Object> existingValues = existing.toMap();
             Map<String, Object> updates = new HashMap<>();
-            updates.put("accounts", existingValues);
-            dbRef.updateChildren(updates).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (!task.isSuccessful()) {
-                        Toast.makeText(EditExistingActivity.this,
-                                "Something went very wrong.",
-                                Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                }
-            });
-
-            progressDialog.setMessage("Logging in...");
-            auth
-                    .signInWithEmailAndPassword(existing.getEmailAddress(), existing.getPassword())
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (!task.isSuccessful()) {
-                                Toast.makeText(EditExistingActivity.this,
-                                        "Something went very wrong.",
-                                        Toast.LENGTH_SHORT).show();
-                                return;
-                            } else {
-                                Toast.makeText(
-                                        EditExistingActivity.this,
-                                        "Edit Successful!",
-                                        Toast.LENGTH_SHORT).show();
-                                finish();
-                                startActivity(new Intent(getApplicationContext(), LoggedInActivity.class));
-                            }
-                        }
-                    });
+            dbRef.child("accounts").child("" + existing.getId())
+                    .setValue(existing);
+            Toast.makeText(this, "Edit successful.", Toast.LENGTH_SHORT).show();
+            finish();
+            startActivity(new Intent(getApplicationContext(), LoggedInActivity.class));
         }
+    }
+
+    /**
+     * Edits the account's information in the model.
+     *
+     * @param existing the existing account which we are trying to edit.
+     * @param newPassword the new password being set to the account.
+     * @param newCredential the new Credential being assigned to the account.
+     */
+    private void editAccountInfo(final Account existing,
+                                 final String newPassword,
+                                 Credential newCredential) {
+        if (existing.equals(new Account(9999))) {
+            // something is very wrong
+            return;
+        } else {
+            existing.setPassword(newPassword);
+            existing.setCredential(newCredential);
+        }
+    }
+
+    /**
+     * Intended to determine the credential level selected for the new user. Should determine
+     * the credential level based on the radio buttons that are pushed.
+     *
+     * @return the Credential value that has been selected on this screen.
+     */
+    private Credential determineCredential() {
+        if (userRadioButton.isSelected()) {
+            return Credential.USER;
+        }
+        if (workerRadioButton.isSelected()) {
+            return Credential.WORKER;
+        }
+        if (managerRadioButton.isSelected()) {
+            return Credential.MANAGER;
+        }
+        if (adminRadioButton.isSelected()) {
+            return Credential.ADMIN;
+        }
+        return Credential.NULL;
     }
 
     @Override
