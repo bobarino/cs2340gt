@@ -34,7 +34,7 @@ public class Model {
     private static WaterReport currentReport;
 
     // current account getter and setter
-    public static Account getCurrentAccount() {
+    public Account getCurrentAccount() {
         return currentAccount;
     }
     public void setCurrentAcc(Account currentAccount) {

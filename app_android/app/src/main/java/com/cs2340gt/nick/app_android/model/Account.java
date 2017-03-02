@@ -20,18 +20,18 @@ public class Account {
     private Credential credential;
 
     public Account() {
-        // default for firebase database updates
+        // default constructor used only for Firebase database updates
     }
 
     // constructor for general use with proper indexing
     public Account(String emailAddress, String password, Credential credential) {
-        this(Next_Id++, "user", "pass", "example@gatech.edu", Credential.USER);
+        this(Next_Id++, emailAddress, password, credential);
     }
 
-    public Account(int id, String username,
+    public Account(int id, String emailAddress,
                    String password,
-                   String emailAddress,
                    Credential credential) {
+        this.id = id;
         this.emailAddress = emailAddress;
         this.password = password;
         this.credential = credential;
