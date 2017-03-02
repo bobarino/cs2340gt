@@ -92,19 +92,19 @@ public class EditExistingActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
-        editTextEmail = (EditText) findViewById(R.id.editTextEmail);
-        editTextPass = (EditText) findViewById(R.id.editTextPass);
+        editTextEmail = (EditText) findViewById(R.id.editEmail);
+        editTextPass = (EditText) findViewById(R.id.editPassword);
 
-        editButton = (Button) findViewById(R.id.edit_button);
-        cancelButton = (Button) findViewById(R.id.cancel_button);
+        editButton = (Button) findViewById(R.id.buttonEditAcc);
+        cancelButton = (Button) findViewById(R.id.buttonCancelEdit);
         editButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
 
-        credentialsRadioGroup = (RadioGroup) findViewById(R.id.cred_group);
-        userRadioButton = (RadioButton) findViewById(R.id.cred_user);
-        workerRadioButton = (RadioButton) findViewById(R.id.cred_worker);
-        managerRadioButton = (RadioButton) findViewById(R.id.cred_manager);
-        adminRadioButton = (RadioButton) findViewById(R.id.cred_admin);
+        credentialsRadioGroup = (RadioGroup) findViewById(R.id.rGroupCred);
+        userRadioButton = (RadioButton) findViewById(R.id.rButtonUser);
+        workerRadioButton = (RadioButton) findViewById(R.id.rButtonWorker);
+        managerRadioButton = (RadioButton) findViewById(R.id.rButtonManager);
+        adminRadioButton = (RadioButton) findViewById(R.id.rButtonAdmin);
 
     }
 
@@ -192,7 +192,7 @@ public class EditExistingActivity extends AppCompatActivity implements View.OnCl
         if (adminRadioButton.isSelected()) {
             return Credential.ADMIN;
         }
-        return Credential.NULL;
+        return Credential.USER;
     }
 
     @Override

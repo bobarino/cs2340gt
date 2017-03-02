@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,26 +40,22 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     // Widgets represented in the view
     private EditText editTextEmail, editTextPass;
 
-    private Button addButton, editButton, cancelButton;
+    private Button addButton, cancelButton;
 
     private RadioGroup credentialsRadioGroup;
     private RadioButton userRadioButton, workerRadioButton,
             managerRadioButton, adminRadioButton;
 
-    // Fancy progress bar and dialogs
     private ProgressDialog progressDialog;
     private AlertDialog.Builder alertDialogBuilder;
     private AlertDialog optionsDialog;
 
-    // Firebase Authorization
     private FirebaseAuth auth;
     private FirebaseUser currentUser;
     private FirebaseAuth.AuthStateListener authStateListener;
 
-    // Database
     private DatabaseReference dbRef;
 
-    // Account that is being created / changed
     private Account account;
     private String emailString;
     private String passwordString;
@@ -103,23 +98,22 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
-        // progress and alert dialogs
         progressDialog = new ProgressDialog(this);
         alertDialogBuilder = new AlertDialog.Builder(this);
 
-        editTextEmail = (EditText) findViewById(R.id.editTextEmail);
-        editTextPass = (EditText) findViewById(R.id.editTextPass);
+        editTextEmail = (EditText) findViewById(R.id.editEmail);
+        editTextPass = (EditText) findViewById(R.id.editPassword);
 
-        addButton = (Button) findViewById(R.id.add_button);
-        cancelButton = (Button) findViewById(R.id.cancel_button);
+        addButton = (Button) findViewById(R.id.buttonAddAcc);
+        cancelButton = (Button) findViewById(R.id.buttonCancelRgstr);
         addButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
 
-        credentialsRadioGroup = (RadioGroup) findViewById(R.id.cred_group);
-        userRadioButton = (RadioButton) findViewById(R.id.cred_user);
-        workerRadioButton = (RadioButton) findViewById(R.id.cred_worker);
-        managerRadioButton = (RadioButton) findViewById(R.id.cred_manager);
-        adminRadioButton = (RadioButton) findViewById(R.id.cred_admin);
+        credentialsRadioGroup = (RadioGroup) findViewById(R.id.rGroupCred);
+        userRadioButton = (RadioButton) findViewById(R.id.rButtonUser);
+        workerRadioButton = (RadioButton) findViewById(R.id.rButtonWorker);
+        managerRadioButton = (RadioButton) findViewById(R.id.rButtonManager);
+        adminRadioButton = (RadioButton) findViewById(R.id.rButtonAdmin);
 
     }
 
@@ -173,9 +167,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
      * existing account. Alert Dialog is not always created/shown.
      *
      * @param emailRef a String representing the existing account's email address
-     * @param passRef a String representing the existing account's password
+     * @param passwordRef a String representing the existing account's password
      */
-    private void setUpAlertDialogBuilder(final String emailRef, final String passRef) {
+    private void setUpAlertDialogBuilder(final String emailRef, final String passwordRef) {
         alertDialogBuilder
                 .setView(R.layout.dialog_options_registration)
                 .setTitle("Trying to edit?")
@@ -183,7 +177,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     public void onClick(final DialogInterface dialog, int id) {
                         progressDialog.setMessage("Verifying password...");
                         auth
-                                .signInWithEmailAndPassword(emailString, passwordString)
+                                .signInWithEmailAndPassword(emailRef, passwordRef)
                                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -236,6 +230,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             startActivity(new Intent(getApplicationContext(),
                                     LoggedInActivity.class));
                         } else {
+                            // must be attempting to edit an account that exists
                             optionsDialog = alertDialogBuilder.create();
                             optionsDialog.show();
                         }
@@ -244,8 +239,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
     /**
-     * Intended to determine the credential level selected for the new user. Should determine
-     * the credential level based on the radio buttons that are pushed.
+     * Intended to determine the credential level selected for the new user. Should
+     * determine the credential level based on the radio button that is pushed.
      *
      * @return the Credential value that has been selected on this screen.
      */
@@ -262,7 +257,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         if (adminRadioButton.isSelected()) {
             return Credential.ADMIN;
         }
-        return Credential.NULL;
+        return Credential.USER;
     }
 
     @Override
