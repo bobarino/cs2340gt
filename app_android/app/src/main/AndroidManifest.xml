@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cs2340gt.nick.app_android">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -28,7 +30,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.cs2340gt.nick.app_android.controller.WelcomeDirectionActivity">
+            android:name="com.cs2340gt.nick.app_android.controller.RegistrationActivity"
+            android:label="Registration"
+            android:parentActivityName=".controller.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,8 +40,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.cs2340gt.nick.app_android.controller.RegistrationActivity"
-            android:parentActivityName=".controller.MainActivity">
+            android:name="com.cs2340gt.nick.app_android.controller.EditExistingActivity"
+            android:label="Editing"
+            android:parentActivityName=".controller.RegistrationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -62,15 +67,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.cs2340gt.nick.app_android.controller.EditUserInfoActivity"
-            android:parentActivityName=".controller.LoggedInActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-        <activity android:name=".controller.WaterReportListActivity"
+        <activity android:name="com.cs2340gt.nick.app_android.controller.WaterReportListActivity"
             android:parentActivityName=".controller.LoggedInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

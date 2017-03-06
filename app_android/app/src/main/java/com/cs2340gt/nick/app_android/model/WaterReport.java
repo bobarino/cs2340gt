@@ -9,9 +9,9 @@ import java.util.Arrays;
 public class WaterReport {
 
     private static int nextNo = 0;
+    private int id;
     private Account reporter;
     private String date_time;
-    private int id;
     public static List<String> waterSources = Arrays.asList("Bottled", "Well",
             "Stream", "Lake", "Spring", "Other");
     private String source;
@@ -20,20 +20,32 @@ public class WaterReport {
     private String condition;
     private String location;
 
+    public WaterReport() {
+        // default constructor used only for Firebase database updates
+    }
+
     /*
+    // TODO: resolve the following
     * need to figure out the location information
     * need to figure out the date/time data
      */
 
-    public WaterReport(Account _reporter, String _source, String _condition, String _dateTime,
-                       String place) {
-        reporter = _reporter;
-        setCondition(_condition);
-        setSource(_source);
-        id = WaterReport.nextNo++;
-        date_time = _dateTime;
-        location = place;
+    public WaterReport(Account reporter, String source, String condition,
+                       String dateTime, String location) {
+        this(nextNo++, reporter, source, condition, dateTime, location);
     }
+
+    public WaterReport(int id, Account reporter, String source,
+                       String condition, String dateTime, String location) {
+        this.id = id;
+        this.reporter = reporter;
+        this.condition = condition;
+        this.source = source;
+        this.date_time = dateTime;
+        this.location = location;
+    }
+
+    // getters and setters
 
     public Account getReporter() {
         return reporter;
@@ -75,7 +87,7 @@ public class WaterReport {
         }
     }
 
-
+    // equals based on reporter, condition, and source
     @Override
     public boolean equals(Object o) {
         WaterReport wr = (WaterReport) o;
@@ -85,7 +97,7 @@ public class WaterReport {
     }
 
     @Override
-    public String toString() { return ("Report No.: " + id + " " + reporter.getUsername() + "\n"
+    public String toString() { return ("Report No.: " + id + " " + reporter.getEmailAddress() + "\n"
             + " - " + condition + " - " + source
             + "\nLocation: " + location); }
 }

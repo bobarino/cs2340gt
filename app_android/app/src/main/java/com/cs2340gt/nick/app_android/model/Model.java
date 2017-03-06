@@ -34,26 +34,27 @@ public class Model {
     private static WaterReport currentReport;
 
     // current account getter and setter
-    public static Account getCurrentAccount() {
+    public Account getCurrentAccount() {
         return currentAccount;
     }
     public void setCurrentAcc(Account currentAccount) {
-        this.currentAccount = currentAccount;
+        if (currentAccount == null) {
+            this.currentAccount = nullAcc;
+        } else {
+            this.currentAccount = currentAccount;
+        }
     }
 
     // current report getter and setter
     public static WaterReport getCurrentReport() { return currentReport; }
     public void setCurrentReport(WaterReport _currentReport) { currentReport = _currentReport; }
 
-//    // created for the case of an error
-//    private final Account nullAcc =
-//            new Account("null",
-//                    "null", "null",
-//                    Credential.NULL);
-//
-//    // created for case of an error
-//    private final WaterReport nullReport =
-//            new WaterReport(null, null, null, null, null);
+    // created for the case of an error
+    private final Account nullAcc = new Account(9999);
+
+    // created for case of an error
+    private final WaterReport nullReport =
+            new WaterReport(nullAcc, "null", "null", "null", "null");
 
     // constructor for our model
     public Model() {
@@ -62,13 +63,12 @@ public class Model {
     }
 
     /**
-     * A method to add accounts to the application. Checks to see
-     * if the account already exists.
+     * A method to add accounts to the application. Only adds if the account does not exist.
      *
      * @param newAcc the candidate account.
      * @return whether or not addition was successful.
      */
-    public boolean addAccount(Account newAcc) {
+    public boolean addAccountInfo(Account newAcc) {
         for (Account account: accountList) {
             if (newAcc.equals(account)) {
                 return false;
@@ -101,28 +101,37 @@ public class Model {
      * @return the account, if found, or the null account.
      */
     public Account findAccountById(int id) {
-        for (Account account: accountList) {
-            if (account.getId() == id) {
-                return account;
+        if (accountList.size() == 0) {
+            return nullAcc;
+        } else {
+            for (Account account: accountList) {
+                if (account.getId() == id) {
+                    return account;
+                }
             }
+            return nullAcc;
         }
-        return null;
+
     }
 
     /**
      * A method to find an account by its username, using an O(n)
      * linear search.
      *
-     * @param username the username being searched by.
+     * @param email the email address being searched by.
      * @return the account, if found, or the null account.
      */
-    public Account findAccountByUser(String username) {
-        for (Account account: accountList) {
-            if (account.getUsername().equals(username)) {
-                return account;
+    public Account findAccountByEmail(String email) {
+        if (accountList.size() == 0) {
+            return nullAcc;
+        } else {
+            for (Account account: accountList) {
+                if (account.getEmailAddress().equals(email)) {
+                    return account;
+                }
             }
+            return nullAcc;
         }
-        return null;
     }
 
     /*
@@ -132,10 +141,10 @@ public class Model {
     * @return a list of waterReports submitted by a particular user,
     * if found, or null otherwise
      */
-    public List<WaterReport> findReportBySubmitter(Account user) {
+    public List<WaterReport> findReportBySubmitter(Account account) {
         List<WaterReport> foundSubmissions = new ArrayList<>();
         for (WaterReport wr : reportList) {
-            if (wr.getReporter().equals(user)) {
+            if (wr.getReporter().equals(account)) {
                 foundSubmissions.add(wr);
             }
         }

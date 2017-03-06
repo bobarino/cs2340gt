@@ -1,12 +1,14 @@
 package com.cs2340gt.nick.app_android.controller;
 
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
-
 import com.cs2340gt.nick.app_android.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.cs2340gt.nick.app_android.model.Model;
 
 /*
@@ -14,26 +16,80 @@ import com.cs2340gt.nick.app_android.model.Model;
 * edited by SeanBills on 2/19/17.
  */
 
-public class LoggedInActivity extends AppCompatActivity {
+public class LoggedInActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private FirebaseAuth auth;
+    private FirebaseUser currentUser;
+    private FirebaseAuth.AuthStateListener authStateListener;
+
+    private Button submitReportButton;
+    private Button logoutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.logged_in);
 
-        // the controller for the submit water report button
-        Button submitReportButton = (Button) findViewById(R.id.report_submit);
-        submitReportButton.setOnClickListener(new View.OnClickListener() {
+        auth = FirebaseAuth.getInstance();
+        authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent =
-                        new Intent(getBaseContext(), WaterReportSubmitActivity.class);
-                startActivity(intent);
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                authStateListener = new FirebaseAuth.AuthStateListener() {
+                    @Override
+                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                        currentUser = auth.getCurrentUser();
+                        if (currentUser == null) {
+                            // no user is signed in
+                        } else {
+                            // some user is signed in
+                        }
+                    }
+                };
             }
-        });
+        };
+
+        // buttons
+        submitReportButton = (Button) findViewById(R.id.report_submit);
+        logoutButton = (Button) findViewById(R.id.logout_button);
+        submitReportButton.setOnClickListener(this);
+        logoutButton.setOnClickListener(this);
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        auth.addAuthStateListener(authStateListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (authStateListener != null) {
+            auth.removeAuthStateListener(authStateListener);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        Model model = Model.getInstance();
+
+        if (view == submitReportButton) {
+            finish();
+            startActivity(new Intent(getApplicationContext(), WaterReportSubmitActivity.class));
+        }
+
+        if (view == logoutButton) {
+            auth.getInstance().signOut();
+            model.setCurrentAcc(null);
+            finish();
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        }
+
+        if (view == submitReportButton)
 
         // the controller for the logout button
-        Button logoutButton = (Button) findViewById(R.id.logout_button);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

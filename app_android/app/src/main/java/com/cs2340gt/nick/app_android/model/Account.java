@@ -1,39 +1,57 @@
 package com.cs2340gt.nick.app_android.model;
 
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by ArmandoGonzalez on 2/14/17.
  */
+@IgnoreExtraProperties
 public class Account {
 
+    public static int Next_Id = 0;
+
     private int id;
-    private String username;
-    private String password;
     private String emailAddress;
+    private String password;
     private Credential credential;
-    private static int nextNo = 0;
 
     public Account() {
-        this("user", "pass", "example@gatech.edu", Credential.USER);
+        // default constructor used only for Firebase database updates
     }
 
-    public Account(String username,
+    // constructor for general use with proper indexing
+    public Account(String emailAddress, String password, Credential credential) {
+        this(Next_Id++, emailAddress, password, credential);
+    }
+
+    public Account(int id, String emailAddress,
                    String password,
-                   String emailAddress,
                    Credential credential) {
-        this.id = nextNo++;
-        this.username = username;
-        this.password = password;
+        this.id = id;
         this.emailAddress = emailAddress;
+        this.password = password;
         this.credential = credential;
     }
 
-    // getters and setters
-    public String getUsername() {
-        return username;
+    // ONLY for use with creating the null account
+    public Account(int id) {
+        this.id = id;
+        emailAddress = "null";
+        password = "null";
+        credential = Credential.NULL;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    // getters and setters
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
     public String getPassword() {
@@ -42,14 +60,6 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getEmailAddress() {
-        return emailAddress;
-    }
-
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
     }
 
     public Credential getCredential() {
@@ -69,12 +79,22 @@ public class Account {
     @Override
     public boolean equals(Object account) {
         Account a = (Account) account;
-        return a.getUsername().equals(username);
+        return a.getEmailAddress().equals(emailAddress);
     }
 
     @Override
     public String toString() {
-        return id + " " + username + " " + emailAddress + " " + credential;
+        return emailAddress;
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        Map<String, Object> result = new HashMap<>();
+        result.put("id", id);
+        result.put("email", emailAddress);
+        result.put("pass", password);
+        result.put("credential", credential);
+        return result;
     }
 
 }

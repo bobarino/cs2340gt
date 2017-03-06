@@ -9,38 +9,45 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.cs2340gt.nick.app_android.controller.MainActivity">
+    tools:context="com.cs2340gt.nick.app_android.controller.LoggedInActivity">
+
+    <TextView
+        android:id="@+id/textViewWelcome"
+        android:text="WELCOME"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"/>
 
     <Button
+        android:id="@+id/logout_button"
         android:text="LOGOUT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/logout_button"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"/>
 
     <Button
+        android:id="@+id/edit_user"
         android:text="Edit User"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/logout_button"
-        android:layout_alignParentStart="true"
-        android:id="@+id/edit_user" />
+        android:layout_alignParentStart="true"/>
 
     <Button
+        android:id="@+id/report_submit"
         android:text="SUBMIT REPORT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/report_submit"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"/>
 
     <Button
+        android:id="@+id/show_reports_button"
         android:text="SHOW REPORTS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/show_reports_button"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"/>
 
 </RelativeLayout>
