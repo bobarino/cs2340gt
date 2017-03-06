@@ -115,11 +115,11 @@ public class WaterReportSubmitActivity extends AppCompatActivity implements View
         dateTimeDisplay = (TextView) findViewById(R.id.displayTextDateTime);
         locationField = (EditText) findViewById(R.id.editLocation);
 
-        waterSourceSpinner = (Spinner) findViewById(R.id.source_options);
-        wasteButton = (RadioButton) findViewById(R.id.waste_button);
-        treatableMudButton = (RadioButton) findViewById(R.id.treatable_muddy_button);
-        treatableClearButton = (RadioButton) findViewById(R.id.treatable_clear_button);
-        potableButton = (RadioButton) findViewById(R.id.potable_button);
+        waterSourceSpinner = (Spinner) findViewById(R.id.SpinnerSource);
+        wasteButton = (RadioButton) findViewById(R.id.rButtonWaste);
+        treatableMudButton = (RadioButton) findViewById(R.id.rButtonTreatableMuddy);
+        treatableClearButton = (RadioButton) findViewById(R.id.rButtonTreatableClear);
+        potableButton = (RadioButton) findViewById(R.id.rButtonPotable);
 
         addButton = (Button) findViewById(R.id.buttonAddReport);
         cancelButton = (Button) findViewById(R.id.buttonCancelReport);

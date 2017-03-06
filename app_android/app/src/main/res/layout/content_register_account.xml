@@ -48,31 +48,31 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:gravity="center_vertical|center_horizontal"
-        android:checkedButton="@id/cred_user">
+        android:checkedButton="@id/rButtonUser">
 
         <RadioButton
-            android:id="@+id/cred_user"
+            android:id="@+id/rButtonUser"
             android:text="User"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <RadioButton
-            android:id="@+id/cred_worker"
+            android:id="@+id/rButtonWorker"
             android:text="Worker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <RadioButton
-            android:id="@+id/cred_manager"
+            android:id="@+id/rButtonManager"
             android:text="Manager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <RadioButton
-            android:id="@+id/cred_admin"
+            android:id="@+id/rButtonAdmin"
             android:text="Admin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -80,13 +80,13 @@
     </RadioGroup>
 
     <Button
-        android:id="@+id/add_button"
+        android:id="@+id/addButton"
         android:text="ADD"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <Button
-        android:id="@+id/cancel_button"
+        android:id="@+id/cancelButton"
         android:text="Cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

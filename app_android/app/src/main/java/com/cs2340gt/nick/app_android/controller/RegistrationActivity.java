@@ -101,11 +101,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         progressDialog = new ProgressDialog(this);
         alertDialogBuilder = new AlertDialog.Builder(this);
 
-        editTextEmail = (EditText) findViewById(R.id.editEmail);
-        editTextPass = (EditText) findViewById(R.id.editPassword);
+        editTextEmail = (EditText) findViewById(R.id.editTextEmail);
+        editTextPass = (EditText) findViewById(R.id.editTextPass);
 
-        addButton = (Button) findViewById(R.id.buttonAddAcc);
-        cancelButton = (Button) findViewById(R.id.buttonCancelRgstr);
+        addButton = (Button) findViewById(R.id.addButton);
+        cancelButton = (Button) findViewById(R.id.cancelButton);
         addButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
 
