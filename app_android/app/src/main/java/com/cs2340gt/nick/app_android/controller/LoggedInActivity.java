@@ -65,5 +65,7 @@ public class LoggedInActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
     }
 }

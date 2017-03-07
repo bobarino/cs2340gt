@@ -22,7 +22,7 @@ import com.cs2340gt.nick.app_android.model.Credential;
 import com.cs2340gt.nick.app_android.model.Model;
 import com.cs2340gt.nick.app_android.model.Location;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends android.support.v4.app.FragmentActivity implements OnMapReadyCallback {
 
     // GoogleMap to put in the display
     private GoogleMap mMap;
