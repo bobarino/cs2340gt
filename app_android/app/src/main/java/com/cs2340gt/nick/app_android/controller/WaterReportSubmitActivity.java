@@ -74,7 +74,7 @@ public class WaterReportSubmitActivity extends AppCompatActivity implements View
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_water_report_submit);
+        setContentView(R.layout.activity_report_submit);
 
         auth = FirebaseAuth.getInstance();
         authStateListener = new FirebaseAuth.AuthStateListener() {
