@@ -142,7 +142,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         Model model = Model.getInstance();
 
         emailString = editTextEmail.getText().toString();
+        System.out.println(emailString);
         passwordString = editTextPass.getText().toString();
+        System.out.println(passwordString);
 
         setUpAlertDialogBuilder(emailString, passwordString);
 

@@ -87,19 +87,19 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
 
-        if (view == submitReportButton)
-
-        // the controller for the logout button
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Model model = Model.getInstance();
-                model.setCurrentAcc(null);
-                Intent intent =
-                        new Intent(getBaseContext(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
+//        if (view == submitReportButton)
+//
+//        // the controller for the logout button
+//        logoutButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Model model = Model.getInstance();
+//                model.setCurrentAcc(null);
+//                Intent intent =
+//                        new Intent(getBaseContext(), MainActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
         // controller for the edit user information button
         Button editInfoButton = (Button) findViewById(R.id.edit_user);
