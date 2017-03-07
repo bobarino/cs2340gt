@@ -19,15 +19,23 @@ import com.cs2340gt.nick.app_android.model.Model;
  */
 public class RegistrationActivity extends AppCompatActivity {
 
-    // Widgets represented in the view
+    // editText for the username of registration
     private EditText usernameField;
+    // edittext for password of registration
     private EditText passwordField;
+    // editText for email of registartion
     private EditText emailField;
+    // radioGroup for controlling which button is selected
     private RadioGroup credentialsRadioGroup;
+    // radio button for selected button
     private RadioButton selectedRadioButton;
+    // radio button for user button
     private RadioButton userRadioButton;
+    // radio button for worker button
     private RadioButton workerRadioButton;
+    // radio button for manager button
     private RadioButton managerRadioButton;
+    // radio button for admin button
     private RadioButton adminRadioButton;
 
     // Account that is being created / changed

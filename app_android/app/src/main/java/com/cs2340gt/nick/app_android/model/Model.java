@@ -32,30 +32,44 @@ public class Model {
 
     // current WaterReport being worked with
     private static WaterReport currentReport;
+    // current WaterReport ID no.
+    private static int nextReportId = 1;
 
-    // current account getter and setter
+    // nextReportId getter
+    public static int getNextReportId() { return nextReportId; }
+
+    /**
+     * method to get the current account that's logged in
+     * @return an Account that the model is currenlty logged in as
+     */
     public static Account getCurrentAccount() {
         return currentAccount;
     }
+
+    /**
+     * method to set a current account that the model is logged in as
+     * @param currentAccount the method to update the logged in status as
+     */
     public void setCurrentAcc(Account currentAccount) {
         this.currentAccount = currentAccount;
     }
 
-    // current report getter and setter
+    /**
+     * method to get the current report being used in the model
+     * @return a WaterReport that we're currently using
+     */
     public static WaterReport getCurrentReport() { return currentReport; }
+
+    /**
+     * method to set the current report associated with the model at hand
+     * @param _currentReport the updated current report
+     */
     public void setCurrentReport(WaterReport _currentReport) { currentReport = _currentReport; }
 
-//    // created for the case of an error
-//    private final Account nullAcc =
-//            new Account("null",
-//                    "null", "null",
-//                    Credential.NULL);
-//
-//    // created for case of an error
-//    private final WaterReport nullReport =
-//            new WaterReport(null, null, null, null, null);
 
-    // constructor for our model
+    /**
+     * no arg constructor for the model class...no need for a parameter constructor
+     */
     public Model() {
         accountList = new ArrayList<>();
         reportList = new ArrayList<>();
@@ -86,10 +100,16 @@ public class Model {
      * @return whether the add was successful
      */
     public boolean addReport(WaterReport newReport) {
-        if (reportList.contains(newReport)) {
+        if (newReport.getLocation().getLatitude() > 90 ||
+                newReport.getLocation().getLatitude() < -90 ||
+                newReport.getLocation().getLongitude() > 180 ||
+                newReport.getLocation().getLongitude() < -180) {
+            return false;
+        } else if (reportList.contains(newReport)) {
             return false;
         }
         reportList.add(newReport);
+        Model.nextReportId++;
         return true;
     }
 

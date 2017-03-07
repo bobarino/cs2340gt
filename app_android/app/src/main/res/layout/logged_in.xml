@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,28 +12,12 @@
     tools:context="com.cs2340gt.nick.app_android.controller.MainActivity">
 
     <Button
-        android:text="SUBMIT REPORT"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/report_submit"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-    <Button
         android:text="LOGOUT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/logout_button"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:text="LOGGED IN"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/success_logged_in" />
 
     <Button
         android:text="Edit User"
@@ -41,4 +26,40 @@
         android:layout_alignBottom="@+id/logout_button"
         android:layout_alignParentStart="true"
         android:id="@+id/edit_user" />
+
+    <Button
+        android:text="SUBMIT REPORT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/report_submit"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:text="SHOW REPORTS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/show_reports_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/logout_button"
+        android:layout_above="@+id/report_submit">
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            class="com.google.android.gms.maps.SupportMapFragment">
+            <include
+                layout="@layout/activity_maps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </fragment>
+
+    </FrameLayout>
+
+
 </RelativeLayout>

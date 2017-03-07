@@ -19,15 +19,24 @@ import com.cs2340gt.nick.app_android.model.Model;
  */
 
 public class EditUserInfoActivity extends AppCompatActivity {
-    // Widgets represented in the view
+
+    // edit text for updating username of user
     private EditText usernameField;
+    // edit text for updating password of user
     private EditText passwordField;
+    // edit text for updating email address
     private EditText emailField;
+    // radio group for holding all possible credentials
     private RadioGroup credentialsRadioGroup;
+    // radio button for selected radio button
     private RadioButton selectedRadioButton;
+    // radio button for user button
     private RadioButton userRadioButton;
+    // radio button for worker button
     private RadioButton workerRadioButton;
+    // radio button for manager button
     private RadioButton managerRadioButton;
+    // radio button for admin button
     private RadioButton adminRadioButton;
 
     // Account that is being created / changed

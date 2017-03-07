@@ -20,6 +20,7 @@ import com.cs2340gt.nick.app_android.R;
 import com.cs2340gt.nick.app_android.model.Account;
 import com.cs2340gt.nick.app_android.model.Credential;
 import com.cs2340gt.nick.app_android.model.Model;
+import com.cs2340gt.nick.app_android.model.Location;
 
 import com.cs2340gt.nick.app_android.model.WaterReport;
 
@@ -30,16 +31,33 @@ import org.w3c.dom.Text;
  */
 
 public class WaterReportSubmitActivity extends AppCompatActivity {
+    // textview for the id no. for the report
     private TextView reportID;
+    // textview for the username of the curernt user making the report
     private TextView username;
+    // textview to fill in with the current date/time instance
     private TextView date_time;
 
+    // spinner to hold the possible water sources (from the water report class)
     private Spinner waterSourceSpinner;
+    // radio button to represent waste quality water
     private RadioButton wasteButton;
+    // radio button to represent muddy water
     private RadioButton treatMudButton;
+    // radio button to represent clear water
     private RadioButton treatClearButton;
+    // radio button for potable water
     private RadioButton potableButton;
-    private EditText location;
+
+    // editText for the latitude of the current location
+    private EditText latInput;
+    // editText for the longitude input of current location
+    private EditText longInput;
+
+    // TextView to display the an error if long/lat are missing
+    private TextView error;
+    // TextView to display an error of inputs are invalid
+    private TextView invalidInput;
 
     // water report currently being created/changed
     private WaterReport waterReport;
@@ -61,7 +79,13 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
         reportID = (TextView) findViewById(R.id.id_field);
         username = (TextView) findViewById(R.id.name_field);
         date_time = (TextView) findViewById(R.id.date_time_field);
-        location = (EditText) findViewById(R.id.location_field);
+        latInput = (EditText) findViewById(R.id.latInput);
+        longInput = (EditText) findViewById(R.id.longInput);
+        error = (TextView) findViewById(R.id.errorInvalid);
+        invalidInput = (TextView) findViewById(R.id.invalidInput);
+
+        error.setVisibility(TextView.INVISIBLE);
+        invalidInput.setVisibility(TextView.INVISIBLE);
 
         ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, WaterReport.waterSources);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -81,7 +105,7 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
 
     /**
      * button handler for the submit button
-     * @param view
+     * @param view button for report submission
      */
     protected void onAddPressed(View view) {
         Model model = Model.getInstance();
@@ -97,15 +121,25 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
         } else {
             waterReport.setCondition(WaterReport.waterCondition.get(0));
         }
-
-        waterReport.setLocation(location.getText().toString());
-        waterReport.setSource((String) waterSourceSpinner.getSelectedItem());
-        waterReport.setReporter(model.getCurrentAccount());
-        waterReport.setDate_time((String) date_time.getText());
-        if (model.addReport(waterReport)) {
-            Intent intent =
-                    new Intent(getBaseContext(), LoggedInActivity.class);
-            startActivity(intent);
+        if (latInput.getText() != null || longInput.getText() != null) {
+            waterReport.setLocation(new Location(Double.parseDouble(latInput.getText().toString()),
+                    Double.parseDouble(longInput.getText().toString())));
+            waterReport.setSource((String) waterSourceSpinner.getSelectedItem());
+            waterReport.setReporter(model.getCurrentAccount());
+            waterReport.setDate_time((String) date_time.getText());
+            if (model.addReport(waterReport)) {
+                Intent intent =
+                        new Intent(getBaseContext(), LoggedInActivity.class);
+                startActivity(intent);
+            } else {
+                latInput.setText("Latitude: ");
+                longInput.setText("Longitude: ");
+                invalidInput.setVisibility(TextView.VISIBLE);
+            }
+        } else {
+            latInput.setText("Latitude: ");
+            longInput.setText("Longitude: ");
+            error.setVisibility(TextView.VISIBLE);
         }
 
         System.out.println(waterReport);
@@ -113,6 +147,10 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
     //TODO: make distinction for editing a water report
     }
 
+    /**
+     * button handler for cancel button
+     * @param view the button to cancel report submission
+     */
     protected void onCancelPressed(View view) {
         Intent intent =
                 new Intent(getBaseContext(), LoggedInActivity.class);
