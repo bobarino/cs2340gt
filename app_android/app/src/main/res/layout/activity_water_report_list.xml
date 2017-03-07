@@ -14,7 +14,9 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <include layout="@layout/water_report_list" />
+        <include layout="@layout/water_report_list"
+            android:layout_height="wrap_content" />
+
     </FrameLayout>
 
 

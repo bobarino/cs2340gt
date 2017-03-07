@@ -18,8 +18,11 @@ import com.cs2340gt.nick.app_android.model.Account;
 
 public class LoginActivity extends AppCompatActivity {
 
+    // editText to hold entered username for login
     private EditText username;
+    // editText for entered password for login
     private EditText password;
+    // TextView to hold error message if value is missing
     private TextView error;
 
     @Override
@@ -34,6 +37,10 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * method to handle when the Login button is pressed
+     * @param view the login button
+     */
     protected void onLoginPressed(View view) {
         Model model = Model.getInstance();
         Account cur_user = model.findAccountByUser(username.getText().toString());
@@ -53,6 +60,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * method to handle the cancel button being pressed
+     * @param view the cancel button
+     */
     protected void onCancelPressed(View view) {
         Intent intent =
                 new Intent(getBaseContext(), MainActivity.class);

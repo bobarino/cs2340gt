@@ -37,7 +37,8 @@
         </activity>
         <activity
             android:name="com.cs2340gt.nick.app_android.controller.RegistrationActivity"
-            android:parentActivityName=".controller.MainActivity">
+            android:parentActivityName=".controller.MainActivity"
+            android:label="Registration">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,8 +47,10 @@
         </activity>
         <activity
             android:name="com.cs2340gt.nick.app_android.controller.LoggedInActivity"
-            android:parentActivityName=".controller.LoginActivity">
+            android:parentActivityName=".controller.LoginActivity"
+            android:label="Clean Water Hub">
             <!--TODO: show credential level and/or username at top-->
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -55,7 +58,8 @@
             </intent-filter>
         </activity>
         <activity android:name="com.cs2340gt.nick.app_android.controller.WaterReportSubmitActivity"
-            android:parentActivityName=".controller.LoggedInActivity">
+            android:parentActivityName=".controller.LoggedInActivity"
+            android:label="Submit a Report">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -63,7 +67,8 @@
             </intent-filter>
         </activity>
         <activity android:name="com.cs2340gt.nick.app_android.controller.EditUserInfoActivity"
-            android:parentActivityName=".controller.LoggedInActivity">
+            android:parentActivityName=".controller.LoggedInActivity"
+            android:label="Edit User Info">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -71,10 +76,18 @@
             </intent-filter>
         </activity>
         <activity android:name=".controller.WaterReportListActivity"
-            android:parentActivityName=".controller.LoggedInActivity">
+            android:parentActivityName=".controller.LoggedInActivity"
+            android:label="Water Report List">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".controller.MapsActivity"
+            android:parentActivityName=".controller.LoggedInActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>

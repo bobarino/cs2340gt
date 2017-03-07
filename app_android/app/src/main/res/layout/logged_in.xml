@@ -43,4 +43,23 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/logout_button"
+        android:layout_above="@+id/report_submit">
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            class="com.google.android.gms.maps.SupportMapFragment">
+            <include
+                layout="@layout/activity_maps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </fragment>
+
+    </FrameLayout>
+
+
 </RelativeLayout>

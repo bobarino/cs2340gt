@@ -14,8 +14,9 @@ import com.cs2340gt.nick.app_android.R;
 
 public class WelcomeDirectionActivity extends AppCompatActivity {
 
-    // Widgets represented in the view
+    // button for logging in
     private Button loginButton;
+    // button for registering user
     private Button registerButton;
 
     @Override

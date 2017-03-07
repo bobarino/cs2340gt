@@ -141,15 +141,43 @@
         android:layout_alignParentEnd="true" />
 
     <EditText
+        android:id="@+id/latInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPostalAddress"
-        android:ems="10"
         android:layout_below="@+id/location_text"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:id="@+id/location_field"
-        android:text="Enter Address"
-        android:gravity="center_vertical|center_horizontal" />
+        android:ems="10"
+        android:gravity="center_vertical|center_horizontal"
+        android:inputType="numberSigned|numberDecimal"
+        android:text="Latitude:" />
+
+    <EditText
+        android:id="@+id/longInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/latInput"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:gravity="center_vertical|center_horizontal"
+        android:inputType="numberDecimal"
+        android:text="Longitude:" />
+
+    <TextView
+        android:id="@+id/errorInvalid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/longInput"
+        android:layout_centerHorizontal="true"
+        android:text="Warning: these fields are required!" />
+
+    <TextView
+        android:id="@+id/invalidInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/errorInvalid"
+        android:layout_alignBottom="@+id/errorInvalid"
+        android:layout_toEndOf="@+id/name_field"
+        android:gravity="center_horizontal|center"
+        android:text="ERROR: Enter valid values" />
 
 </RelativeLayout>
