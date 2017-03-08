@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyAUb6rfKK2dxfe5YeGmWxwejvn3lHhBW2Y"/>
+            android:value="AIzaSyCLllxb-Ki7JLjQ8RtY0ZaPSuqHGxi2ktc"/>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
