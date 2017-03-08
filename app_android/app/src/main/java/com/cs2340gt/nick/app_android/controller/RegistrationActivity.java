@@ -38,7 +38,7 @@ import com.google.firebase.database.ValueEventListener;
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
 
     // Widgets represented in the view
-    private EditText editTextEmail, editTextPass;
+    private EditText editEmail, editPass;
 
     private Button addButton, cancelButton;
 
@@ -101,8 +101,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         progressDialog = new ProgressDialog(this);
         alertDialogBuilder = new AlertDialog.Builder(this);
 
-        editTextEmail = (EditText) findViewById(R.id.editEmail);
-        editTextPass = (EditText) findViewById(R.id.editPassword);
+        editEmail = (EditText) findViewById(R.id.editEmail);
+        editPass = (EditText) findViewById(R.id.editPass);
 
         addButton = (Button) findViewById(R.id.buttonAddAcc);
         cancelButton = (Button) findViewById(R.id.buttonCancelRgstr);
@@ -141,8 +141,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     protected void onAddPressed(View view) {
         Model model = Model.getInstance();
 
-        emailString = editTextEmail.getText().toString();
-        passwordString = editTextPass.getText().toString();
+        emailString = editEmail.getText().toString();
+        passwordString = editPass.getText().toString();
 
         setUpAlertDialogBuilder(emailString, passwordString);
 
@@ -155,8 +155,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         } else {
             progressDialog.setMessage("Registering user...");
             progressDialog.show();
-            account = new Account(editTextEmail.getText().toString(),
-                    editTextPass.getText().toString(), determineCredential());
+            account = new Account(editEmail.getText().toString(),
+                    editPass.getText().toString(), determineCredential());
             register(model, account);
         }
     }

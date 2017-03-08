@@ -35,14 +35,14 @@ public class Model {
 
     // current account getter and setter
     public Account getCurrentAccount() {
-        return currentAccount;
+        if (currentAccount == null) {
+            return nullAcc;
+        } else {
+            return currentAccount;
+        }
     }
     public void setCurrentAcc(Account currentAccount) {
-        if (currentAccount == null) {
-            this.currentAccount = nullAcc;
-        } else {
-            this.currentAccount = currentAccount;
-        }
+        this.currentAccount = currentAccount;
     }
 
     // current report getter and setter

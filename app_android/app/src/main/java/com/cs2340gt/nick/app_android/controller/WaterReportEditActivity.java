@@ -15,14 +15,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 import com.cs2340gt.nick.app_android.R;
 import com.cs2340gt.nick.app_android.model.Account;
 import com.cs2340gt.nick.app_android.model.Model;
-
 import com.cs2340gt.nick.app_android.model.WaterReport;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,10 +28,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 /**
- * Created by SEAN on 2/19/17.
+ * Created by ArmandoGonzalez on 3/8/17.
  */
 
-public class WaterReportSubmitActivity extends AppCompatActivity implements View.OnClickListener {
+public class WaterReportEditActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView idDisplay;
     private TextView emailDisplay;
     private TextView dateTimeDisplay;
@@ -61,10 +56,7 @@ public class WaterReportSubmitActivity extends AppCompatActivity implements View
 
     private DatabaseReference dbRef;
 
-    private WaterReport waterReport;
-
-    //TODO: add modifications to process for 'editing'
-    private boolean editing;
+    private WaterReport existing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,86 +119,67 @@ public class WaterReportSubmitActivity extends AppCompatActivity implements View
         waterSourceSpinner.setAdapter(adapter);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        auth.addAuthStateListener(authStateListener);
-        Model model = Model.getInstance();
-
-//        idDisplay.setText(" " + waterReport.getId());
-        emailDisplay.setText(" " + model.getCurrentAccount().getEmailAddress());
-
-        DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy, HH:mm");
-        String date = df.format(Calendar.getInstance().getTime());
-        dateTimeDisplay.setText(date);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (authStateListener != null) {
-            auth.removeAuthStateListener(authStateListener);
-        }
-    }
-
     /**
-     * Attempts to add a new report to the model.
+     * Attempts to edit an existing report in the model.
      *
      * @param view a View object included as convention
      */
-    protected void onAddPressed(View view) {
+    private void onEditPressed(View view) {
         Model model = Model.getInstance();
 
-        Account reporter = model.getCurrentAccount();
-        String dateTime = dateTimeDisplay.getText().toString();
-        String source = (String) waterSourceSpinner.getSelectedItem();
-        String condition = determineWaterCondition();
-        String location = locationField.getText().toString();
+        // TODO: get the accurate ID from prev screen
+        existing = model.findReportById(0);
 
-        if (TextUtils.isEmpty(dateTime)
-                || TextUtils.isEmpty(source)
-                || TextUtils.isEmpty(condition)
-                || TextUtils.isEmpty(location)) {
+        // TODO: maybe check if current user is allowed to edit reports made?
+        Account newReporter = model.getCurrentAccount();
+        String newDateTime = dateTimeDisplay.getText().toString();
+        String newSource = (String) waterSourceSpinner.getSelectedItem();
+        String newCondition = determineWaterCondition();
+        String newLocation = locationField.getText().toString();
+
+        if (TextUtils.isEmpty(newDateTime)
+                || TextUtils.isEmpty(newSource)
+                || TextUtils.isEmpty(newCondition)
+                || TextUtils.isEmpty(newLocation)) {
             Toast.makeText(this,
                     "Please enter in all relevant fields.",
                     Toast.LENGTH_SHORT).show();
             return;
+        } else if (existing.getReporter() == newReporter
+                & existing.getDate_time() == newDateTime
+                & existing.getSource() == newSource
+                & existing.getCondition() == newCondition
+                & existing.getLocation() == newLocation) {
+            Toast.makeText(this,
+                    "No edit needed; nothing has been changed.",
+                    Toast.LENGTH_SHORT).show();
+            return;
         } else {
-            waterReport = new WaterReport(reporter, source,
-                    condition, dateTime, location);
-            progressDialog.setMessage("Submitting water report. Report Id: " + waterReport.getId());
-//            idDisplay.setText(" " + waterReport.getId());
+            progressDialog.setMessage("Making edits...");
             progressDialog.show();
-            submit(model, waterReport);
+            edit(model, existing);
         }
     }
 
     /**
-     * A helper to consolidate the submission of new water reports. Takes in
-     * a WaterReport object and adds it to the model. If this is successful,
-     * the report is added to Firebase. If unsuccessful the user is prompted.
+     * A helper to consolidate the editing of an existing account. Takes in
+     * a WaterReport object and edits it accordingly. If this is successful,
+     * the report is updated Firebase. If unsuccessful the user is prompted.
      *
      * @param model the model which we are adding this water report to.
-     * @param newReport the water report which we are trying to add.
+     * @param existing the water report which we are trying to edit.
      */
-    private void submit(Model model, WaterReport newReport) {
-        if (model.addReport(newReport)) {
-            progressDialog.dismiss();
-            dbRef.child("reports").child("" + newReport.getId())
-                    .setValue(newReport);
-            Toast.makeText(
-                    WaterReportSubmitActivity.this,
-                    "Submission Accepted",
-                    Toast.LENGTH_SHORT).show();
-            finish();
-            startActivity(new Intent(getApplicationContext(),
-                    LoggedInActivity.class));
-        } else {
-            Toast.makeText(
-                    WaterReportSubmitActivity.this,
-                    "Submission Failed. Please try again.",
-                    Toast.LENGTH_SHORT).show();
-        }
+    private void edit(Model model, WaterReport existing) {
+        progressDialog.dismiss();
+        dbRef.child("reports").child("" + existing.getId())
+                .setValue(existing);
+        Toast.makeText(
+                WaterReportEditActivity.this,
+                "Edit Accepted",
+                Toast.LENGTH_SHORT).show();
+        finish();
+        startActivity(new Intent(getApplicationContext(),
+                LoggedInActivity.class));
     }
 
     /**
@@ -234,21 +207,10 @@ public class WaterReportSubmitActivity extends AppCompatActivity implements View
     @Override
     public void onClick(View view) {
         if (view == addButton) {
-            onAddPressed(view);
+            onEditPressed(view);
         }
         if (view == cancelButton) {
             startActivity(new Intent(getApplicationContext(), LoggedInActivity.class));
         }
     }
-
-//    @Override
-//    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//
-//        _major = parent.getItemAtPosition(position).toString();
-//    }
-//
-//    @Override
-//    public void onNothingSelected(AdapterView<?> parent) {
-//        _major = "NA";
-//    }
 }

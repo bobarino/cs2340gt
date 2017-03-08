@@ -98,7 +98,7 @@
         android:layout_alignStart="@+id/rButtonTreatableMuddy"/>
 
     <Spinner
-        android:id="@+id/SpinnerSource"
+        android:id="@+id/spinnerSource"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -109,7 +109,7 @@
         android:text="Water Source:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/SpinnerSource"
+        android:layout_above="@+id/spinnerSource"
         android:layout_centerHorizontal="true"/>
 
     <TextView
