@@ -14,6 +14,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import com.cs2340gt.nick.app_android.R;
@@ -56,46 +59,57 @@ public class MapsActivity extends android.support.v4.app.FragmentActivity implem
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         // Setting a click event handler for the map
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-
-            @Override
-            public void onMapClick(LatLng latLng) {
-
-
-
-                // Creating a marker
-                MarkerOptions markerOptions = new MarkerOptions();
-
-                // Setting the position for the marker
-                markerOptions.position(latLng);
-
-
-
-                // Clears the previously touched position
-                // mMap.clear();
-//                WaterReport newRep = new WaterReport(Model.getInstance().getCurrentAccount(), )
-//                mFacade.addReport("newly added", "Bobs Place", new Location(latLng.latitude, latLng.longitude));
+//        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 //
-//                // Setting the title for the marker.
-//                // This will be displayed on taping the marker
-//                markerOptions.title(mFacade.getLastReport().getName());
-//                markerOptions.snippet(mFacade.getLastReport().getDescription());
+//            @Override
+//            public void onMapClick(LatLng latLng) {
+//
+//
+//
+//                // Creating a marker
+//                MarkerOptions markerOptions = new MarkerOptions();
+//
+//                // Setting the position for the marker
+//                markerOptions.position(latLng);
+//
+//
+//
+//                // Clears the previously touched position
+//                // mMap.clear();
+////                DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy, HH:mm");
+////                String date = df.format(Calendar.getInstance().getTime());
+////                WaterReport newRep = new WaterReport(mFacade.getCurrentAccount(), WaterReport.waterSources.get(0),
+////                        WaterReport.waterCondition.get(0), date, new Location(latLng.latitude, latLng.longitude));
+////                mFacade.addReport(newRep);
+////                int temp_id = newRep.getId();
+////
+////                // Setting the title for the marker.
+////                // This will be displayed on taping the marker
+////                markerOptions.title(mFacade.findReportById(temp_id).getCondition());
+////                markerOptions.snippet(mFacade.findReportById(temp_id).getDate_time() + "\n"
+////                        + mFacade.findReportById(temp_id).getLocation());
+//
+//                // Animating to the touched position
+//                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+//
+//                // Placing a marker on the touched position
+//                mMap.addMarker(markerOptions);
+//            }
+//        });
 
-                // Animating to the touched position
-                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 
-                // Placing a marker on the touched position
-                mMap.addMarker(markerOptions);
-            }
-        });
 
-        List<WaterReport> reportList = mFacade.getReportList();
-        for (WaterReport wr : reportList) {
-            LatLng loc = new LatLng(wr.getLocation().getLatitude(), wr.getLocation().getLongitude());
-            mMap.addMarker(new MarkerOptions().position(loc).title(wr.getReporter().getUsername()).snippet(wr.getSource()
-                    + " - " + wr.getCondition()));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
-        }
+        LatLng hold = new LatLng(51.5074, 0.1278);
+        mMap.addMarker(new MarkerOptions().position(hold).title("London").snippet("City of London"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(hold));
+
+//        List<WaterReport> reportList = mFacade.getReportList();
+//        for (WaterReport wr : reportList) {
+//            LatLng loc = new LatLng(wr.getLocation().getLatitude(), wr.getLocation().getLongitude());
+//            mMap.addMarker(new MarkerOptions().position(loc).title(wr.getReporter().getUsername()).snippet(wr.getSource()
+//                    + " - " + wr.getCondition()));
+//            mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
+//        }
 
         mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
     }

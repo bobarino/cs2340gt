@@ -159,7 +159,7 @@
         android:layout_centerHorizontal="true"
         android:ems="10"
         android:gravity="center_vertical|center_horizontal"
-        android:inputType="numberDecimal"
+        android:inputType="numberSigned|numberDecimal"
         android:text="Longitude:" />
 
     <TextView
