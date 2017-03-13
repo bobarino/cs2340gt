@@ -1,29 +1,24 @@
 package com.cs2340gt.nick.app_android.controller;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.content.Intent;
-import android.view.Display;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.cs2340gt.nick.app_android.R;
+import com.cs2340gt.nick.app_android.model.Credential;
 import com.cs2340gt.nick.app_android.model.Model;
+import com.cs2340gt.nick.app_android.model.WaterPurityReport;
+import com.cs2340gt.nick.app_android.model.WaterReport;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import com.cs2340gt.nick.app_android.R;
-import com.cs2340gt.nick.app_android.model.Account;
-import com.cs2340gt.nick.app_android.model.Credential;
-import com.cs2340gt.nick.app_android.model.Model;
-import com.cs2340gt.nick.app_android.model.Location;
-import com.cs2340gt.nick.app_android.model.WaterReport;
 
 import java.util.List;
 
@@ -34,7 +29,6 @@ import java.util.List;
 
 public class LoggedInActivity extends android.support.v4.app.FragmentActivity implements OnMapReadyCallback {
 
-
     private GoogleMap mMap;
 
     private Model mFacade;
@@ -42,6 +36,8 @@ public class LoggedInActivity extends android.support.v4.app.FragmentActivity im
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.logged_in);
+
+
 
         // the controller for the submit water report button
         Button submitReportButton = (Button) findViewById(R.id.report_submit);
@@ -88,11 +84,36 @@ public class LoggedInActivity extends android.support.v4.app.FragmentActivity im
             }
         });
 
+        Button submitPurityReport = (Button) findViewById(R.id.submitPurityButton);
+        submitPurityReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =
+                        new Intent(getBaseContext(), WaterPuritySubmitActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button showPurityList = (Button) findViewById(R.id.showPurityListButton);
+        showPurityList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =
+                        new Intent(getBaseContext(), WaterPurityListActivity.class);
+                startActivity(intent);
+            }
+        });
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         mFacade = Model.getInstance();
+
+        if (mFacade.getCurrentAccount().getCredential() == Credential.USER) {
+            submitPurityReport.setVisibility(Button.INVISIBLE);
+            showPurityList.setVisibility(Button.INVISIBLE);
+        }
     }
 
     /**
@@ -107,50 +128,6 @@ public class LoggedInActivity extends android.support.v4.app.FragmentActivity im
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        // Setting a click event handler for the map
-//        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-//
-//            @Override
-//            public void onMapClick(LatLng latLng) {
-//
-//
-//
-//                // Creating a marker
-//                MarkerOptions markerOptions = new MarkerOptions();
-//
-//                // Setting the position for the marker
-//                markerOptions.position(latLng);
-//
-//
-//
-//                // Clears the previously touched position
-//                // mMap.clear();
-////                DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy, HH:mm");
-////                String date = df.format(Calendar.getInstance().getTime());
-////                WaterReport newRep = new WaterReport(mFacade.getCurrentAccount(), WaterReport.waterSources.get(0),
-////                        WaterReport.waterCondition.get(0), date, new Location(latLng.latitude, latLng.longitude));
-////                mFacade.addReport(newRep);
-////                int temp_id = newRep.getId();
-////
-////                // Setting the title for the marker.
-////                // This will be displayed on taping the marker
-////                markerOptions.title(mFacade.findReportById(temp_id).getCondition());
-////                markerOptions.snippet(mFacade.findReportById(temp_id).getDate_time() + "\n"
-////                        + mFacade.findReportById(temp_id).getLocation());
-//
-//                // Animating to the touched position
-//                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-//
-//                // Placing a marker on the touched position
-//                mMap.addMarker(markerOptions);
-//            }
-//        });
-
-
-
-//        LatLng hold = new LatLng(51.5074, 0.1278);
-//        mMap.addMarker(new MarkerOptions().position(hold).title("London").snippet("City of London"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(hold));
 
         List<WaterReport> reportList = mFacade.getReportList();
         for (WaterReport wr : reportList) {
@@ -158,6 +135,13 @@ public class LoggedInActivity extends android.support.v4.app.FragmentActivity im
             mMap.addMarker(new MarkerOptions().position(loc).title(wr.getReporter().getUsername()).snippet(wr.getSource()
                     + " - " + wr.getCondition()));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
+        }
+
+        List<WaterPurityReport> purityReportList = mFacade.getPurityReportList();
+        for (WaterPurityReport wpr : purityReportList) {
+            LatLng location = new LatLng(wpr.getLocation().getLatitude(), wpr.getLocation().getLongitude());
+            mMap.addMarker(new MarkerOptions().position(location).title(wpr.getAccount().getUsername()).snippet("ViralPPM: "
+                    + wpr.getViralPPM() + " Contaminant PPM: " + wpr.getContaminantPPM()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
         }
 
         mMap.setInfoWindowAdapter(new LoggedInActivity.CustomInfoWindowAdapter());

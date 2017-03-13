@@ -121,7 +121,7 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
         } else {
             waterReport.setCondition(WaterReport.waterCondition.get(0));
         }
-        if (latInput.getText() != null || longInput.getText() != null) {
+        if (latInput.getText() != null && longInput.getText() != null) {
             waterReport.setLocation(new Location(Double.parseDouble(latInput.getText().toString()),
                     Double.parseDouble(longInput.getText().toString())));
             waterReport.setSource((String) waterSourceSpinner.getSelectedItem());
@@ -142,8 +142,6 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
             error.setVisibility(TextView.VISIBLE);
         }
 
-        System.out.println(waterReport);
-
     //TODO: make distinction for editing a water report
     }
 
@@ -157,14 +155,4 @@ public class WaterReportSubmitActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-//    @Override
-//    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//
-//        _major = parent.getItemAtPosition(position).toString();
-//    }
-//
-//    @Override
-//    public void onNothingSelected(AdapterView<?> parent) {
-//        _major = "NA";
-//    }
 }

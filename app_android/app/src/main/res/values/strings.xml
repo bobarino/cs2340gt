@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">app_android</string>
+    <string name="app_name">Options</string>
+    <string-array name="planets_array">
+        <item>Logout</item>
+        <item>Edit Account</item>
+        <item>Submit Water Report</item>
+        <item>Show Reports List</item>
+        <item>Submit Purity Report</item>
+        <item>Show Purity List</item>
+    </string-array>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="app_not_available">Sorry, there\'s no web browser available</string>
 </resources>

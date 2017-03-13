@@ -27,6 +27,11 @@ public class Model {
     //getter for reportList (read-only)
     public List<WaterReport> getReportList() { return reportList; }
 
+    // list of water purity reports in the model
+    private List<WaterPurityReport> purityReportList;
+    //getter for purity report list (read-only)
+    public List<WaterPurityReport> getPurityReportList() { return purityReportList; }
+
     // current account being worked with
     private static Account currentAccount;
 
@@ -34,9 +39,13 @@ public class Model {
     private static WaterReport currentReport;
     // current WaterReport ID no.
     private static int nextReportId = 1;
+    // current WaterPurityReport ID no.
+    private static int nextPurityReportId = 1;
 
     // nextReportId getter
     public static int getNextReportId() { return nextReportId; }
+    // getter for the next purity report id
+    public static int getNextPurityReportId() { return nextPurityReportId; }
 
     /**
      * method to get the current account that's logged in
@@ -60,6 +69,8 @@ public class Model {
      */
     public static WaterReport getCurrentReport() { return currentReport; }
 
+    private Account tester = new Account("sean", "sean", "sean", Credential.MANAGER);
+
     /**
      * method to set the current report associated with the model at hand
      * @param _currentReport the updated current report
@@ -73,6 +84,8 @@ public class Model {
     public Model() {
         accountList = new ArrayList<>();
         reportList = new ArrayList<>();
+        purityReportList = new ArrayList<>();
+        accountList.add(tester);
     }
 
     /**
@@ -100,10 +113,7 @@ public class Model {
      * @return whether the add was successful
      */
     public boolean addReport(WaterReport newReport) {
-        if (newReport.getLocation().getLatitude() > 90 ||
-                newReport.getLocation().getLatitude() < -90 ||
-                newReport.getLocation().getLongitude() > 180 ||
-                newReport.getLocation().getLongitude() < -180) {
+        if (checkInvalidLocation(newReport.getLocation())) {
             return false;
         } else if (reportList.contains(newReport)) {
             return false;
@@ -111,6 +121,39 @@ public class Model {
         reportList.add(newReport);
         Model.nextReportId++;
         return true;
+    }
+
+    /**
+     * method to add a new purity report to the overall list of
+     * water purity reports contained within the model
+     * @param newRep the new purity report to add to the list
+     * @return a boolean representing whether the report was added
+     */
+    public boolean addPurityReport(WaterPurityReport newRep) {
+        if (checkInvalidLocation(newRep.getLocation())) {
+            return false;
+        } else if (purityReportList.contains(newRep)) {
+            return false;
+        }
+        purityReportList.add(newRep);
+        Model.nextPurityReportId++;
+        return true;
+    }
+
+    /**
+     * method to check whether a valid lat/long combination has been
+     * entered into a report's submission page (works for both regular
+     * reports and purity reports)
+     * @param check the location to check the lat/long pair of
+     * @return a boolean representing whether the location was invalid
+     * (returns true if the input was invalid and false otherwise)
+     */
+    public boolean checkInvalidLocation(Location check) {
+        if (check.getLatitude() > 90 || check.getLatitude() < -90
+            || check.getLongitude() > 180 || check.getLongitude() < -180) {
+            return true;
+        }
+        return false;
     }
 
     /**

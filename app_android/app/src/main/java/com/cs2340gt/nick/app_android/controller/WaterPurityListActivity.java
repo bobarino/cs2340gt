@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.cs2340gt.nick.app_android.R;
 import com.cs2340gt.nick.app_android.model.Model;
-import com.cs2340gt.nick.app_android.model.WaterReport;
+import com.cs2340gt.nick.app_android.model.WaterPurityReport;
 
 import java.util.List;
 
@@ -19,16 +19,16 @@ import java.util.List;
  * Created by SEAN on 3/1/17.
  */
 
-public class WaterReportListActivity extends AppCompatActivity {
+public class WaterPurityListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_water_report_list);
+        setContentView(R.layout.activity_water_purity_list);
 
 
 
         //Step 1.  Setup the recycler view by getting it from our layout in the main window
-        View recyclerView = findViewById(R.id.water_report_list);
+        View recyclerView = findViewById(R.id.water_purity_list);
         assert recyclerView != null;
         //Step 2.  Hook up the adapter to the view
         setupRecyclerView((RecyclerView) recyclerView);
@@ -39,7 +39,7 @@ public class WaterReportListActivity extends AppCompatActivity {
      */
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         Model model = Model.getInstance();
-        recyclerView.setAdapter(new SimpleReportRecyclerViewAdapter(model.getReportList()));
+        recyclerView.setAdapter(new SimpleReportRecyclerViewAdapter(model.getPurityReportList()));
     }
 
     /**
@@ -54,13 +54,13 @@ public class WaterReportListActivity extends AppCompatActivity {
         /**
          * Collection of the items to be shown in this list.
          */
-        private final List<WaterReport> mReports;
+        private final List<WaterPurityReport> mReports;
 
         /**
          * set the items to be used by the adapter
          * @param items the list of items to be displayed in the recycler view
          */
-        public SimpleReportRecyclerViewAdapter(List<WaterReport> items) {
+        public SimpleReportRecyclerViewAdapter(List<WaterPurityReport> items) {
             mReports = items;
         }
 
@@ -73,7 +73,7 @@ public class WaterReportListActivity extends AppCompatActivity {
               If you look at the example file, you will see it currently just 2 TextView elements
              */
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.water_report_list_content, parent, false);
+                    .inflate(R.layout.water_purity_list_content, parent, false);
             return new ViewHolder(view);
         }
 
@@ -145,7 +145,7 @@ public class WaterReportListActivity extends AppCompatActivity {
             public final View mView;
             public final TextView mIdView;
             public final TextView mContentView;
-            public WaterReport mReport;
+            public WaterPurityReport mReport;
 
             public ViewHolder(View view) {
                 super(view);

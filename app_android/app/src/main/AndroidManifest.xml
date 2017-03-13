@@ -100,8 +100,22 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".controller.MapsActivity">
+        <activity android:name=".controller.WaterPuritySubmitActivity"
+            android:parentActivityName=".controller.LoggedInActivity"
+            android:label="Submit a Purity Report">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".controller.WaterPurityListActivity"
+            android:parentActivityName=".controller.LoggedInActivity"
+            android:label="Water Purity Report List">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
     </application>
 

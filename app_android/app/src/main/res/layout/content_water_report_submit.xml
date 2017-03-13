@@ -85,17 +85,16 @@
         android:text="Water Quality:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/treatable_muddy_button"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/water_quality_text" />
+        android:id="@+id/water_quality_text"
+        android:layout_below="@+id/source_options"
+        android:layout_centerHorizontal="true" />
 
     <RadioButton
         android:text="Waste"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="104dp"
         android:id="@+id/waste_button"
-        android:layout_above="@+id/cancel_button"
+        android:layout_below="@+id/water_quality_text"
         android:layout_alignStart="@+id/treatable_muddy_button" />
 
     <Spinner
@@ -114,13 +113,13 @@
         android:id="@+id/water_source_text" />
 
     <TextView
-        android:text="Location (enter address):"
+        android:id="@+id/location_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/location_text"
         android:layout_below="@+id/date_time_field"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="27dp" />
+        android:layout_marginTop="27dp"
+        android:text="Location (Enter Coordinates):" />
 
     <RadioButton
         android:text="Treatable - Muddy"
@@ -166,18 +165,18 @@
         android:id="@+id/errorInvalid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Warning: these fields are required!"
         android:layout_below="@+id/longInput"
-        android:layout_centerHorizontal="true"
-        android:text="Warning: these fields are required!" />
+        android:layout_toEndOf="@+id/date_time_text" />
 
     <TextView
         android:id="@+id/invalidInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal|center"
+        android:text="ERROR: Enter valid values"
         android:layout_alignBaseline="@+id/errorInvalid"
         android:layout_alignBottom="@+id/errorInvalid"
-        android:layout_toEndOf="@+id/name_field"
-        android:gravity="center_horizontal|center"
-        android:text="ERROR: Enter valid values" />
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
