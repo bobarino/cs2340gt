@@ -19,6 +19,9 @@ public class Account {
     private String password;
     private Credential credential;
 
+    /**
+     * no arg constructor to create a new Account
+     */
     public Account() {
         // default constructor used only for Firebase database updates
     }
@@ -28,6 +31,13 @@ public class Account {
         this(Next_Id++, emailAddress, password, credential);
     }
 
+    /**
+     * constructor to create a fully flushed out Account object
+     * @param id the id to be assigned to this account
+     * @param emailAddress the passed in email address of this account
+     * @param password the passed in password of this account
+     * @param credential the passed in Credential value of this account
+     */
     public Account(int id, String emailAddress,
                    String password,
                    Credential credential) {
@@ -54,23 +64,41 @@ public class Account {
         this.emailAddress = emailAddress;
     }
 
+    /**
+     * method to get the password from this account
+     * @return the password for this account
+     */
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    /**
+     * method to update the password
+     * @param password new password value
+     */
+    public void setPassword(String password) { this.password = password; }
 
+
+    /**
+     * mthod to get the credential for this account
+     * @return credential for the account
+     */
     public Credential getCredential() {
         return credential;
     }
 
+    /**
+     * method to update the credential
+     * @param credential value to update to
+     */
     public void setCredential(Credential credential) {
         this.credential = credential;
     }
 
-    // id should be read-only
+    /**
+     * method to get the id of the curernt account
+     * @return id value for account
+     */
     public int getId() {
         return id;
     }

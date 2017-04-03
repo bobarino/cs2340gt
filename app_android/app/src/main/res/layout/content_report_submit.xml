@@ -64,39 +64,6 @@
         android:layout_alignBottom="@+id/labelTextDateTime"
         android:layout_toEndOf="@+id/displayTextId"/>
 
-    <RadioButton
-        android:id="@+id/rButtonTreatableClear"
-        android:text="Treatable - Clear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rButtonTreatableMuddy"
-        android:layout_alignStart="@+id/rButtonTreatableMuddy"/>
-
-    <RadioButton
-        android:id="@+id/rButtonPotable"
-        android:text="Potable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rButtonTreatableClear"
-        android:layout_alignStart="@+id/rButtonTreatableClear"/>
-
-    <TextView
-        android:id="@+id/labelRGroupQuality"
-        android:text="Water Quality:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/rButtonTreatableMuddy"
-        android:layout_centerHorizontal="true"/>
-
-    <RadioButton
-        android:id="@+id/rButtonWaste"
-        android:text="Waste"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="104dp"
-        android:layout_above="@+id/buttonCancelReport"
-        android:layout_alignStart="@+id/rButtonTreatableMuddy"/>
-
     <Spinner
         android:id="@+id/spinnerSource"
         android:layout_width="match_parent"
@@ -110,44 +77,60 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/spinnerSource"
-        android:layout_centerHorizontal="true"/>
+        android:layout_marginBottom="10dp" />
+
+    <TextView
+        android:id="@+id/conditionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Water Condition:"
+        android:layout_centerHorizontal="true" />
+
+    <Spinner
+        android:id="@+id/conditionSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/conditionText"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/labelTextLocation"
         android:text="Location:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/displayTextDateTime"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="27dp"/>
-
-    <RadioButton
-        android:id="@+id/rButtonTreatableMuddy"
-        android:text="Treatable - Muddy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="31dp"
-        android:layout_alignTop="@+id/rButtonWaste"
-        android:layout_centerHorizontal="true"/>
+        android:layout_above="@+id/latInput"
+        android:layout_centerHorizontal="true" />
 
     <Button
-        android:id="@+id/buttonAddReport"
-        android:text="ADD"
+        android:id="@+id/buttonSubmitReport"
+        android:text="SUBMIT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"/>
 
     <EditText
-        android:id="@+id/editLocation"
-        android:hint="Please Enter Address"
+        android:id="@+id/latInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPostalAddress"
         android:ems="10"
-        android:layout_below="@+id/labelTextLocation"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:gravity="center_vertical|center_horizontal"/>
+        android:gravity="center_vertical|center_horizontal"
+        android:inputType="numberSigned|numberDecimal"
+        android:hint="Latitude:"
+        android:layout_marginTop="37dp"
+        android:layout_below="@+id/displayTextDateTime"
+        android:layout_alignStart="@+id/displayTextDateTime" />
+
+    <EditText
+        android:id="@+id/longInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="center_vertical|center_horizontal"
+        android:inputType="numberSigned|numberDecimal"
+        android:hint="Longitude:"
+        android:layout_below="@+id/latInput"
+        android:layout_alignStart="@+id/latInput" />
 
 </RelativeLayout>

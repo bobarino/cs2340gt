@@ -27,39 +27,80 @@ public class Model {
     //getter for reportList (read-only)
     public List<WaterReport> getReportList() { return reportList; }
 
-    // current account being worked with
-    private static Account currentAccount;
+    // list of water purity reports in the model
+    private List<WaterPurityReport> purityReportList;
+    //getter for purity report list (read-only)
+    public List<WaterPurityReport> getPurityReportList() { return purityReportList; }
 
-    // current WaterReport being worked with
-    private static WaterReport currentReport;
+    // current account being worked with
+    private static Account currentAccount = null;
+
+    // current water report being worked with
+    private static WaterReport currentReport = null;
+
+    // current water purity report being worked with
+    private static WaterPurityReport currentPurityReport = null;
 
     // current account getter and setter
-    public Account getCurrentAccount() {
-        if (currentAccount == null) {
-            return nullAcc;
-        } else {
-            return currentAccount;
-        }
-    }
-    public void setCurrentAcc(Account currentAccount) {
-        this.currentAccount = currentAccount;
+    public static Account getCurrentAccount() {
+        return currentAccount;
     }
 
-    // current report getter and setter
-    public static WaterReport getCurrentReport() { return currentReport; }
-    public void setCurrentReport(WaterReport _currentReport) { currentReport = _currentReport; }
+    /**
+     * method to set a current account that the model is logged in as
+     * @param account the method to update the logged in status as
+     */
+    public void setCurrentAcc(Account account) {
+        this.currentAccount = account;
+    }
+
+    /**
+     * method to get the current report being used in the model
+     * @return a WaterReport that we're currently using
+     */
+    public static WaterReport getCurrentReport() {
+        return currentReport;
+    }
+
+    /**
+     * method to set the current report associated with the model at hand
+     * @param report the updated current report
+     */
+    public void setCurrentPurityReport(WaterPurityReport report) {
+        this.currentPurityReport = report;
+    }
+
+    /**
+     * method to get the current report being used in the model
+     * @return a WaterReport that we're currently using
+     */
+    public static WaterPurityReport getCurrentPurityReport() {
+        return currentPurityReport;
+    }
+
+    /**
+     * method to set the current report associated with the model at hand
+     * @param purityReport the updated current report
+     */
+    public void setCurrentReport(WaterPurityReport purityReport) {
+        this.currentPurityReport = purityReport;
+    }
 
     // created for the case of an error
     private final Account nullAcc = new Account(9999);
 
     // created for case of an error
     private final WaterReport nullReport =
-            new WaterReport(nullAcc, "null", "null", "null", "null");
+            new WaterReport(nullAcc, "null", "null", "null", null);
 
-    // constructor for our model
+    /**
+     * no arg constructor for the model class...no need for a parameter constructor
+     */
     public Model() {
         accountList = new ArrayList<>();
         reportList = new ArrayList<>();
+        purityReportList = new ArrayList<>();
+//        accountList.add(tester);
     }
 
     /**
@@ -86,11 +127,45 @@ public class Model {
      * @return whether the add was successful
      */
     public boolean addReport(WaterReport newReport) {
-        if (reportList.contains(newReport)) {
+        if (checkInvalidLocation(newReport.getLocation())) {
+            return false;
+        } else if (reportList.contains(newReport)) {
             return false;
         }
         reportList.add(newReport);
         return true;
+    }
+
+    /**
+     * method to add a new purity report to the overall list of
+     * water purity reports contained within the model
+     * @param newRep the new purity report to add to the list
+     * @return a boolean representing whether the report was added
+     */
+    public boolean addPurityReport(WaterPurityReport newRep) {
+        if (checkInvalidLocation(newRep.getLocation())) {
+            return false;
+        } else if (purityReportList.contains(newRep)) {
+            return false;
+        }
+        purityReportList.add(newRep);
+        return true;
+    }
+
+    /**
+     * method to check whether a valid lat/long combination has been
+     * entered into a report's submission page (works for both regular
+     * reports and purity reports)
+     * @param check the location to check the lat/long pair of
+     * @return a boolean representing whether the location was invalid
+     * (returns true if the input was invalid and false otherwise)
+     */
+    public boolean checkInvalidLocation(Location check) {
+        if (check.getLatitude() > 90 || check.getLatitude() < -90
+            || check.getLongitude() > 180 || check.getLongitude() < -180) {
+            return true;
+        }
+        return false;
     }
 
     /**

@@ -30,7 +30,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private EditText editTextEmail;
     private EditText editTextPass;
-    private TextView error;
 
     private Button loginButton, cancelButton, registerButton;
 
@@ -94,7 +93,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (TextUtils.isEmpty(editTextEmail.toString())
                 || TextUtils.isEmpty(editTextPass.toString())) {
-
             Toast.makeText(this, "Please fill all relevant fields.", Toast.LENGTH_SHORT).show();
             return;
         } else {
@@ -103,7 +101,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             progressDialog.setMessage("Logging in...");
             progressDialog.show();
-
             auth.signInWithEmailAndPassword(email, pass)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -113,6 +110,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 Toast.makeText(LoginActivity.this, "Login Successful",
                                         Toast.LENGTH_SHORT).show();
                                 model.setCurrentAcc(model.findAccountByEmail(email));
+                                System.out.println(model.getCurrentAccount().toString());
                                 finish();
                                 startActivity(new Intent(getApplicationContext(),
                                         LoggedInActivity.class));
@@ -128,17 +126,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        if (view == loginButton) {
-            onLoginPressed();
-        }
-        if (view == cancelButton) {
-            finish();
-            startActivity(new Intent(this, MainActivity.class));
-        }
-        if (view == registerButton) {
-            finish();
-            startActivity(new Intent(this, RegistrationActivity.class));
-        }
-    }
+                if (view == loginButton) {
+                    onLoginPressed();
+                }
+                if (view == cancelButton) {
+                    finish();
+                    startActivity(new Intent(this, MainActivity.class));
+                }
+                if (view == registerButton) {
+                    finish();
+                    startActivity(new Intent(this, RegistrationActivity.class));
+                }
+            }
+
 
 }

@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.cs2340gt.nick.app_android.R;
 import com.cs2340gt.nick.app_android.model.Account;
+import com.cs2340gt.nick.app_android.model.Location;
 import com.cs2340gt.nick.app_android.model.Model;
 import com.cs2340gt.nick.app_android.model.WaterReport;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +28,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 /**
  * Created by ArmandoGonzalez on 3/8/17.
  */
@@ -36,17 +41,14 @@ public class WaterReportEditActivity extends AppCompatActivity implements View.O
     private TextView emailDisplay;
     private TextView dateTimeDisplay;
 
-    private Button addButton;
+    private Button submitButton;
     private Button cancelButton;
 
     private Spinner waterSourceSpinner;
+    private Spinner waterConditionsSpinner;
 
-    private RadioButton wasteButton;
-    private RadioButton treatableMudButton;
-    private RadioButton treatableClearButton;
-    private RadioButton potableButton;
-
-    private EditText locationField;
+    private EditText latInput;
+    private EditText longInput;
 
     private ProgressDialog progressDialog;
 
@@ -57,11 +59,12 @@ public class WaterReportEditActivity extends AppCompatActivity implements View.O
     private DatabaseReference dbRef;
 
     private WaterReport existing;
+    private WaterReport edited;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_report_submit);
+        setContentView(R.layout.activity_report_edit);
 
         auth = FirebaseAuth.getInstance();
         authStateListener = new FirebaseAuth.AuthStateListener() {
@@ -100,23 +103,52 @@ public class WaterReportEditActivity extends AppCompatActivity implements View.O
         idDisplay = (TextView) findViewById(R.id.displayTextId);
         emailDisplay = (TextView) findViewById(R.id.displayTextUser);
         dateTimeDisplay = (TextView) findViewById(R.id.displayTextDateTime);
-        locationField = (EditText) findViewById(R.id.editLocation);
 
         waterSourceSpinner = (Spinner) findViewById(R.id.spinnerSource);
-        wasteButton = (RadioButton) findViewById(R.id.rButtonWaste);
-        treatableMudButton = (RadioButton) findViewById(R.id.rButtonTreatableMuddy);
-        treatableClearButton = (RadioButton) findViewById(R.id.rButtonTreatableClear);
-        potableButton = (RadioButton) findViewById(R.id.rButtonPotable);
+        waterConditionsSpinner = (Spinner) findViewById(R.id.conditionSpinner);
 
-        addButton = (Button) findViewById(R.id.buttonAddReport);
+        submitButton = (Button) findViewById(R.id.buttonSubmitReport);
         cancelButton = (Button) findViewById(R.id.buttonCancelReport);
-        addButton.setOnClickListener(this);
+        submitButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter(this,
-                android.R.layout.simple_spinner_item, WaterReport.waterSources);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        waterSourceSpinner.setAdapter(adapter);
+        latInput = (EditText) findViewById(R.id.latInput);
+        longInput = (EditText) findViewById(R.id.longInput);
+
+        ArrayAdapter<String> conditionAdapter =
+                new ArrayAdapter<>(this,
+                        android.R.layout.simple_spinner_dropdown_item,
+                        WaterReport.waterCondition);
+        conditionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        waterConditionsSpinner.setAdapter(conditionAdapter);
+
+        ArrayAdapter<String> sourceAdapter =
+                new ArrayAdapter<>(this,
+                        android.R.layout.simple_spinner_item,
+                        WaterReport.waterSources);
+        sourceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        waterSourceSpinner.setAdapter(sourceAdapter);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        auth.addAuthStateListener(authStateListener);
+        Model model = Model.getInstance();
+
+        idDisplay.setText(" " + existing.getId());
+        emailDisplay.setText(" " + model.getCurrentAccount().getEmailAddress());
+        DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy, HH:mm");
+        String date = df.format(Calendar.getInstance().getTime());
+        dateTimeDisplay.setText(date);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (authStateListener != null) {
+            auth.removeAuthStateListener(authStateListener);
+        }
     }
 
     /**
@@ -125,39 +157,30 @@ public class WaterReportEditActivity extends AppCompatActivity implements View.O
      * @param view a View object included as convention
      */
     private void onEditPressed(View view) {
-        Model model = Model.getInstance();
-
-        // TODO: get the accurate ID from prev screen
-        existing = model.findReportById(0);
-
-        // TODO: maybe check if current user is allowed to edit reports made?
-        Account newReporter = model.getCurrentAccount();
+        Account reporter = Model.getCurrentAccount();
+        String newCondition = (String) waterConditionsSpinner.getSelectedItem();
         String newDateTime = dateTimeDisplay.getText().toString();
         String newSource = (String) waterSourceSpinner.getSelectedItem();
-        String newCondition = determineWaterCondition();
-        String newLocation = locationField.getText().toString();
+        Location newLocation = new Location(Double.parseDouble(latInput.getText().toString()),
+                Double.parseDouble(longInput.getText().toString()));
+
+        existing = Model.getCurrentReport();
+        edited = new WaterReport(reporter, newSource, newCondition, newDateTime, newLocation);
 
         if (TextUtils.isEmpty(newDateTime)
                 || TextUtils.isEmpty(newSource)
-                || TextUtils.isEmpty(newCondition)
-                || TextUtils.isEmpty(newLocation)) {
+                || TextUtils.isEmpty(newCondition)) {
             Toast.makeText(this,
                     "Please enter in all relevant fields.",
                     Toast.LENGTH_SHORT).show();
-            return;
-        } else if (existing.getReporter() == newReporter
-                & existing.getDate_time() == newDateTime
-                & existing.getSource() == newSource
-                & existing.getCondition() == newCondition
-                & existing.getLocation() == newLocation) {
+        } else if (existing.equals(edited)) {
             Toast.makeText(this,
                     "No edit needed; nothing has been changed.",
                     Toast.LENGTH_SHORT).show();
-            return;
         } else {
             progressDialog.setMessage("Making edits...");
             progressDialog.show();
-            edit(model, existing);
+            edit(Model.getInstance(), existing, edited);
         }
     }
 
@@ -166,47 +189,39 @@ public class WaterReportEditActivity extends AppCompatActivity implements View.O
      * a WaterReport object and edits it accordingly. If this is successful,
      * the report is updated Firebase. If unsuccessful the user is prompted.
      *
-     * @param model the model which we are adding this water report to.
+     * @param model the model where this report is stored.
      * @param existing the water report which we are trying to edit.
+     * @param edited the fully edited version of the report, whose fields
+     *               will be copied onto existing.
      */
-    private void edit(Model model, WaterReport existing) {
-        progressDialog.dismiss();
-        dbRef.child("reports").child("" + existing.getId())
-                .setValue(existing);
-        Toast.makeText(
-                WaterReportEditActivity.this,
-                "Edit Accepted",
-                Toast.LENGTH_SHORT).show();
-        finish();
-        startActivity(new Intent(getApplicationContext(),
-                LoggedInActivity.class));
-    }
-
-    /**
-     * Intended to determine the water condition selected by the user. Should
-     * determine the water condition based on which radio button is selected.
-     *
-     * @return a String representing the chosen condition of the water.
-     */
-    private String determineWaterCondition() {
-        if (wasteButton.isSelected()) {
-            return WaterReport.waterCondition.get(0);
+    private void edit(Model model, WaterReport existing, WaterReport edited) {
+        Location location = edited.getLocation();
+        if (model.checkInvalidLocation(location)) {
+            progressDialog.dismiss();
+            Toast.makeText(
+                    WaterReportEditActivity.this,
+                    "Please enter in a valid location.",
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            existing.setCondition(edited.getCondition());
+            existing.setSource(edited.getSource());
+            existing.setLocation(edited.getLocation());
+            dbRef.child("reports").child("" + existing.getId())
+                    .setValue(existing);
+            progressDialog.dismiss();
+            Toast.makeText(
+                    WaterReportEditActivity.this,
+                    "Edit Accepted",
+                    Toast.LENGTH_SHORT).show();
+            finish();
+            startActivity(new Intent(getApplicationContext(),
+                    WaterReportListActivity.class));
         }
-        if (treatableMudButton.isSelected()) {
-            return WaterReport.waterCondition.get(1);
-        }
-        if (treatableClearButton.isSelected()) {
-            return WaterReport.waterCondition.get(2);
-        }
-        if (potableButton.isSelected()){
-            return WaterReport.waterCondition.get(3);
-        }
-        return WaterReport.waterCondition.get(0);
     }
 
     @Override
     public void onClick(View view) {
-        if (view == addButton) {
+        if (view == submitButton) {
             onEditPressed(view);
         }
         if (view == cancelButton) {

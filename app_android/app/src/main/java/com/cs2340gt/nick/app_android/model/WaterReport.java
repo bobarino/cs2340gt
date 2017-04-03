@@ -9,81 +9,173 @@ import java.util.Arrays;
 public class WaterReport {
 
     private static int nextNo = 0;
-    private int id;
+
+    // the user who submitted this report
     private Account reporter;
-    private String date_time;
+
+    // the date and time the report was created
+    private String dateTime;
+
+    // the unique ID value of this report
+    private int id;
+
+    // a list of all of the possible sources of water for the report
     public static List<String> waterSources = Arrays.asList("Bottled", "Well",
             "Stream", "Lake", "Spring", "Other");
+
+    // a string value indicating the unique source of this report (from the options
+    // in the waterSources list)
     private String source;
+
+    // a list of possible waterConditions for the report
     public static List<String> waterCondition = Arrays.asList("Waste", "Treatable - Muddy",
             "Treatable - Clear", "Potable");
+
+    // the actual condition of the water in the report
+    // (value comes from list above)
     private String condition;
-    private String location;
+
+    // the Location (latitude and longitude) of the water report
+    private Location location;
 
     public WaterReport() {
         // default constructor used only for Firebase database updates
     }
 
-    /*
-    // TODO: resolve the following
-    * need to figure out the location information
-    * need to figure out the date/time data
+    /**
+     * Constructor used more often, since the ID is not known until construction.
+     * @param reporter the Account creating the report
+     * @param source the String value associated with the source of the water
+     *                (well, spring, bottled, etc.)
+     * @param condition the condition of hte water (potable, muddy, etc.)
+     * @param dateTime the date/time string of when the report was created
+     * @param location the Location instance of the report
      */
-
     public WaterReport(Account reporter, String source, String condition,
-                       String dateTime, String location) {
+                       String dateTime, Location location) {
         this(nextNo++, reporter, source, condition, dateTime, location);
     }
 
-    public WaterReport(int id, Account reporter, String source,
-                       String condition, String dateTime, String location) {
+    /**
+     * constructor to create a WaterReport object
+     * @param reporter the Account creating the report
+     * @param source the String value associated with the source of the water
+     *                (well, spring, bottled, etc.)
+     * @param condition the condition of hte water (potable, muddy, etc.)
+     * @param dateTime the date/time string of when the report was created
+     * @param location the Location instance of the report
+     */
+    public WaterReport(int id, Account reporter, String source, String condition, String dateTime,
+                       Location location) {
         this.id = id;
         this.reporter = reporter;
-        this.condition = condition;
         this.source = source;
-        this.date_time = dateTime;
+        this.condition = condition;
+        this.dateTime = dateTime;
         this.location = location;
     }
 
-    // getters and setters
-
+    /**
+     * method to ge the Account associated with the reporter
+     * that created this report
+     * @return the Account of the user that created the report
+     */
     public Account getReporter() {
         return reporter;
     }
-    public void setReporter(Account newReporter) {
-        reporter = newReporter;
+
+    /**
+     * method to set a new Account as the reporter (to be used
+     * when updating a report)
+     * @param reporter the new Account reporter
+     */
+    public void setReporter(Account reporter) {
+        this.reporter = reporter;
     }
 
+
+    /**
+     * method to return the ID no. of the curernt report
+     * @return the ID no. of the report
+     */
     public int getId() {
         return id;
     }
-    public void setId(int newID) {
-        id = newID;
+
+    /**
+     * method to change ID value for the report
+     * @param id the new ID value to be assigned to this report
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getDate_time() { return date_time; }
-    public void setDate_time(String newDateTime) { date_time = newDateTime; }
 
-    public String getLocation() { return location; }
-    public void setLocation(String newLoc) { location = newLoc; }
+    /**
+     * method to get the date/time instance of this report
+     * @return a string representing the date/time data for this report
+     */
+    public String getDateTime() { return dateTime; }
 
-    public int getNextNo() {return nextNo; }
+    /**
+     * method to change the date/time instance of this report to a new value
+     * @param dateTime the new String date/time value for this report
+     */
+    public void setDateTime(String dateTime) { this.dateTime = dateTime; }
 
+
+    /**
+     * method to return the Location instance associated with this report
+     * @return the location object asosciated with the report
+     */
+    public Location getLocation() { return location; }
+
+    /**
+     * method to change the location of the water report
+     * @param location the new Location object to be assigned to this report
+     */
+    public void setLocation(Location location) { this.location = location; }
+
+
+    /**
+     * method to return the source of this current water report
+     * @return
+     */
     public String getSource() {
         return source;
     }
-    public void setSource(String newSource) {
-        if (waterSources.contains(newSource)) {
-            source = newSource;
+
+    /**
+     * method to set the source of the water to a new value
+     * @param source the new source (bottled, spring, etc.)
+     *                  of the WaterReport
+     */
+    public void setSource(String source) {
+        if (waterSources.contains(source)) {
+            this.source = source;
+        } else {
+            // TODO: handle this error
         }
     }
 
+    /**
+     * method to return the condition of the current water report
+     * @return the condition of the water report in string format
+     */
     public String getCondition() {
         return condition;
     }
-    public void setCondition(String newCond) {
-        if (waterCondition.contains(newCond)) {
-            condition = newCond;
+
+    /**
+     * method to set the condition fo the water report to a new value
+     * @param condition the new condition that you want to update the
+     *                WaterReport to be
+     */
+    public void setCondition(String condition) {
+        if (waterCondition.contains(condition)) {
+            this.condition = condition;
+        } else {
+            // TODO: handle this error
         }
     }
 
@@ -91,9 +183,11 @@ public class WaterReport {
     @Override
     public boolean equals(Object o) {
         WaterReport wr = (WaterReport) o;
-        return (wr.getReporter().equals(reporter)
+        return (wr.getId() == id
+                && wr.getReporter().equals(reporter)
                 && wr.getCondition().equals(condition)
-                && wr.getSource().equals(source) && wr.getId() == id);
+                && wr.getSource().equals(source)
+                && wr.getLocation().equals(location));
     }
 
     @Override

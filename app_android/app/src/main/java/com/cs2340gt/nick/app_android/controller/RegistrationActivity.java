@@ -139,12 +139,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
      * @param view a View object included as convention
      */
     protected void onAddPressed(View view) {
-        Model model = Model.getInstance();
+        final Model model = Model.getInstance();
 
         emailString = editEmail.getText().toString();
         passwordString = editPass.getText().toString();
 
-        setUpAlertDialogBuilder(emailString, passwordString);
+        setUpAlertDialogBuilder(emailString, passwordString, model);
 
         // check if necessary fields are filled in
         if (TextUtils.isEmpty(emailString) || TextUtils.isEmpty(passwordString)) {
@@ -155,8 +155,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         } else {
             progressDialog.setMessage("Registering user...");
             progressDialog.show();
-            account = new Account(editEmail.getText().toString(),
-                    editPass.getText().toString(), determineCredential());
+            account = new Account(emailString, passwordString, determineCredential());
             register(model, account);
         }
     }
@@ -169,7 +168,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
      * @param emailRef a String representing the existing account's email address
      * @param passwordRef a String representing the existing account's password
      */
-    private void setUpAlertDialogBuilder(final String emailRef, final String passwordRef) {
+    private void setUpAlertDialogBuilder(final String emailRef, final String passwordRef, final Model model) {
         alertDialogBuilder
                 .setView(R.layout.dialog_options_registration)
                 .setTitle("Trying to edit?")
@@ -182,6 +181,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
+                                    model.setCurrentAcc(model.findAccountByEmail(emailRef));
                                     progressDialog.dismiss();
                                     finish();
                                     startActivity(new Intent(getApplicationContext(), EditExistingActivity.class));
@@ -226,6 +226,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                     RegistrationActivity.this,
                                     "Registration Successful",
                                     Toast.LENGTH_SHORT).show();
+                            model.setCurrentAcc(account);
                             finish();
                             startActivity(new Intent(getApplicationContext(),
                                     LoggedInActivity.class));
