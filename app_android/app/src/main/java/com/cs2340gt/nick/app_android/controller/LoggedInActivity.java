@@ -137,13 +137,14 @@ public class LoggedInActivity extends android.support.v4.app.FragmentActivity im
             mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
         }
 
-        List<WaterPurityReport> purityReportList = mFacade.getPurityReportList();
-        for (WaterPurityReport wpr : purityReportList) {
-            LatLng location = new LatLng(wpr.getLocation().getLatitude(), wpr.getLocation().getLongitude());
-            mMap.addMarker(new MarkerOptions().position(location).title(wpr.getAccount().getUsername()).snippet("ViralPPM: "
-                    + wpr.getViralPPM() + " Contaminant PPM: " + wpr.getContaminantPPM()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+        if (mFacade.getCurrentAccount().getCredential() != Credential.USER) {
+            List<WaterPurityReport> purityReportList = mFacade.getPurityReportList();
+            for (WaterPurityReport wpr : purityReportList) {
+                LatLng location = new LatLng(wpr.getLocation().getLatitude(), wpr.getLocation().getLongitude());
+                mMap.addMarker(new MarkerOptions().position(location).title(wpr.getAccount().getUsername()).snippet("ViralPPM: "
+                        + wpr.getViralPPM() + " Contaminant PPM: " + wpr.getContaminantPPM()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            }
         }
-
         mMap.setInfoWindowAdapter(new LoggedInActivity.CustomInfoWindowAdapter());
     }
 
