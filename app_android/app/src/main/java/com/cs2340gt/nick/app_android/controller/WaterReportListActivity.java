@@ -49,9 +49,6 @@ public class WaterReportListActivity extends AppCompatActivity implements View.O
         returnButton = (Button) findViewById(R.id.returnButton);
         returnButton.setOnClickListener(this);
 
-        my_size = 0;
-
-
 
         //Step 1.  Setup the recycler view by getting it from our layout in the main window
         View recyclerView = findViewById(R.id.water_report_list);
