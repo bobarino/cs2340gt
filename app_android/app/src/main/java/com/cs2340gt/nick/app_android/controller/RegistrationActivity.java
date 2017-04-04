@@ -144,7 +144,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         emailString = editEmail.getText().toString();
         passwordString = editPass.getText().toString();
 
-        setUpAlertDialogBuilder(emailString, passwordString, model);
+        //TODO- Implement edit user box correctly
+        //setUpAlertDialogBuilder(emailString, passwordString, model);
 
         // check if necessary fields are filled in
         if (TextUtils.isEmpty(emailString) || TextUtils.isEmpty(passwordString)) {
