@@ -158,7 +158,7 @@ public class HistoryGraphActivity extends AppCompatActivity {
 
     protected void onCancelPressed(View view) {
         Intent intent =
-                new Intent(getBaseContext(), WaterPurityListActivity.class);
+                new Intent(getBaseContext(), LoggedInActivity.class);
         startActivity(intent);
     }
 }

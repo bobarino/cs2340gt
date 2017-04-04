@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.cs2340gt.nick.app_android.R;
+import com.cs2340gt.nick.app_android.model.Credential;
 import com.cs2340gt.nick.app_android.model.Model;
 import com.cs2340gt.nick.app_android.model.WaterPurityReport;
 
@@ -37,7 +38,7 @@ public class WaterPurityListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_water_purity_list);
 
-
+        Model model = Model.getInstance();
 
         //Step 1.  Setup the recycler view by getting it from our layout in the main window
         View recyclerView = findViewById(R.id.water_purity_list);
@@ -55,14 +56,19 @@ public class WaterPurityListActivity extends AppCompatActivity {
             }
         });
         Button generateGraphButton = (Button) findViewById(R.id.historyButton);
-        generateGraphButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent =
-                        new Intent(getBaseContext(), HistoryGraphActivity.class);
-                startActivity(intent);
-            }
-        });
+        if (model.getCurrentAccount().getCredential() == Credential.USER
+                || model.getCurrentAccount().getCredential() == Credential.WORKER) {
+            generateGraphButton.setVisibility(Button.INVISIBLE);
+        } else {
+            generateGraphButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent =
+                            new Intent(getBaseContext(), HistoryGraphActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
 
     }
 

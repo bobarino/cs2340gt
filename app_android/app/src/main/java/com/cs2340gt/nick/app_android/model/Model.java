@@ -70,6 +70,7 @@ public class Model {
     public static WaterReport getCurrentReport() { return currentReport; }
 
     private Account tester = new Account("sean", "sean", "sean", Credential.MANAGER);
+    private Account worker = new Account("bills", "bills", "bills", Credential.WORKER);
 
     /**
      * method to set the current report associated with the model at hand
@@ -86,6 +87,7 @@ public class Model {
         reportList = new ArrayList<>();
         purityReportList = new ArrayList<>();
         accountList.add(tester);
+        accountList.add(worker);
     }
 
     /**
