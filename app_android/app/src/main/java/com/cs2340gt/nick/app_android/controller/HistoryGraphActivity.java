@@ -125,7 +125,7 @@ public class HistoryGraphActivity extends AppCompatActivity {
         double variance = Double.parseDouble((String) varianceSpinner.getSelectedItem());
 
         for (WaterPurityReport wpr : model.getPurityReportList()) {
-            String temp = wpr.getDate_time();
+            String temp = wpr.getDateTime();
             int length = temp.length();
             int year = Integer.parseInt(temp.substring(length - 11, length - 7));
             double lat = wpr.getLocation().getLatitude();

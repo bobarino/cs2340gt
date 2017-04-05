@@ -36,9 +36,9 @@ public class ModelTest {
         Assert.assertEquals("Initial size of reporter list is incorrect", 1,
                 theModel.getAccountList().size());
         try {
-            theModel.addAccount(new Account("mbills2", "mbills", "mbills2@gmail.com", Credential.MANAGER));
-            theModel.addAccount(new Account("madie", "madie", "madie", Credential.USER));
-            theModel.addAccount(new Account("sbills3", "sbills3", "sbills3", Credential.ADMIN));
+            theModel.addAccountInfo(new Account(1, "mbills2@gmail.com", "mbills2", Credential.MANAGER));
+            theModel.addAccountInfo(new Account(2, "madie", "madie", Credential.USER));
+            theModel.addAccountInfo(new Account(3, "sbills3", "sbills3", Credential.ADMIN));
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail("Should not have thrown exception here");
@@ -72,7 +72,7 @@ public class ModelTest {
     @Test
     public void testAccountSetPassword() {
         try {
-            Account newAcc = new Account("holder", "holder", "holder@holder.com", Credential.ADMIN);
+            Account newAcc = new Account(1, "holder", "holder", Credential.ADMIN);
             newAcc.setPassword("newPasswordForHolder");
             Assert.assertEquals("Incorrect updated password for account after changing",
                     "newPasswordForHolder", newAcc.getPassword());
@@ -90,7 +90,7 @@ public class ModelTest {
         Assert.assertEquals("Incorrect initial water report list size", 0,
                 theModel.getReportList().size());
         try {
-            Account holder = new Account("bills", "bills", "bills", Credential.ADMIN);
+            Account holder = new Account(1, "bills", "bills", Credential.ADMIN);
             WaterReport a = new WaterReport(holder, "Bottled", "Waste",
                     "Today", new Location(45, 50));
             WaterReport b = new WaterReport(holder, "Well",
