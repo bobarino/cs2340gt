@@ -73,19 +73,20 @@
         android:id="@+id/longInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/latInput"
-        android:layout_below="@+id/latInput"
         android:ems="10"
         android:gravity="center_horizontal|center"
         android:inputType="numberSigned|numberDecimal"
-        android:hint="Longitude" />
+        android:hint="Longitude"
+        android:layout_below="@+id/latInput"
+        android:layout_alignStart="@+id/latInput" />
 
     <TextView
         android:id="@+id/conditionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:text="Water Condition:"
+        android:layout_below="@+id/longInput"
         android:layout_centerHorizontal="true" />
 
     <Spinner
@@ -99,42 +100,39 @@
         android:id="@+id/viralText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:text="Viral PPM:"
-        android:layout_below="@+id/conditionSpinner"
+        android:layout_above="@+id/viralInput"
         android:layout_centerHorizontal="true" />
 
     <EditText
         android:id="@+id/viralInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/viralText"
-        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/contamText"
+        android:layout_alignStart="@+id/contamInput"
         android:ems="10"
         android:gravity="center_horizontal|center"
-        android:inputType="numberSigned|numberDecimal"
-        android:text="Enter Viral PPM" />
+        android:inputType="numberSigned|numberDecimal" />
 
     <TextView
         android:id="@+id/contamText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/viralInput"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
         android:gravity="center_horizontal|center"
-        android:text="Contaminant PPM:" />
+        android:text="Contaminant PPM:"
+        android:layout_above="@+id/contamInput"
+        android:layout_centerHorizontal="true" />
 
     <EditText
         android:id="@+id/contamInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/viralInput"
-        android:layout_below="@+id/contamText"
+        android:layout_above="@+id/cancelButton"
+        android:layout_alignStart="@+id/longInput"
+        android:layout_marginBottom="50dp"
         android:ems="10"
         android:gravity="center_horizontal|center"
-        android:inputType="numberSigned|numberDecimal"
-        android:text="Enter Contaminant PPM" />
+        android:inputType="numberSigned|numberDecimal" />
 
     <Button
         android:id="@+id/cancelButton"

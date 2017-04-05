@@ -6,6 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".controller.WaterPuritySubmitActivity">
 
-    <include layout="@layout/content_water_purity_edit"/>
+    <include layout="@layout/content_water_purity_submit"/>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -166,25 +166,27 @@ public class WaterReportSubmitActivity extends AppCompatActivity implements View
     protected void onSubmitPressed(View view) {
         Model model = Model.getInstance();
 
-        Account reporter = Model.getCurrentAccount();
-        String source = (String) waterSourceSpinner.getSelectedItem();
+        Account reporter = model.getCurrentAccount();
         String condition = (String) waterConditionsSpinner.getSelectedItem();
         String dateTime = dateTimeDisplay.getText().toString();
+        String source = (String) waterSourceSpinner.getSelectedItem();
         Location location = new Location(
                 Double.parseDouble(latInput.getText().toString()),
                 Double.parseDouble(longInput.getText().toString()));
 
         if (TextUtils.isEmpty(dateTime)
-                || TextUtils.isEmpty(source)
                 || TextUtils.isEmpty(condition)) {
             Toast.makeText(this,
                     "Please enter in all relevant fields.",
                     Toast.LENGTH_SHORT).show();
         } else {
-            waterReport = new WaterReport(reporter, source,
-                    condition, dateTime, location);
+            waterReport.setReporter(reporter);
+            waterReport.setCondition(condition);
+            waterReport.setSource(source);
+            waterReport.setDateTime(dateTime);
+            waterReport.setLocation(location);
             progressDialog.setMessage(
-                    "Submitting water report. Report ID: "
+                    "Submitting water purity report. Report ID:"
                             + waterReport.getId());
             progressDialog.show();
             submit(model, waterReport);

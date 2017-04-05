@@ -12,9 +12,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.cs2340gt.nick.app_android.R;
+import com.cs2340gt.nick.app_android.model.Account;
 import com.cs2340gt.nick.app_android.model.Credential;
+import com.cs2340gt.nick.app_android.model.Location;
 import com.cs2340gt.nick.app_android.model.Model;
 import com.cs2340gt.nick.app_android.model.WaterPurityReport;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -122,6 +128,39 @@ public class WaterPurityListActivity extends AppCompatActivity {
         public void onBindViewHolder(final ViewHolder holder, int position) {
 
             final Model model = Model.getInstance();
+
+            FirebaseDatabase.getInstance().getReference().child("purity_reports")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                //WaterReport waterReport = snapshot.getValue(WaterReport.class);
+                                //System.out.println(waterReport.getCondition());
+                                String condition = snapshot.child("condition").getValue(String.class);
+                                String dateTime = snapshot.child("dateTime").getValue(String.class);
+                                Long longitude = snapshot.child("location").child("longitude").getValue(Long.class);
+                                Long latitude = snapshot.child("location").child("latitude").getValue(Long.class);
+                                String cred = snapshot.child("reporter").child("credential").getValue(String.class);
+                                String emailAddress = snapshot.child("reporter").child("emailAddress").getValue(String.class);
+                                String password = snapshot.child("reporter").child("password").getValue(String.class);
+                                Long contaminantPPM = snapshot.child("contaminantPPM").getValue(Long.class);
+                                Long viralPPM = snapshot.child("viralPPM").getValue(Long.class);
+                                Long id = snapshot.child("id").getValue(Long.class);
+
+
+                                Account fakeAcc = new Account(emailAddress, password, Credential.USER);
+                                Location fakeLoc = new Location((double)(latitude), (double)(longitude));
+                                WaterPurityReport wpr = new WaterPurityReport(fakeAcc, condition,
+                                        viralPPM.intValue(), contaminantPPM.intValue(), dateTime,
+                                         fakeLoc);
+                                model.addPurityReport(wpr);
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+
             /*
             This is where we have to bind each data element in the list (given by position parameter)
             to an element in the view (which is one of our two TextView widgets

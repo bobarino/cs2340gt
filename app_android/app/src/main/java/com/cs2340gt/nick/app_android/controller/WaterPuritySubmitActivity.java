@@ -19,14 +19,10 @@ import com.cs2340gt.nick.app_android.model.Account;
 import com.cs2340gt.nick.app_android.model.Location;
 import com.cs2340gt.nick.app_android.model.Model;
 import com.cs2340gt.nick.app_android.model.WaterPurityReport;
-import com.cs2340gt.nick.app_android.model.WaterReport;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -97,24 +93,26 @@ public class WaterPuritySubmitActivity extends AppCompatActivity implements View
             }
         };
         dbRef = FirebaseDatabase.getInstance().getReference();
-        dbRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // this is called twice, once with initial value and again whenever changed
-                WaterPurityReport waterPurityReport = dataSnapshot.getValue(WaterPurityReport.class);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // failed to read value
-                // could be useful in differentiating different users' credentials?
-            }
-        });
+//        dbRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                // this is called twice, once with initial value and again whenever changed
+//                WaterPurityReport waterPurityReport = dataSnapshot.getValue(WaterPurityReport.class);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                // failed to read value
+//                // could be useful in differentiating different users' credentials?
+//            }
+//        });
 
         submitButton = (Button) findViewById(R.id.submitButton);
         cancelButton = (Button) findViewById(R.id.cancelButton);
         submitButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
+
+        progressDialog = new ProgressDialog(this);
 
         waterConditionsSpinner = (Spinner) findViewById(R.id.conditionSpinner);
         reportID = (TextView) findViewById(R.id.idField);

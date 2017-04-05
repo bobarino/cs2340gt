@@ -21,6 +21,8 @@ public class Model {
     public List<Account> getAccountList() {
         return accountList;
     }
+    //setter for accountList (accessing Firebase stuff)
+    public void setAccountList(List accounts) { accountList = accounts; }
 
     // list of waterReports in the model
     private List<WaterReport> reportList;
@@ -66,8 +68,8 @@ public class Model {
      * method to set the current report associated with the model at hand
      * @param report the updated current report
      */
-    public void setCurrentPurityReport(WaterPurityReport report) {
-        this.currentPurityReport = report;
+    public void setCurrentReport(WaterReport report) {
+        this.currentReport = report;
     }
 
     /**
@@ -83,7 +85,7 @@ public class Model {
      * method to set the current report associated with the model at hand
      * @param purityReport the updated current report
      */
-    public void setCurrentReport(WaterPurityReport purityReport) {
+    public void setCurrentPurityReport(WaterPurityReport purityReport) {
         this.currentPurityReport = purityReport;
     }
 

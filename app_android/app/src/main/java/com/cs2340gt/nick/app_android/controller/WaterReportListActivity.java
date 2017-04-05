@@ -11,18 +11,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import android.util.Log;
-
 import com.cs2340gt.nick.app_android.R;
+import com.cs2340gt.nick.app_android.model.Account;
+import com.cs2340gt.nick.app_android.model.Credential;
 import com.cs2340gt.nick.app_android.model.Location;
 import com.cs2340gt.nick.app_android.model.Model;
-import com.cs2340gt.nick.app_android.model.Credential;
-import com.cs2340gt.nick.app_android.model.Account;
 import com.cs2340gt.nick.app_android.model.WaterReport;
-
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -125,8 +119,6 @@ public class WaterReportListActivity extends AppCompatActivity implements View.O
                                 String password = snapshot.child("reporter").child("password").getValue(String.class);
                                 String source = snapshot.child("source").getValue(String.class);
 
-                                //Credential newCred = new Credential(cred, cred);
-                                Log.d("EGGCHELLE", condition);
 
                                 Account fakeAcc = new Account(emailAddress, password, Credential.USER);
                                 Location fakeLoc = new Location((double)(latitude), (double)(longitude));
