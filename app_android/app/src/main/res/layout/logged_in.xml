@@ -11,13 +11,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.cs2340gt.nick.app_android.controller.LoggedInActivity">
 
-    <TextView
-        android:id="@+id/textViewWelcome"
-        android:text="WELCOME"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"/>
-
     <Button
         android:id="@+id/logout_button"
         android:text="LOGOUT"
