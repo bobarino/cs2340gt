@@ -170,6 +170,7 @@ public class LoggedInActivity extends FragmentActivity implements View.OnClickLi
             map.moveCamera(CameraUpdateFactory.newLatLng(location));
         }
 
+
         if (modelFacade.getCurrentAccount().getCredential() != Credential.USER) {
             List<WaterPurityReport> purityReportList = modelFacade.getPurityReportList();
             for (WaterPurityReport wpr : purityReportList) {
@@ -181,6 +182,7 @@ public class LoggedInActivity extends FragmentActivity implements View.OnClickLi
         }
 
         map.setInfoWindowAdapter(new LoggedInActivity.CustomInfoWindowAdapter());
+
     }
 
     /**

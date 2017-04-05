@@ -77,6 +77,7 @@ public class Model {
     public static WaterPurityReport getCurrentPurityReport() {
         return currentPurityReport;
     }
+    
 
     /**
      * method to set the current report associated with the model at hand
@@ -101,6 +102,7 @@ public class Model {
         reportList = new ArrayList<>();
         purityReportList = new ArrayList<>();
 //        accountList.add(tester);
+
     }
 
     /**

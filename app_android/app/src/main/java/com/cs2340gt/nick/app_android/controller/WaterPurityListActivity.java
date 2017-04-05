@@ -1,5 +1,6 @@
 package com.cs2340gt.nick.app_android.controller;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -7,9 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.cs2340gt.nick.app_android.R;
+import com.cs2340gt.nick.app_android.model.Credential;
 import com.cs2340gt.nick.app_android.model.Model;
 import com.cs2340gt.nick.app_android.model.WaterPurityReport;
 
@@ -20,12 +23,22 @@ import java.util.List;
  */
 
 public class WaterPurityListActivity extends AppCompatActivity {
+
+    /*
+    button for canceling/leaving the water purity report list
+     */
+    private Button cancel;
+    /*
+    button for going to the history graph generation page
+     */
+    private Button graph;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_water_purity_list);
 
-
+        Model model = Model.getInstance();
 
         //Step 1.  Setup the recycler view by getting it from our layout in the main window
         View recyclerView = findViewById(R.id.water_purity_list);
@@ -33,7 +46,35 @@ public class WaterPurityListActivity extends AppCompatActivity {
         //Step 2.  Hook up the adapter to the view
         setupRecyclerView((RecyclerView) recyclerView);
 
-    }/**
+        Button cancelButton = (Button) findViewById(R.id.cancelButton);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =
+                        new Intent(getBaseContext(), LoggedInActivity.class);
+                startActivity(intent);
+            }
+        });
+        Button generateGraphButton = (Button) findViewById(R.id.historyButton);
+        if (model.getCurrentAccount().getCredential() == Credential.USER
+                || model.getCurrentAccount().getCredential() == Credential.WORKER) {
+            generateGraphButton.setVisibility(Button.INVISIBLE);
+        } else {
+            generateGraphButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent =
+                            new Intent(getBaseContext(), HistoryGraphActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+
+    }
+
+
+
+    /**
      * Set up an adapter and hook it to the provided view
      * @param recyclerView  the view that needs this adapter
      */
