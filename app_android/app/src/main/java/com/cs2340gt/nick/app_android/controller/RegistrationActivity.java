@@ -1,138 +1,276 @@
 package com.cs2340gt.nick.app_android.controller;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import com.cs2340gt.nick.app_android.R;
 import com.cs2340gt.nick.app_android.model.Account;
 import com.cs2340gt.nick.app_android.model.Credential;
 import com.cs2340gt.nick.app_android.model.Model;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by ArmandoGonzalez on 2/14/17.
  */
-public class RegistrationActivity extends AppCompatActivity {
+public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
 
-    // editText for the username of registration
-    private EditText usernameField;
-    // edittext for password of registration
-    private EditText passwordField;
-    // editText for email of registartion
-    private EditText emailField;
-    // radioGroup for controlling which button is selected
+    // Widgets represented in the view
+    private EditText editEmail, editPass;
+
+    private Button addButton, cancelButton;
+
     private RadioGroup credentialsRadioGroup;
-    // radio button for selected button
-    private RadioButton selectedRadioButton;
-    // radio button for user button
-    private RadioButton userRadioButton;
-    // radio button for worker button
-    private RadioButton workerRadioButton;
-    // radio button for manager button
-    private RadioButton managerRadioButton;
-    // radio button for admin button
-    private RadioButton adminRadioButton;
+    private RadioButton userRadioButton, workerRadioButton,
+            managerRadioButton, adminRadioButton;
 
-    // Account that is being created / changed
+    private ProgressDialog progressDialog;
+    private AlertDialog.Builder alertDialogBuilder;
+    private AlertDialog optionsDialog;
+
+    private FirebaseAuth auth;
+    private FirebaseUser currentUser;
+    private FirebaseAuth.AuthStateListener authStateListener;
+
+    private DatabaseReference dbRef;
+
     private Account account;
-
-    // TODO: add modifications to process for 'editing'
-    private boolean editing;
+    private String emailString;
+    private String passwordString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_registration);
+        setContentView(R.layout.activity_register_account);
 
-        // fetch the true widgets from our view
-        usernameField = (EditText) findViewById(R.id.user_input);
-        passwordField = (EditText) findViewById(R.id.pass_input);
-        emailField = (EditText) findViewById(R.id.email_input);
-//        credentialsRadioGroup = (RadioGroup) findViewById(R.id.cred_group);
-//        selectedRadioButton = (RadioButton) findViewById(credentialsRadioGroup
-//                .getCheckedRadioButtonId());
-        userRadioButton = (RadioButton) findViewById(R.id.cred_user);
-        workerRadioButton = (RadioButton) findViewById(R.id.cred_worker);
-        managerRadioButton = (RadioButton) findViewById(R.id.cred_manager);
-        adminRadioButton = (RadioButton) findViewById(R.id.cred_admin);
+        // authorization and database
+        auth = FirebaseAuth.getInstance();
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                authStateListener = new FirebaseAuth.AuthStateListener() {
+                    @Override
+                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                        currentUser = auth.getCurrentUser();
+                        if (currentUser == null) {
+                            // no user is signed in
+                        } else {
+                            // some user is signed in
+                        }
+                    }
+                };
+            }
+        };
+        dbRef = FirebaseDatabase.getInstance().getReference();
+        dbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // this is called twice, once with initial value and again whenever changed
+                Account account = dataSnapshot.getValue(Account.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // failed to read value
+                // could be useful in differentiating different users' credentials?
+            }
+        });
+
+        progressDialog = new ProgressDialog(this);
+        alertDialogBuilder = new AlertDialog.Builder(this);
+
+        editEmail = (EditText) findViewById(R.id.editEmail);
+        editPass = (EditText) findViewById(R.id.editPass);
+
+        addButton = (Button) findViewById(R.id.buttonAddAcc);
+        cancelButton = (Button) findViewById(R.id.buttonCancelRgstr);
+        addButton.setOnClickListener(this);
+        cancelButton.setOnClickListener(this);
+
+        credentialsRadioGroup = (RadioGroup) findViewById(R.id.rGroupCred);
+        userRadioButton = (RadioButton) findViewById(R.id.rButtonUser);
+        workerRadioButton = (RadioButton) findViewById(R.id.rButtonWorker);
+        managerRadioButton = (RadioButton) findViewById(R.id.rButtonManager);
+        adminRadioButton = (RadioButton) findViewById(R.id.rButtonAdmin);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        auth.addAuthStateListener(authStateListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (authStateListener != null) {
+            auth.removeAuthStateListener(authStateListener);
+        }
     }
 
     /**
-     * update the model and the view upon pressing hte add button
-     * @param view the button
+     * Attempts to add a new account to the model. If account exists,
+     * tries to reroute persons to edit this existing account; disallows any
+     * persons from registering preexisting accounts.
+     *
+     * @param view a View object included as convention
      */
     protected void onAddPressed(View view) {
-        Model model = Model.getInstance();
-        if (model.getCurrentAccount() != null) {
-            account = model.getCurrentAccount();
-            editing = true;
+        final Model model = Model.getInstance();
+
+        emailString = editEmail.getText().toString();
+        passwordString = editPass.getText().toString();
+
+        //TODO- Implement edit user box correctly
+        //setUpAlertDialogBuilder(emailString, passwordString, model);
+
+        // check if necessary fields are filled in
+        if (TextUtils.isEmpty(emailString) || TextUtils.isEmpty(passwordString)) {
+            Toast.makeText(this,
+                    "Please enter in all relevant fields.",
+                    Toast.LENGTH_SHORT).show();
+            return;
         } else {
-            account = new Account();
+            progressDialog.setMessage("Registering user...");
+            progressDialog.show();
+            account = new Account(emailString, passwordString, determineCredential());
+            register(model, account);
         }
-
-        account.setUsername(usernameField.getText().toString());
-        account.setPassword(passwordField.getText().toString());
-        account.setEmailAddress(emailField.getText().toString());
-        if (userRadioButton.isSelected()) {
-            account.setCredential(Credential.USER);
-        } else if (workerRadioButton.isSelected()) {
-            account.setCredential(Credential.WORKER);
-        } else if (managerRadioButton.isSelected()) {
-            account.setCredential(Credential.MANAGER);
-        } else if (adminRadioButton.isSelected()) {
-            account.setCredential(Credential.ADMIN);
-        }
-
-
-//         TODO: make distinction for editing
-//        if (editing) {
-//            account.setUsername(usernameField.getText().toString());
-//            account.setPassword(passwordField.getText().toString());
-//            account.setEmailAddress(emailField.getText().toString());
-//            account.setCredential(Credential.valueOf(selectedRadioButton.getText().toString()));
-//        } else {
-//
-//        }
-        System.out.println(account);
-        System.out.println(model.getCurrentAccount());
-        System.out.println(model.getAccountList());
-        if (editing == true) {
-            Intent intent = new Intent(getBaseContext(), LoggedInActivity.class);
-            startActivity(intent);
-        } else {
-            if (model.addAccount(account)) {
-                System.out.println(model.getAccountList());
-                Intent intent =
-                        new Intent(getBaseContext(), MainActivity.class);
-                startActivity(intent);
-            }
-        }
-
-
     }
 
     /**
-     * update the model and the view upon pressing the cancel button
-     * @param view the button
+     * A helper to set up the alert dialog based on the String values obtained from the
+     * view which represent an email and password used to attempt registration of an
+     * existing account. Alert Dialog is not always created/shown.
+     *
+     * @param emailRef a String representing the existing account's email address
+     * @param passwordRef a String representing the existing account's password
      */
-    protected void onCancelPressed(View view) {
-        Model model = Model.getInstance();
-        System.out.println(account);
-        System.out.println(model.getAccountList());
-        if (model.getCurrentAccount() != null) {
-            Intent intent = new Intent(getBaseContext(), LoggedInActivity.class);
-            startActivity(intent);
-        } else {
-            Intent intent =
-                    new Intent(getBaseContext(), MainActivity.class);
-            startActivity(intent);
-        }
+    private void setUpAlertDialogBuilder(final String emailRef, final String passwordRef, final Model model) {
+        alertDialogBuilder
+                .setView(R.layout.dialog_options_registration)
+                .setTitle("Trying to edit?")
+                .setPositiveButton("EDIT",new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, int id) {
+                        progressDialog.setMessage("Verifying password...");
+                        auth
+                                .signInWithEmailAndPassword(emailRef, passwordRef)
+                                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    model.setCurrentAcc(model.findAccountByEmail(emailRef));
+                                    progressDialog.dismiss();
+                                    finish();
+                                    startActivity(new Intent(getApplicationContext(), EditExistingActivity.class));
+                                } else {
+                                    Toast.makeText(
+                                            RegistrationActivity.this,
+                                            "Wrong password. Please try again.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton("CANCEL",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        // if this button is clicked, just close dialog and do nothing
+                        dialog.cancel();
+                    }
+                });
+    }
 
+    /**
+     * A helper to consolidate the registration of new accounts. Takes in
+     * an Account object and registers to the model based on whether or not Firebase
+     * authentication approves this new registration to occur.
+     *
+     * @param model the model which the account is being added to.
+     * @param newAccount the new account being registered.
+     */
+    private void register(final Model model, final Account newAccount) {
+        auth
+                .createUserWithEmailAndPassword(emailString, passwordString)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressDialog.dismiss();
+                        if (task.isSuccessful()) {
+                            model.addAccountInfo(account);
+                            dbRef.child("accounts").child("" + newAccount.getId())
+                                    .setValue(newAccount);
+                            Toast.makeText(
+                                    RegistrationActivity.this,
+                                    "Registration Successful",
+                                    Toast.LENGTH_SHORT).show();
+                            model.setCurrentAcc(account);
+                            finish();
+                            startActivity(new Intent(getApplicationContext(),
+                                    LoggedInActivity.class));
+                        } else {
+                            // must be attempting to edit an account that exists
+                            optionsDialog = alertDialogBuilder.create();
+                            optionsDialog.show();
+                        }
+                    }
+                });
+    }
+
+    /**
+     * Intended to determine the credential level selected for the new user. Should
+     * determine the credential level based on the radio button that is pushed.
+     *
+     * @return the Credential value that has been selected on this screen.
+     */
+    private Credential determineCredential() {
+        if (userRadioButton.isSelected()) {
+            return Credential.USER;
+        }
+        if (workerRadioButton.isSelected()) {
+            return Credential.WORKER;
+        }
+        if (managerRadioButton.isSelected()) {
+            return Credential.MANAGER;
+        }
+        if (adminRadioButton.isSelected()) {
+            return Credential.ADMIN;
+        }
+        return Credential.USER;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == cancelButton) {
+            finish();
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        }
+        if (view == addButton) {
+            onAddPressed(view);
+        }
     }
 
 }

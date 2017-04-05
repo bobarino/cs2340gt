@@ -5,14 +5,18 @@ import java.util.Arrays;
 
 /**
  * Created by SEAN on 3/12/17.
+ * Edited by ARMANDO on 4/2/17.
  */
 
 public class WaterPurityReport {
-    // account that is submitting the water purity report
-    private Account account;
+
+    private static int nextId = 0;
+
+    // account that submitted this report
+    private Account reporter;
 
     // date/time associated with the report's submission
-    private String date_time;
+    private String dateTime;
 
     // string value of the condition for this report
     private String condition;
@@ -33,37 +37,54 @@ public class WaterPurityReport {
 
     /**
      * constructor to create a WaterPurityReport object
-     * @param _reporter the account/user reporting the water purity
-     * @param _condition the string value associated with the condition of the water
+     * @param reporter the account/user reporting the water purity
+     * @param condition the string value associated with the condition of the water
      *                   (i.e. safe, treatable, unsafe)
-     * @param _viral the viral ppm of the water
-     * @param _contaminant the contaminant ppm of the water
-     * @param _dateTime the date and time that the report is being submitted
-     * @param place the location at which the report is being submitted for
+     * @param viralPPM the viral ppm of the water
+     * @param contaminantPPM the contaminant ppm of the water
+     * @param dateTime the date and time that the report is being submitted
+     * @param location the location at which the report is being submitted for
      */
-    public WaterPurityReport(Account _reporter, String _condition,
-                             int _viral, int _contaminant, String _dateTime,
-                             Location place) {
-        account = _reporter;
-        setCondition(_condition);
-        id = Model.getNextPurityReportId();
-        viralPPM = _viral;
-        contaminantPPM = _contaminant;
-        date_time = _dateTime;
-        location = place;
+    public WaterPurityReport(Account reporter, String condition,
+                             int viralPPM, int contaminantPPM, String dateTime,
+                             Location location) {
+        this(nextId++, reporter, condition, viralPPM, contaminantPPM, dateTime, location);
+    }
+
+    /**
+     * constructor to create a WaterPurityReport object
+     * @param id the unique id being assigned to this water purity report
+     * @param reporter the account/user reporting the water purity
+     * @param condition the string value associated with the condition of the water
+     *                   (i.e. safe, treatable, unsafe)
+     * @param viralPPM the viral ppm of the water
+     * @param contaminantPPM the contaminant ppm of the water
+     * @param dateTime the date and time that the report is being submitted
+     * @param location the location at which the report is being submitted for
+     */
+    public WaterPurityReport(int id, Account reporter, String condition,
+                             int viralPPM, int contaminantPPM, String dateTime,
+                             Location location) {
+        this.id = id;
+        this.reporter = reporter;
+        this.condition = condition;
+        this.viralPPM = viralPPM;
+        this.contaminantPPM = contaminantPPM;
+        this.dateTime = dateTime;
+        this.location = location;
     }
 
     /**
      * method to get the account associated with the report
      * @return the account of the reporter
      */
-    public Account getAccount() { return account; }
+    public Account getReporter() { return reporter; }
 
     /**
      * method to update the account
-     * @param newUser the new account associated with report
+     * @param reporter the new account associated with report
      */
-    public void setAccount(Account newUser) { account = newUser; }
+    public void setReporter(Account reporter) { this.reporter = reporter; }
 
     /**
      * method to get the id of the report
@@ -73,9 +94,9 @@ public class WaterPurityReport {
 
     /**
      * method to update the id value for the report
-     * @param newID the new id value
+     * @param id the new id value
      */
-    public void setId(int newID) { id = newID;}
+    public void setId(int id) { this.id = id;}
 
     /**
      * method to get the viral ppm of the report
@@ -85,9 +106,9 @@ public class WaterPurityReport {
 
     /**
      * method to update the viral ppm
-     * @param newViral the new viral ppm value
+     * @param viralPPM the new viral ppm value
      */
-    public void setViralPPM(int newViral) { viralPPM = newViral; }
+    public void setViralPPM(int viralPPM) { this.viralPPM = viralPPM; }
 
     /**
      * method to get the contaminant ppm of the report
@@ -97,55 +118,64 @@ public class WaterPurityReport {
 
     /**
      * method to update the contaminant ppm for the report
-     * @param newContaminant the updated contaminant ppm value
+     * @param contaminantPPM the updated contaminant ppm value
      */
-    public void setContaminantPPM(int newContaminant) { contaminantPPM = newContaminant; }
+    public void setContaminantPPM(int contaminantPPM) { this.contaminantPPM = contaminantPPM; }
 
     /**
      * method to get the date/time of the report
      * @return the date/time of the report
      */
-    public String getDate_time() { return  date_time; }
+    public String getDateTime() { return dateTime; }
 
     /**
      * method to update the date/time of the report
-     * @param newDateTime the date/time of the report
+     * @param dateTime the date/time of the report
      */
-    public void setDate_time(String newDateTime) { date_time = newDateTime; }
+    public void setDateTime(String dateTime) { this.dateTime = dateTime; }
 
     /**
-     * method to get the lcoation of the report
+     * method to get the location of the report
      * @return the location
      */
     public Location getLocation() { return location; }
 
     /**
      * method to update the lcoation of the report
-     * @param newLoc the new location
+     * @param location the new location
      */
-    public void setLocation(Location newLoc) { location = newLoc; }
+    public void setLocation(Location location) { this.location = location; }
+
+    /**
+     * method to get the condition of the report
+     * @return the condition
+     */
+    public String getCondition() { return condition; }
 
     /**
      * method to set the condition of the report
-     * @param newCond the new condition
+     * @param condition the new condition
      */
-    public void setCondition(String newCond) {
-        if (waterConditions.contains(newCond)) {
-            condition = newCond;
+    public void setCondition(String condition) {
+        if (waterConditions.contains(condition)) {
+            this.condition = condition;
+        } else {
+            // TODO: handle this error
         }
     }
 
     @Override
     public boolean equals(Object o) {
         WaterPurityReport wpr = (WaterPurityReport) o;
-        return (wpr.getLocation().equals(location)
-                && wpr.getAccount().equals(account)
-                && wpr.getDate_time().equals(date_time) && wpr.getId() == id
+        return (wpr.getId() == id
+                && wpr.getLocation().equals(location)
+                && wpr.getReporter().equals(reporter)
+                && wpr.getDateTime().equals(dateTime)
                 && wpr.getViralPPM() == viralPPM && wpr.getContaminantPPM() == contaminantPPM);
         }
 
     @Override
-    public String toString() { return ("Report No.: " + id + " Reporter: " + account.getUsername()
+    public String toString() { return ("Report No.: " + id + " Reporter: " + reporter.getEmailAddress()
         + "\n" + condition + "\n" + "Viral PPM: " + viralPPM + " Contaminant PPM: " + contaminantPPM
         + "\nLocation: " + location);
     }

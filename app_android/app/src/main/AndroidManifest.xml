@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cs2340gt.nick.app_android">
+
 <permission android:name="com.cs2340gt.nick.app_android.permissions.MAPS_RECEIVE"
     android:protectionLevel="signature"/>
     <uses-permission android:name="com.cs2340gt.nick.app_android.permission.MAPS_RECEIVE"/>
@@ -44,7 +45,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.cs2340gt.nick.app_android.controller.WelcomeDirectionActivity">
+            android:name="com.cs2340gt.nick.app_android.controller.RegistrationActivity"
+            android:label="Registration"
+            android:parentActivityName=".controller.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,9 +55,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.cs2340gt.nick.app_android.controller.RegistrationActivity"
-            android:parentActivityName=".controller.MainActivity"
-            android:label="Registration">
+            android:name="com.cs2340gt.nick.app_android.controller.EditExistingActivity"
+            android:label="Editing"
+            android:parentActivityName=".controller.RegistrationActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -74,7 +78,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.cs2340gt.nick.app_android.controller.WaterReportSubmitActivity"
-            android:parentActivityName=".controller.LoggedInActivity"
+            android:parentActivityName="com.cs2340gt.nick.app_android.controller.LoggedInActivity"
             android:label="Submit a Report">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -82,9 +86,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.cs2340gt.nick.app_android.controller.EditUserInfoActivity"
-            android:parentActivityName=".controller.LoggedInActivity"
-            android:label="Edit User Info">
+        <activity android:name="com.cs2340gt.nick.app_android.controller.WaterReportEditActivity"
+            android:parentActivityName="com.cs2340gt.nick.app_android.controller.LoggedInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -92,7 +95,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".controller.WaterReportListActivity"
-            android:parentActivityName=".controller.LoggedInActivity"
+            android:parentActivityName="com.cs2340gt.nick.app_android.controller.LoggedInActivity"
             android:label="Water Report List">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -100,17 +103,24 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".controller.WaterPuritySubmitActivity"
-            android:parentActivityName=".controller.LoggedInActivity"
-            android:label="Submit a Purity Report">
+        <activity android:name="com.cs2340gt.nick.app_android.controller.WaterPuritySubmitActivity"
+            android:parentActivityName="com.cs2340gt.nick.app_android.controller.LoggedInActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="com.cs2340gt.nick.app_android.controller.WaterPurityEditActivity"
+            android:parentActivityName="com.cs2340gt.nick.app_android.controller.LoggedInActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity android:name=".controller.WaterPurityListActivity"
-            android:parentActivityName=".controller.LoggedInActivity"
+            android:parentActivityName="com.cs2340gt.nick.app_android.controller.LoggedInActivity"
             android:label="Water Purity Report List">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

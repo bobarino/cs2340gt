@@ -1,12 +1,17 @@
 package com.cs2340gt.nick.app_android.controller;
 
-import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
+import com.cs2340gt.nick.app_android.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import android.widget.TextView;
 
-import com.cs2340gt.nick.app_android.R;
 import com.cs2340gt.nick.app_android.model.Credential;
 import com.cs2340gt.nick.app_android.model.Model;
 import com.cs2340gt.nick.app_android.model.WaterPurityReport;
@@ -26,94 +31,122 @@ import java.util.List;
 * created by SeanBills on 2/14/17.
 * edited by SeanBills on 2/19/17.
  */
+public class LoggedInActivity extends FragmentActivity implements View.OnClickListener, OnMapReadyCallback {
 
-public class LoggedInActivity extends android.support.v4.app.FragmentActivity implements OnMapReadyCallback {
+    private FirebaseAuth auth;
+    private FirebaseUser currentUser;
+    private FirebaseAuth.AuthStateListener authStateListener;
 
-    private GoogleMap mMap;
+    private Button editAccountButton;
+    private Button logoutButton;
+    private Button showReportListButton;
+    private Button showPurityReportButton;
+    private Button submitPurityReportButton;
+    private Button submitReportButton;
 
-    private Model mFacade;
+    private GoogleMap map;
+
+    private Model modelFacade;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.logged_in);
 
-
-
-        // the controller for the submit water report button
-        Button submitReportButton = (Button) findViewById(R.id.report_submit);
-        submitReportButton.setOnClickListener(new View.OnClickListener() {
+        auth = FirebaseAuth.getInstance();
+        authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent =
-                        new Intent(getBaseContext(), WaterReportSubmitActivity.class);
-                startActivity(intent);
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                authStateListener = new FirebaseAuth.AuthStateListener() {
+                    @Override
+                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                        currentUser = auth.getCurrentUser();
+                        if (currentUser == null) {
+                            // no user is signed in
+                        } else {
+                            // some user is signed in
+                        }
+                    }
+                };
             }
-        });
+        };
 
-        // the controller for the logout button
-        Button logoutButton = (Button) findViewById(R.id.logout_button);
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Model model = Model.getInstance();
-                model.setCurrentAcc(null);
-                Intent intent =
-                        new Intent(getBaseContext(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
+        editAccountButton = (Button) findViewById(R.id.edit_user);
+        logoutButton = (Button) findViewById(R.id.logout_button);
+        showReportListButton = (Button) findViewById(R.id.show_reports_button);
+        showPurityReportButton = (Button) findViewById(R.id.showPurityListButton);
+        submitReportButton = (Button) findViewById(R.id.report_submit);
+        submitPurityReportButton = (Button) findViewById(R.id.submitPurityButton);
 
-        // controller for the edit user information button
-        Button editInfoButton = (Button) findViewById(R.id.edit_user);
-        editInfoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent =
-                        new Intent(getBaseContext(), RegistrationActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        Button showReportList = (Button) findViewById(R.id.show_reports_button);
-        showReportList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent =
-                        new Intent(getBaseContext(), WaterReportListActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        Button submitPurityReport = (Button) findViewById(R.id.submitPurityButton);
-        submitPurityReport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent =
-                        new Intent(getBaseContext(), WaterPuritySubmitActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        Button showPurityList = (Button) findViewById(R.id.showPurityListButton);
-        showPurityList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent =
-                        new Intent(getBaseContext(), WaterPurityListActivity.class);
-                startActivity(intent);
-            }
-        });
+        editAccountButton.setOnClickListener(this);
+        logoutButton.setOnClickListener(this);
+        showReportListButton.setOnClickListener(this);
+        showPurityReportButton.setOnClickListener(this);
+        submitReportButton.setOnClickListener(this);
+        submitPurityReportButton.setOnClickListener(this);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        mFacade = Model.getInstance();
+        modelFacade = Model.getInstance();
 
-        if (mFacade.getCurrentAccount().getCredential() == Credential.USER) {
-            submitPurityReport.setVisibility(Button.INVISIBLE);
-            showPurityList.setVisibility(Button.INVISIBLE);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (modelFacade.getCurrentAccount().getCredential().equals(Credential.USER)) {
+            submitPurityReportButton.setVisibility(Button.INVISIBLE);
+            showPurityReportButton.setVisibility(Button.INVISIBLE);
         }
+        auth.addAuthStateListener(authStateListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (authStateListener != null) {
+            auth.removeAuthStateListener(authStateListener);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        Model model = Model.getInstance();
+
+        if (view == editAccountButton) {
+            finish();
+            startActivity(new Intent(getApplicationContext(), EditExistingActivity.class));
+        }
+
+        if (view == logoutButton) {
+            auth.signOut();
+            model.setCurrentAcc(null);
+            finish();
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        }
+
+        if (view == showReportListButton) {
+            finish();
+            startActivity(new Intent(getApplicationContext(), WaterReportListActivity.class));
+        }
+
+        if (view == showPurityReportButton) {
+            finish();
+            startActivity(new Intent(getApplicationContext(), WaterPurityListActivity.class));
+        }
+
+        if (view == submitPurityReportButton) {
+            finish();
+            startActivity(new Intent(getApplicationContext(), WaterPuritySubmitActivity.class));
+        }
+
+        if (view == submitReportButton) {
+            finish();
+            startActivity(new Intent(getApplicationContext(), WaterReportSubmitActivity.class));
+        }
+
     }
 
     /**
@@ -127,31 +160,35 @@ public class LoggedInActivity extends android.support.v4.app.FragmentActivity im
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+        map = googleMap;
 
-        List<WaterReport> reportList = mFacade.getReportList();
+        List<WaterReport> reportList = modelFacade.getReportList();
         for (WaterReport wr : reportList) {
-            LatLng loc = new LatLng(wr.getLocation().getLatitude(), wr.getLocation().getLongitude());
-            mMap.addMarker(new MarkerOptions().position(loc).title(wr.getReporter().getUsername()).snippet(wr.getSource()
+            LatLng location = new LatLng(wr.getLocation().getLatitude(), wr.getLocation().getLongitude());
+            map.addMarker(new MarkerOptions().position(location).title(wr.getReporter().getEmailAddress()).snippet(wr.getSource()
                     + " - " + wr.getCondition()));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
+            map.moveCamera(CameraUpdateFactory.newLatLng(location));
         }
 
-        if (mFacade.getCurrentAccount().getCredential() != Credential.USER) {
-            List<WaterPurityReport> purityReportList = mFacade.getPurityReportList();
+
+        if (modelFacade.getCurrentAccount().getCredential() != Credential.USER) {
+            List<WaterPurityReport> purityReportList = modelFacade.getPurityReportList();
             for (WaterPurityReport wpr : purityReportList) {
                 LatLng location = new LatLng(wpr.getLocation().getLatitude(), wpr.getLocation().getLongitude());
-                mMap.addMarker(new MarkerOptions().position(location).title(wpr.getAccount().getUsername()).snippet("ViralPPM: "
-                        + wpr.getViralPPM() + " Contaminant PPM: " + wpr.getContaminantPPM()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                map.addMarker(new MarkerOptions().position(location).title(wpr.getReporter().getEmailAddress()).snippet("ViralPPM: "
+                        + wpr.getViralPPM() + " Contaminant PPM: "
+                        + wpr.getContaminantPPM()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
             }
         }
-        mMap.setInfoWindowAdapter(new LoggedInActivity.CustomInfoWindowAdapter());
+
+        map.setInfoWindowAdapter(new LoggedInActivity.CustomInfoWindowAdapter());
+
     }
 
     /**
      * class to create a WindowAdapter to adapt to eht GoogleMap
      */
-    class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+    private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
         private final View myContentsView;
 

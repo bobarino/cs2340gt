@@ -1,5 +1,6 @@
 package com.cs2340gt.nick.app_android.controller;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -7,11 +8,26 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import android.util.Log;
+
 import com.cs2340gt.nick.app_android.R;
+import com.cs2340gt.nick.app_android.model.Location;
 import com.cs2340gt.nick.app_android.model.Model;
+import com.cs2340gt.nick.app_android.model.Credential;
+import com.cs2340gt.nick.app_android.model.Account;
 import com.cs2340gt.nick.app_android.model.WaterReport;
+
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -19,12 +35,19 @@ import java.util.List;
  * Created by SEAN on 3/1/17.
  */
 
-public class WaterReportListActivity extends AppCompatActivity {
+public class WaterReportListActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private Button returnButton;
+
+    private DatabaseReference dbRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_water_report_list);
 
+        returnButton = (Button) findViewById(R.id.returnButton);
+        returnButton.setOnClickListener(this);
 
 
         //Step 1.  Setup the recycler view by getting it from our layout in the main window
@@ -33,12 +56,16 @@ public class WaterReportListActivity extends AppCompatActivity {
         //Step 2.  Hook up the adapter to the view
         setupRecyclerView((RecyclerView) recyclerView);
 
-    }/**
+    }
+
+    /**
      * Set up an adapter and hook it to the provided view
      * @param recyclerView  the view that needs this adapter
      */
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         Model model = Model.getInstance();
+        //grabReports(model);
+
         recyclerView.setAdapter(new SimpleReportRecyclerViewAdapter(model.getReportList()));
     }
 
@@ -81,6 +108,38 @@ public class WaterReportListActivity extends AppCompatActivity {
         public void onBindViewHolder(final ViewHolder holder, int position) {
 
             final Model model = Model.getInstance();
+
+            FirebaseDatabase.getInstance().getReference().child("reports")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                //WaterReport waterReport = snapshot.getValue(WaterReport.class);
+                                //System.out.println(waterReport.getCondition());
+                                String condition = snapshot.child("condition").getValue(String.class);
+                                String dateTime = snapshot.child("dateTime").getValue(String.class);
+                                Long longitude = snapshot.child("location").child("longitude").getValue(Long.class);
+                                Long latitude = snapshot.child("location").child("latitude").getValue(Long.class);
+                                String cred = snapshot.child("reporter").child("credential").getValue(String.class);
+                                String emailAddress = snapshot.child("reporter").child("emailAddress").getValue(String.class);
+                                String password = snapshot.child("reporter").child("password").getValue(String.class);
+                                String source = snapshot.child("source").getValue(String.class);
+
+                                //Credential newCred = new Credential(cred, cred);
+                                Log.d("EGGCHELLE", condition);
+
+                                Account fakeAcc = new Account(emailAddress, password, Credential.USER);
+                                Location fakeLoc = new Location((double)(latitude), (double)(longitude));
+                                WaterReport wr = new WaterReport(fakeAcc, source, condition,
+                                        dateTime, fakeLoc);
+                                model.addReport(wr);
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+
             /*
             This is where we have to bind each data element in the list (given by position parameter)
             to an element in the view (which is one of our two TextView widgets
@@ -93,6 +152,7 @@ public class WaterReportListActivity extends AppCompatActivity {
              */
             //holder.mIdView.setText("" + mReports.get(position).getId());
             holder.mContentView.setText(mReports.get(position).toString());
+
 
             /*
              * set up a listener to handle if the user clicks on this list item, what should happen?
@@ -160,4 +220,15 @@ public class WaterReportListActivity extends AppCompatActivity {
             }
         }
     }
+
+
+    @Override
+    public void onClick(View view) {
+        if (view == returnButton) {
+            finish();
+            startActivity(new Intent(this, LoggedInActivity.class));
+        }
+    }
+
+
 }

@@ -1,67 +1,67 @@
 package com.cs2340gt.nick.app_android.model;
 
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by ArmandoGonzalez on 2/14/17.
  */
+@IgnoreExtraProperties
 public class Account {
 
-    //unique ID value for the Account
+    public static int Next_Id = 0;
+
     private int id;
-
-    // unique username for the account
-    private String username;
-
-    // unique password for the account
-    private String password;
-
-    //unique email address for the Account
     private String emailAddress;
-
-    //unique Credential for the Account (from user, worker, manager, admin)
+    private String password;
     private Credential credential;
-
-    // variable to keep track of the next number for the account IDs
-    private static int nextNo = 0;
 
     /**
      * no arg constructor to create a new Account
      */
     public Account() {
-        this("user", "pass", "example@gatech.edu", Credential.USER);
+        // default constructor used only for Firebase database updates
+    }
+
+    // constructor for general use with proper indexing
+    public Account(String emailAddress, String password, Credential credential) {
+        this(Next_Id++, emailAddress, password, credential);
     }
 
     /**
      * constructor to create a fully flushed out Account object
-     * @param username the passed in username of this account
+     * @param id the id to be assigned to this account
+     * @param emailAddress the passed in email address of this account
      * @param password the passed in password of this account
-     * @param emailAddress the passed in emailAddress of this account
      * @param credential the passed in Credential value of this account
      */
-    public Account(String username,
+    public Account(int id, String emailAddress,
                    String password,
-                   String emailAddress,
                    Credential credential) {
-        this.id = nextNo++;
-        this.username = username;
-        this.password = password;
+        this.id = id;
         this.emailAddress = emailAddress;
+        this.password = password;
         this.credential = credential;
     }
 
-    /**
-     * method to get username for this Account
-     * @return the username for this Account
-     */
-    public String getUsername() {
-        return username;
+    // ONLY for use with creating the null account
+    public Account(int id) {
+        this.id = id;
+        emailAddress = "null";
+        password = "null";
+        credential = Credential.NULL;
     }
 
-    /**
-     * method to set the username to a new value
-     * @param username the new username value
-     */
-    public void setUsername(String username) {
-        this.username = username;
+    // getters and setters
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
     /**
@@ -78,21 +78,6 @@ public class Account {
      */
     public void setPassword(String password) { this.password = password; }
 
-    /**
-     * method to return the email address of the account
-     * @return the email address for this account
-     */
-    public String getEmailAddress() {
-        return emailAddress;
-    }
-
-    /**
-     * method to change the email address for this account
-     * @param emailAddress
-     */
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
 
     /**
      * mthod to get the credential for this account
@@ -122,12 +107,22 @@ public class Account {
     @Override
     public boolean equals(Object account) {
         Account a = (Account) account;
-        return a.getUsername().equals(username);
+        return a.getEmailAddress().equals(emailAddress);
     }
 
     @Override
     public String toString() {
-        return id + " " + username + " " + emailAddress + " " + credential;
+        return emailAddress;
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        Map<String, Object> result = new HashMap<>();
+        result.put("id", id);
+        result.put("email", emailAddress);
+        result.put("pass", password);
+        result.put("credential", credential);
+        return result;
     }
 
 }

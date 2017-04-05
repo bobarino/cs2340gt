@@ -33,51 +33,66 @@ public class Model {
     public List<WaterPurityReport> getPurityReportList() { return purityReportList; }
 
     // current account being worked with
-    private static Account currentAccount;
+    private static Account currentAccount = null;
 
-    // current WaterReport being worked with
-    private static WaterReport currentReport;
-    // current WaterReport ID no.
-    private static int nextReportId = 1;
-    // current WaterPurityReport ID no.
-    private static int nextPurityReportId = 1;
+    // current water report being worked with
+    private static WaterReport currentReport = null;
 
-    // nextReportId getter
-    public static int getNextReportId() { return nextReportId; }
-    // getter for the next purity report id
-    public static int getNextPurityReportId() { return nextPurityReportId; }
+    // current water purity report being worked with
+    private static WaterPurityReport currentPurityReport = null;
 
-    /**
-     * method to get the current account that's logged in
-     * @return an Account that the model is currenlty logged in as
-     */
+    // current account getter and setter
     public static Account getCurrentAccount() {
         return currentAccount;
     }
 
     /**
      * method to set a current account that the model is logged in as
-     * @param currentAccount the method to update the logged in status as
+     * @param account the method to update the logged in status as
      */
-    public void setCurrentAcc(Account currentAccount) {
-        this.currentAccount = currentAccount;
+    public void setCurrentAcc(Account account) {
+        this.currentAccount = account;
     }
 
     /**
      * method to get the current report being used in the model
      * @return a WaterReport that we're currently using
      */
-    public static WaterReport getCurrentReport() { return currentReport; }
-
-    private Account tester = new Account("sean", "sean", "sean", Credential.MANAGER);
-    private Account worker = new Account("bills", "bills", "bills", Credential.WORKER);
+    public static WaterReport getCurrentReport() {
+        return currentReport;
+    }
 
     /**
      * method to set the current report associated with the model at hand
-     * @param _currentReport the updated current report
+     * @param report the updated current report
      */
-    public void setCurrentReport(WaterReport _currentReport) { currentReport = _currentReport; }
+    public void setCurrentPurityReport(WaterPurityReport report) {
+        this.currentPurityReport = report;
+    }
 
+    /**
+     * method to get the current report being used in the model
+     * @return a WaterReport that we're currently using
+     */
+    public static WaterPurityReport getCurrentPurityReport() {
+        return currentPurityReport;
+    }
+    
+
+    /**
+     * method to set the current report associated with the model at hand
+     * @param purityReport the updated current report
+     */
+    public void setCurrentReport(WaterPurityReport purityReport) {
+        this.currentPurityReport = purityReport;
+    }
+
+    // created for the case of an error
+    private final Account nullAcc = new Account(9999);
+
+    // created for case of an error
+    private final WaterReport nullReport =
+            new WaterReport(nullAcc, "null", "null", "null", null);
 
     /**
      * no arg constructor for the model class...no need for a parameter constructor
@@ -86,18 +101,17 @@ public class Model {
         accountList = new ArrayList<>();
         reportList = new ArrayList<>();
         purityReportList = new ArrayList<>();
-        accountList.add(tester);
-        accountList.add(worker);
+//        accountList.add(tester);
+
     }
 
     /**
-     * A method to add accounts to the application. Checks to see
-     * if the account already exists.
+     * A method to add accounts to the application. Only adds if the account does not exist.
      *
      * @param newAcc the candidate account.
      * @return whether or not addition was successful.
      */
-    public boolean addAccount(Account newAcc) {
+    public boolean addAccountInfo(Account newAcc) {
         for (Account account: accountList) {
             if (newAcc.equals(account)) {
                 return false;
@@ -121,7 +135,6 @@ public class Model {
             return false;
         }
         reportList.add(newReport);
-        Model.nextReportId++;
         return true;
     }
 
@@ -138,7 +151,6 @@ public class Model {
             return false;
         }
         purityReportList.add(newRep);
-        Model.nextPurityReportId++;
         return true;
     }
 
@@ -166,28 +178,37 @@ public class Model {
      * @return the account, if found, or the null account.
      */
     public Account findAccountById(int id) {
-        for (Account account: accountList) {
-            if (account.getId() == id) {
-                return account;
+        if (accountList.size() == 0) {
+            return nullAcc;
+        } else {
+            for (Account account: accountList) {
+                if (account.getId() == id) {
+                    return account;
+                }
             }
+            return nullAcc;
         }
-        return null;
+
     }
 
     /**
      * A method to find an account by its username, using an O(n)
      * linear search.
      *
-     * @param username the username being searched by.
+     * @param email the email address being searched by.
      * @return the account, if found, or the null account.
      */
-    public Account findAccountByUser(String username) {
-        for (Account account: accountList) {
-            if (account.getUsername().equals(username)) {
-                return account;
+    public Account findAccountByEmail(String email) {
+        if (accountList.size() == 0) {
+            return nullAcc;
+        } else {
+            for (Account account: accountList) {
+                if (account.getEmailAddress().equals(email)) {
+                    return account;
+                }
             }
+            return nullAcc;
         }
-        return null;
     }
 
     /*
@@ -197,10 +218,10 @@ public class Model {
     * @return a list of waterReports submitted by a particular user,
     * if found, or null otherwise
      */
-    public List<WaterReport> findReportBySubmitter(Account user) {
+    public List<WaterReport> findReportBySubmitter(Account account) {
         List<WaterReport> foundSubmissions = new ArrayList<>();
         for (WaterReport wr : reportList) {
-            if (wr.getReporter().equals(user)) {
+            if (wr.getReporter().equals(account)) {
                 foundSubmissions.add(wr);
             }
         }
