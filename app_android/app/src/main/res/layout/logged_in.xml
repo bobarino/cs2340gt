@@ -8,24 +8,78 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.cs2340gt.nick.app_android.controller.MainActivity">
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:id="@+id/success_log_in_text"
-        android:text="LOGGED IN"
-        android:inputType="text|textCapCharacters"
-        android:gravity="center"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+    tools:context="com.cs2340gt.nick.app_android.controller.LoggedInActivity">
 
     <Button
-        android:text="LOGOUT"
+        android:id="@+id/logout_button"
+        android:text="@string/LOGOUT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/logout_button"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        tools:ignore="RelativeOverlap" />
+
+    <Button
+        android:id="@+id/edit_user"
+        android:text="@string/Edit_User"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/logout_button"
+        android:layout_alignParentStart="true"/>
+
+    <Button
+        android:id="@+id/report_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:text="@string/SUBMIT_REPORT"
+        android:layout_toEndOf="@+id/submitPurityButton" />
+
+    <Button
+        android:id="@+id/show_reports_button"
+        android:text="@string/SHOW_REPORTS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/submitPurityButton" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/logout_button"
+        android:layout_above="@+id/report_submit"
+        android:id="@+id/frameLayout3">
+
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".controller.LoggedInActivity"
+            map:uiZoomControls="true"/>
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/submitPurityButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/Submit_Purity" />
+
+    <Button
+        android:id="@+id/showPurityListButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:width="120dp"
+        android:text="@string/Purity_Reports" />
+
 </RelativeLayout>

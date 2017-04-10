@@ -12,7 +12,7 @@
 
 
     <Button
-        android:text="Log In"
+        android:text="@string/Log_In"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="145dp"
@@ -20,19 +20,19 @@
         android:elevation="0dp"
         android:visibility="visible"
         android:layout_below="@+id/textView2"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"/>
 
     <Button
-        android:text="Register"
+        android:text="@string/Register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/loginButton"
         android:layout_alignStart="@+id/loginButton"
         android:layout_marginTop="26dp"
-        android:id="@+id/registerButton" />
+        android:id="@+id/registerButton"/>
 
     <TextView
-        android:text="Welcome to Clean Water Report"
+        android:text="@string/Welcome_to_Clean_Water_Report"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="23dp"
@@ -41,4 +41,5 @@
         android:textAppearance="@android:style/TextAppearance.Material.Display1"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
+
 </RelativeLayout>

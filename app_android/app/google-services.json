@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "293938703317",
+    "firebase_url": "https://cleanwaterreportapp.firebaseio.com",
+    "project_id": "cleanwaterreportapp",
+    "storage_bucket": "cleanwaterreportapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:293938703317:android:15dc52dd6aaed05d",
+        "android_client_info": {
+          "package_name": "com.cs2340gt.nick.app_android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "293938703317-mlq5oi7l9peljr2rsci1q5ug9en2fikk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUb6rfKK2dxfe5YeGmWxwejvn3lHhBW2Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
