@@ -27,11 +27,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
+
 /**
  * Created by SEAN on 3/12/17.
  * Edited by Armando on 4/2/17.
  */
 
+@SuppressWarnings("AccessStaticViaInstance")
 public class WaterPuritySubmitActivity extends AppCompatActivity implements View.OnClickListener {
     // buttons for adding and cancelling
     private Button submitButton;
@@ -83,11 +86,11 @@ public class WaterPuritySubmitActivity extends AppCompatActivity implements View
                     @Override
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                         currentUser = auth.getCurrentUser();
-                        if (currentUser == null) {
-                            // no user is signed in
-                        } else {
-                            // some user is signed in
-                        }
+//                        if (currentUser == null) {
+//                            // no user is signed in
+//                        } else {
+//                            // some user is signed in
+//                        }
                     }
                 };
             }
@@ -120,11 +123,11 @@ public class WaterPuritySubmitActivity extends AppCompatActivity implements View
         dateTimeDisplay = (TextView) findViewById(R.id.dateTimeField);
         latInput = (EditText) findViewById(R.id.latInput);
         longInput = (EditText) findViewById(R.id.longInput);
-        contaminantText = (EditText) findViewById(R.id.contamInput);
+        contaminantText = (EditText) findViewById(R.id.contaminantInput);
         viralText = (EditText) findViewById(R.id.viralInput);
 
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(this,
+                new ArrayAdapter<>(this,
                         android.R.layout.simple_spinner_dropdown_item,
                         WaterPurityReport.waterConditions);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -139,9 +142,9 @@ public class WaterPuritySubmitActivity extends AppCompatActivity implements View
         auth.addAuthStateListener(authStateListener);
         Model model = Model.getInstance();
 
-        reportID.setText(" " + waterPurityReport.getId());
-        emailText.setText(" " + model.getCurrentAccount().getEmailAddress());
-        DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy, HH:mm");
+        reportID.setText(waterPurityReport.getId());
+        emailText.setText(model.getCurrentAccount().getEmailAddress());
+        DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy, HH:mm", Locale.US);
         String date = df.format(Calendar.getInstance().getTime());
         dateTimeDisplay.setText(date);
     }
@@ -152,7 +155,7 @@ public class WaterPuritySubmitActivity extends AppCompatActivity implements View
      *
      * @param view button for report submission
      */
-    protected void onSubmitPressed(View view) {
+    private void onSubmitPressed(View view) {
         Model model = Model.getInstance();
 
         Account reporter = model.getCurrentAccount();
@@ -192,7 +195,7 @@ public class WaterPuritySubmitActivity extends AppCompatActivity implements View
      * @param model the model which we are adding this report to.
      * @param newPurityReport the new report being added to the model.
      */
-    protected void submit(Model model, WaterPurityReport newPurityReport) {
+    private void submit(Model model, WaterPurityReport newPurityReport) {
         Location location = newPurityReport.getLocation();
         if (model.checkInvalidLocation(location)) {
             progressDialog.dismiss();

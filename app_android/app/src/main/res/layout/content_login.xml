@@ -5,7 +5,7 @@
 
     <TextView
         android:id="@+id/textViewEmail"
-        android:text="Email:"
+        android:text="@string/Email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"/>
@@ -15,13 +15,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
-        android:hint="Enter email"
+        android:hint="@string/Enter_email"
         android:ems="10"
         android:gravity="center_vertical|center_horizontal"/>
 
     <TextView
         android:id="@+id/textViewPass"
-        android:text="Password:"
+        android:text="@string/Password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"/>
@@ -31,12 +31,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
-        android:hint="Enter Password"
+        android:hint="@string/Enter_Password"
         android:ems="10"
         android:gravity="center_vertical|center_horizontal" />
 
     <Button
-        android:text="Login"
+        android:text="@string/Login"
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:layout_margin="16dp"
@@ -45,20 +45,20 @@
 
     <Button
         android:id="@+id/cancel_button"
-        android:text="Cancel"
+        android:text="@string/Cancel"
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:layout_margin="16dp"/>
 
     <TextView
-        android:text="Not Registered? Register here:"
+        android:text="@string/Not_registered"
         android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textViewRegisterNotice" />
 
     <Button
-        android:text="REGISTER NEW USER"
+        android:text="@string/REGISTER_NEW_USER"
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:id="@+id/register_button"/>

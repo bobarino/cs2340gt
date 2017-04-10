@@ -10,7 +10,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="13dp"
         android:layout_marginTop="10dp"
-        android:text="Report ID#: " />
+        android:text="@string/Report_ID" />
 
     <TextView
         android:id="@+id/emailText"
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/numberText"
         android:layout_below="@+id/numberText"
-        android:text="Email: " />
+        android:text="@string/Email" />
 
     <TextView
         android:id="@+id/dateTimeText"
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/emailText"
         android:layout_below="@+id/emailText"
-        android:text="Date/Time: " />
+        android:text="@string/Date_Time" />
 
     <TextView
         android:id="@+id/idField"
@@ -54,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
-        android:text="Location (Enter Coordinates):"
+        android:text="@string/Location_enter"
         android:layout_below="@+id/dateTimeField"
         android:layout_centerHorizontal="true" />
 
@@ -67,7 +67,7 @@
         android:ems="10"
         android:gravity="center_horizontal|center"
         android:inputType="numberSigned|numberDecimal"
-        android:hint="Latitude" />
+        android:hint="@string/Latitude" />
 
     <EditText
         android:id="@+id/longInput"
@@ -76,7 +76,7 @@
         android:ems="10"
         android:gravity="center_horizontal|center"
         android:inputType="numberSigned|numberDecimal"
-        android:hint="Longitude"
+        android:hint="@string/Longitude"
         android:layout_below="@+id/latInput"
         android:layout_alignStart="@+id/latInput" />
 
@@ -85,7 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Water Condition:"
+        android:text="@string/Water_Condition"
         android:layout_below="@+id/longInput"
         android:layout_centerHorizontal="true" />
 
@@ -100,31 +100,33 @@
         android:id="@+id/viralText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Viral PPM:"
+        android:text="@string/Viral_PPM"
         android:layout_above="@+id/viralInput"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:labelFor="@id/viralInput"/>
 
     <EditText
         android:id="@+id/viralInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/contamText"
-        android:layout_alignStart="@+id/contamInput"
+        android:layout_above="@+id/contaminantText"
+        android:layout_alignStart="@+id/contaminantInput"
         android:ems="10"
         android:gravity="center_horizontal|center"
         android:inputType="numberSigned|numberDecimal" />
 
     <TextView
-        android:id="@+id/contamText"
+        android:id="@+id/contaminantText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal|center"
-        android:text="Contaminant PPM:"
-        android:layout_above="@+id/contamInput"
-        android:layout_centerHorizontal="true" />
+        android:text="@string/Contaminant_PPM"
+        android:layout_above="@+id/contaminantInput"
+        android:layout_centerHorizontal="true"
+        android:labelFor="@id/contaminantInput"/>
 
     <EditText
-        android:id="@+id/contamInput"
+        android:id="@+id/contaminantInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/cancelButton"
@@ -141,7 +143,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/dateTimeText"
         android:layout_marginBottom="15dp"
-        android:text="CANCEL" />
+        android:text="@string/Cancel" />
 
     <Button
         android:id="@+id/submitButton"
@@ -151,6 +153,6 @@
         android:layout_alignBottom="@+id/cancelButton"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="19dp"
-        android:text="SUBMIT" />
+        android:text="@string/SUBMIT" />
 
 </RelativeLayout>

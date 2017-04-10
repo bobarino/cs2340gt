@@ -8,7 +8,7 @@
     android:background="#FFFFBB33">
     <TextView
         android:id="@+id/textViewEnterPassPrompt"
-        android:text="This account already exists. Confirm password for account:"
+        android:text="@string/account_exists"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -17,21 +17,22 @@
         android:layout_marginBottom="16dp" />
     <TextView
         android:id="@+id/textViewEmailLabel"
-        android:text="email@email.com"
+        android:text="@string/email_email_com"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp" />
+
     <EditText
-        android:id="@+id/textEditPassVerif"
-        android:inputType="textPassword"
-        android:hint="confirm password"
+        android:id="@+id/textEditPassVerification"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginTop="4dp"
+        android:hint="@string/confirm_password"
+        android:inputType="textPassword" />
 </LinearLayout>

@@ -16,7 +16,7 @@
 
     <EditText
         android:id="@+id/editEmail"
-        android:hint="Reenter email"
+        android:hint="@string/Reenter_email"
         android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
 
     <EditText
         android:id="@+id/editPassword"
-        android:hint="Enter new password"
+        android:hint="@string/Enter_new_password"
         android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:text="Select new Credentials:"/>
+        android:text="@string/Select_new_Credentials"/>
 
     <RadioGroup
         android:id="@+id/rGroupCred"
@@ -51,28 +51,28 @@
 
         <RadioButton
             android:id="@+id/rButtonUser"
-            android:text="User"
+            android:text="@string/User"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
 
         <RadioButton
             android:id="@+id/rButtonWorker"
-            android:text="Worker"
+            android:text="@string/Worker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <RadioButton
             android:id="@+id/rButtonManager"
-            android:text="Manager"
+            android:text="@string/Manager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <RadioButton
             android:id="@+id/rButtonAdmin"
-            android:text="Admin"
+            android:text="@string/Admin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
@@ -80,13 +80,13 @@
 
     <Button
         android:id="@+id/buttonEditAcc"
-        android:text="Edit"
+        android:text="@string/Edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/buttonCancelEdit"
-        android:text="Cancel"
+        android:text="@string/Cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"/>

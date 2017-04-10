@@ -1,11 +1,8 @@
 package com.cs2340gt.nick.app_android.controller;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,32 +10,28 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-
-import com.google.firebase.auth.AuthResult;
+import com.cs2340gt.nick.app_android.R;
+import com.cs2340gt.nick.app_android.model.Account;
+import com.cs2340gt.nick.app_android.model.Credential;
+import com.cs2340gt.nick.app_android.model.Model;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import com.cs2340gt.nick.app_android.R;
-import com.cs2340gt.nick.app_android.model.Account;
-import com.cs2340gt.nick.app_android.model.Credential;
-import com.cs2340gt.nick.app_android.model.Model;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by ArmandoGonzalez on 2/14/17.
+ * major outline class for Editing an existing account
+ * produced by ArmandoGonzalez on 2/14/17.
  */
+@SuppressWarnings("UnusedAssignment")
 public class EditExistingActivity extends AppCompatActivity implements View.OnClickListener {
 
     // Widgets represented in the view
@@ -46,7 +39,6 @@ public class EditExistingActivity extends AppCompatActivity implements View.OnCl
 
     private Button editButton, cancelButton;
 
-    private RadioGroup credentialsRadioGroup;
     private RadioButton userRadioButton, workerRadioButton,
             managerRadioButton, adminRadioButton;
 
@@ -67,11 +59,11 @@ public class EditExistingActivity extends AppCompatActivity implements View.OnCl
                     @Override
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                         FirebaseUser user = auth.getCurrentUser();
-                        if (user == null) {
+                        //if (user == null) {
                             // no user is signed in
-                        } else {
+                        //} else {
                             // some user is signed in
-                        }
+                        //}
                     }
                 };
             }
@@ -100,7 +92,7 @@ public class EditExistingActivity extends AppCompatActivity implements View.OnCl
         editButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
 
-        credentialsRadioGroup = (RadioGroup) findViewById(R.id.rGroupCred);
+        RadioGroup credentialsRadioGroup = (RadioGroup) findViewById(R.id.rGroupCred);
         userRadioButton = (RadioButton) findViewById(R.id.rButtonUser);
         workerRadioButton = (RadioButton) findViewById(R.id.rButtonWorker);
         managerRadioButton = (RadioButton) findViewById(R.id.rButtonManager);
@@ -129,17 +121,15 @@ public class EditExistingActivity extends AppCompatActivity implements View.OnCl
      *
      * @param view a view being passed in by convention.
      */
-    protected void onEditPressed(View view) {
+    private void onEditPressed(View view) {
         Model model = Model.getInstance();
         final Account existing = model.findAccountByEmail(editTextEmail.getText().toString());
         final String newPass = editTextPass.getText().toString();
 
         if (TextUtils.isEmpty(newPass)) {
             Toast.makeText(this, "Please enter in a password.", Toast.LENGTH_SHORT).show();
-            return;
         } else if (newPass.equals(existing.getPassword())) {
             Toast.makeText(this, "You must enter in a NEW password.", Toast.LENGTH_SHORT).show();
-            return;
         } else {
             // all clear
             editAccountInfo(existing, newPass, determineCredential());
@@ -164,13 +154,8 @@ public class EditExistingActivity extends AppCompatActivity implements View.OnCl
     private void editAccountInfo(final Account existing,
                                  final String newPassword,
                                  Credential newCredential) {
-        if (existing.equals(new Account(9999))) {
-            // something is very wrong
-            return;
-        } else {
             existing.setPassword(newPassword);
             existing.setCredential(newCredential);
-        }
     }
 
     /**

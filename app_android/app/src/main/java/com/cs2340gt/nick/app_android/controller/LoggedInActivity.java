@@ -1,17 +1,14 @@
 package com.cs2340gt.nick.app_android.controller;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
-import com.cs2340gt.nick.app_android.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import android.widget.TextView;
 
+import com.cs2340gt.nick.app_android.R;
 import com.cs2340gt.nick.app_android.model.Credential;
 import com.cs2340gt.nick.app_android.model.Model;
 import com.cs2340gt.nick.app_android.model.WaterPurityReport;
@@ -24,13 +21,18 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
+
+import static com.cs2340gt.nick.app_android.R.id.map;
 
 /*
 * created by SeanBills on 2/14/17.
 * edited by SeanBills on 2/19/17.
  */
+@SuppressWarnings("AccessStaticViaInstance")
 public class LoggedInActivity extends FragmentActivity implements View.OnClickListener, OnMapReadyCallback {
 
     private FirebaseAuth auth;
@@ -43,8 +45,6 @@ public class LoggedInActivity extends FragmentActivity implements View.OnClickLi
     private Button showPurityReportButton;
     private Button submitPurityReportButton;
     private Button submitReportButton;
-
-    private GoogleMap map;
 
     private Model modelFacade;
 
@@ -61,11 +61,11 @@ public class LoggedInActivity extends FragmentActivity implements View.OnClickLi
                     @Override
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                         currentUser = auth.getCurrentUser();
-                        if (currentUser == null) {
-                            // no user is signed in
-                        } else {
-                            // some user is signed in
-                        }
+//                        if (currentUser == null) {
+//                            // no user is signed in
+//                        } else {
+//                            // some user is signed in
+//                        }
                     }
                 };
             }
@@ -86,7 +86,7 @@ public class LoggedInActivity extends FragmentActivity implements View.OnClickLi
         submitPurityReportButton.setOnClickListener(this);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(map);
         mapFragment.getMapAsync(this);
 
         modelFacade = Model.getInstance();
@@ -160,14 +160,12 @@ public class LoggedInActivity extends FragmentActivity implements View.OnClickLi
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        map = googleMap;
-
         List<WaterReport> reportList = modelFacade.getReportList();
         for (WaterReport wr : reportList) {
             LatLng location = new LatLng(wr.getLocation().getLatitude(), wr.getLocation().getLongitude());
-            map.addMarker(new MarkerOptions().position(location).title(wr.getReporter().getEmailAddress()).snippet(wr.getSource()
+            googleMap.addMarker(new MarkerOptions().position(location).title(wr.getReporter().getEmailAddress()).snippet(wr.getSource()
                     + " - " + wr.getCondition()));
-            map.moveCamera(CameraUpdateFactory.newLatLng(location));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
         }
 
 
@@ -175,18 +173,18 @@ public class LoggedInActivity extends FragmentActivity implements View.OnClickLi
             List<WaterPurityReport> purityReportList = modelFacade.getPurityReportList();
             for (WaterPurityReport wpr : purityReportList) {
                 LatLng location = new LatLng(wpr.getLocation().getLatitude(), wpr.getLocation().getLongitude());
-                map.addMarker(new MarkerOptions().position(location).title(wpr.getReporter().getEmailAddress()).snippet("ViralPPM: "
+                googleMap.addMarker(new MarkerOptions().position(location).title(wpr.getReporter().getEmailAddress()).snippet("ViralPPM: "
                         + wpr.getViralPPM() + " Contaminant PPM: "
                         + wpr.getContaminantPPM()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
             }
         }
 
-        map.setInfoWindowAdapter(new LoggedInActivity.CustomInfoWindowAdapter());
+        googleMap.setInfoWindowAdapter(new LoggedInActivity.CustomInfoWindowAdapter());
 
     }
 
     /**
-     * class to create a WindowAdapter to adapt to eht GoogleMap
+     * class to create a WindowAdapter to adapt to the GoogleMap
      */
     private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 

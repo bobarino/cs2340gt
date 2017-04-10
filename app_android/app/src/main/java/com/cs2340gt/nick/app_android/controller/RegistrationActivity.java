@@ -33,8 +33,10 @@ import com.cs2340gt.nick.app_android.model.Model;
 import com.google.firebase.database.ValueEventListener;
 
 /**
- * Created by ArmandoGonzalez on 2/14/17.
+ * main activity for handling all Registration by users
+ * produced by ArmandoGonzalez on 2/14/17.
  */
+@SuppressWarnings("UnusedAssignment")
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
 
     // Widgets represented in the view
@@ -42,7 +44,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     private Button addButton, cancelButton;
 
-    private RadioGroup credentialsRadioGroup;
     private RadioButton userRadioButton, workerRadioButton,
             managerRadioButton, adminRadioButton;
 
@@ -74,11 +75,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     @Override
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                         currentUser = auth.getCurrentUser();
-                        if (currentUser == null) {
-                            // no user is signed in
-                        } else {
-                            // some user is signed in
-                        }
+//                        if (currentUser == null) {
+//                            // no user is signed in
+//                        } else {
+//                            // some user is signed in
+//                        }
                     }
                 };
             }
@@ -105,11 +106,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         editPass = (EditText) findViewById(R.id.editPass);
 
         addButton = (Button) findViewById(R.id.buttonAddAcc);
-        cancelButton = (Button) findViewById(R.id.buttonCancelRgstr);
+        cancelButton = (Button) findViewById(R.id.buttonCancelRegister);
         addButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
 
-        credentialsRadioGroup = (RadioGroup) findViewById(R.id.rGroupCred);
+        RadioGroup credentialsRadioGroup = (RadioGroup) findViewById(R.id.rGroupCred);
         userRadioButton = (RadioButton) findViewById(R.id.rButtonUser);
         workerRadioButton = (RadioButton) findViewById(R.id.rButtonWorker);
         managerRadioButton = (RadioButton) findViewById(R.id.rButtonManager);
@@ -138,7 +139,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
      *
      * @param view a View object included as convention
      */
-    protected void onAddPressed(View view) {
+    private void onAddPressed(View view) {
         final Model model = Model.getInstance();
 
         emailString = editEmail.getText().toString();
@@ -152,7 +153,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             Toast.makeText(this,
                     "Please enter in all relevant fields.",
                     Toast.LENGTH_SHORT).show();
-            return;
         } else {
             progressDialog.setMessage("Registering user...");
             progressDialog.show();

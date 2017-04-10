@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <EditText
@@ -31,7 +32,8 @@
         android:layout_alignBaseline="@+id/endText"
         android:layout_alignBottom="@+id/endText"
         android:layout_alignStart="@+id/startYearInput"
-        android:text="Start Year:" />
+        android:labelFor="@id/startYearInput"
+        android:text="@string/Start_Year" />
 
     <TextView
         android:id="@+id/endText"
@@ -39,7 +41,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/endYearInput"
         android:layout_alignStart="@+id/endYearInput"
-        android:text="End Year:" />
+        android:labelFor="@id/endYearInput"
+        android:text="@string/End_Year" />
 
     <EditText
         android:id="@+id/latInput"
@@ -66,17 +69,19 @@
         android:id="@+id/latText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Latitude:"
+        android:text="@string/Latitude"
         android:layout_above="@+id/longInput"
-        android:layout_alignStart="@+id/latInput" />
+        android:layout_alignStart="@+id/latInput"
+        android:labelFor="@id/latInput"/>
 
     <TextView
         android:id="@+id/longText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Longitude:"
+        android:text="@string/Longitude"
         android:layout_above="@+id/longInput"
-        android:layout_alignStart="@+id/longInput" />
+        android:layout_alignStart="@+id/longInput"
+        android:labelFor="@id/longInput"/>
 
     <com.jjoe64.graphview.GraphView
         android:id="@+id/graph"
@@ -89,17 +94,16 @@
         android:id="@+id/searchButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@android:string/search_go"
-        android:onClick="onSearchButtonPressed"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:text="@android:string/search_go"
+        tools:ignore="RelativeOverlap" />
 
     <Button
         android:id="@+id/cancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@android:string/cancel"
-        android:onClick="onCancelPressed"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
 
@@ -116,6 +120,6 @@
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/varianceSpinner"
         android:layout_alignTop="@+id/longText"
-        android:text="+/- Degrees:" />
+        android:text="@string/Degrees" />
 
 </RelativeLayout>

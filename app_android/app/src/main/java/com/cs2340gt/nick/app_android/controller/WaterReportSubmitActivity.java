@@ -30,12 +30,14 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Created by SEAN on 2/19/17.
  * Edited by ARMANDO on 4/2/17.
  */
 
+@SuppressWarnings({"UnusedAssignment", "AccessStaticViaInstance"})
 public class WaterReportSubmitActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView emailDisplay;
     private TextView dateTimeDisplay;
@@ -79,11 +81,11 @@ public class WaterReportSubmitActivity extends AppCompatActivity implements View
                     @Override
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                         currentUser = auth.getCurrentUser();
-                        if (currentUser == null) {
-                            // no user is signed in
-                        } else {
-                            // some user is signed in
-                        }
+//                        if (currentUser == null) {
+//                            // no user is signed in
+//                        } else {
+//                            // some user is signed in
+//                        }
                     }
                 };
             }
@@ -143,9 +145,9 @@ public class WaterReportSubmitActivity extends AppCompatActivity implements View
         auth.addAuthStateListener(authStateListener);
         Model model = Model.getInstance();
 
-        reportIdText.setText(" " + waterReport.getId());
-        emailDisplay.setText(" " + model.getCurrentAccount().getEmailAddress());
-        DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy, HH:mm");
+        reportIdText.setText(waterReport.getId());
+        emailDisplay.setText(model.getCurrentAccount().getEmailAddress());
+        DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy, HH:mm", Locale.US);
         String date = df.format(Calendar.getInstance().getTime());
         dateTimeDisplay.setText(date);
     }
@@ -163,7 +165,7 @@ public class WaterReportSubmitActivity extends AppCompatActivity implements View
      *
      * @param view a View object included as convention
      */
-    protected void onSubmitPressed(View view) {
+    private void onSubmitPressed(View view) {
         Model model = Model.getInstance();
 
         Account reporter = model.getCurrentAccount();

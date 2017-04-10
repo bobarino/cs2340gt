@@ -10,12 +10,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cs2340gt.nick.app_android.R;
 import com.cs2340gt.nick.app_android.model.Model;
-import com.cs2340gt.nick.app_android.model.Account;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -23,9 +21,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
- * Created by nick on 2/14/17.
+ * the main activity for handling the login activity
+ * produced by nick on 2/14/17.
  */
 
+@SuppressWarnings({"UnusedAssignment", "AccessStaticViaInstance"})
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText editTextEmail;
@@ -47,11 +47,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // user signed in
-                } else {
-                    // no user signed in
-                }
+//                if (user != null) {
+//                    // user signed in
+//                } else {
+//                    // no user signed in
+//                }
             }
         };
 
@@ -88,13 +88,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * Attempts to log in a user. Only starts log in process if all fields are filled in,
      * and verifies with Firebase if this account can be logged in.
      */
-    protected void onLoginPressed() {
+    private void onLoginPressed() {
         final Model model = Model.getInstance();
 
         if (TextUtils.isEmpty(editTextEmail.toString())
                 || TextUtils.isEmpty(editTextPass.toString())) {
             Toast.makeText(this, "Please fill all relevant fields.", Toast.LENGTH_SHORT).show();
-            return;
         } else {
             final String email = editTextEmail.getText().toString();
             String pass = editTextPass.getText().toString();
@@ -117,7 +116,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             } else {
                                 Toast.makeText(LoginActivity.this, "Login Failed. Please try again.",
                                         Toast.LENGTH_SHORT).show();
-                                return;
                             }
                         }
                     });

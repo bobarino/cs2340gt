@@ -13,7 +13,7 @@
 
     <Button
         android:id="@+id/buttonCancelReport"
-        android:text="CANCEL"
+        android:text="@string/Cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -21,7 +21,7 @@
 
     <TextView
         android:id="@+id/labelTextId"
-        android:text="Report ID#:"
+        android:text="@string/Report_ID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -36,7 +36,7 @@
 
     <TextView
         android:id="@+id/labelTextUser"
-        android:text="User:"
+        android:text="@string/User_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/labelTextId"
@@ -51,7 +51,7 @@
 
     <TextView
         android:id="@+id/labelTextDateTime"
-        android:text="Date/Time:"
+        android:text="@string/Date_Time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/labelTextUser"
@@ -73,7 +73,7 @@
 
     <TextView
         android:id="@+id/labelSpinnerSource"
-        android:text="Water Source:"
+        android:text="@string/Water_Source"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/spinnerSource"
@@ -84,7 +84,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Water Condition:"
+        android:text="@string/Water_Condition"
         android:layout_centerHorizontal="true" />
 
     <Spinner
@@ -96,7 +96,7 @@
 
     <TextView
         android:id="@+id/labelTextLocation"
-        android:text="Location:"
+        android:text="@string/Location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/latInput"
@@ -104,11 +104,12 @@
 
     <Button
         android:id="@+id/buttonEditReport"
-        android:text="EDIT"
+        android:text="@string/Edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentEnd="true"
+        tools:ignore="RelativeOverlap" />
 
     <EditText
         android:id="@+id/latInput"
@@ -117,7 +118,7 @@
         android:ems="10"
         android:gravity="center_vertical|center_horizontal"
         android:inputType="numberSigned|numberDecimal"
-        android:hint="Latitude:"
+        android:hint="@string/Latitude"
         android:layout_marginTop="37dp"
         android:layout_below="@+id/displayTextDateTime"
         android:layout_alignStart="@+id/displayTextDateTime" />
@@ -129,7 +130,7 @@
         android:ems="10"
         android:gravity="center_vertical|center_horizontal"
         android:inputType="numberSigned|numberDecimal"
-        android:hint="Longitude:"
+        android:hint="@string/Longitude"
         android:layout_below="@+id/latInput"
         android:layout_alignStart="@+id/latInput" />
 

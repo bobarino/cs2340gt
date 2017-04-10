@@ -3,7 +3,8 @@ import java.util.List;
 import java.util.Arrays;
 
 /**
- * Created by Sean Bills on 2/18/17.
+ * main class outline for all Water Reports
+ * produced by Sean Bills on 2/18/17.
  */
 
 public class WaterReport {
@@ -20,7 +21,7 @@ public class WaterReport {
     private int id;
 
     // a list of all of the possible sources of water for the report
-    public static List<String> waterSources = Arrays.asList("Bottled", "Well",
+    public static final List<String> waterSources = Arrays.asList("Bottled", "Well",
             "Stream", "Lake", "Spring", "Other");
 
     // a string value indicating the unique source of this report (from the options
@@ -28,7 +29,7 @@ public class WaterReport {
     private String source;
 
     // a list of possible waterConditions for the report
-    public static List<String> waterCondition = Arrays.asList("Waste", "Treatable - Muddy",
+    public static final List<String> waterCondition = Arrays.asList("Waste", "Treatable - Muddy",
             "Treatable - Clear", "Potable");
 
     // the actual condition of the water in the report
@@ -95,7 +96,7 @@ public class WaterReport {
 
 
     /**
-     * method to return the ID no. of the curernt report
+     * method to return the ID no. of the current report
      * @return the ID no. of the report
      */
     public int getId() {
@@ -126,7 +127,7 @@ public class WaterReport {
 
     /**
      * method to return the Location instance associated with this report
-     * @return the location object asosciated with the report
+     * @return the location object associated with the report
      */
     public Location getLocation() { return location; }
 
@@ -139,7 +140,7 @@ public class WaterReport {
 
     /**
      * method to return the source of this current water report
-     * @return
+     * @return the source associated with the report
      */
     public String getSource() {
         return source;
@@ -153,9 +154,9 @@ public class WaterReport {
     public void setSource(String source) {
         if (waterSources.contains(source)) {
             this.source = source;
-        } else {
-            // TODO: handle this error
-        }
+        } //else {
+//            // TODO: handle this error
+//        }
     }
 
     /**
@@ -174,14 +175,17 @@ public class WaterReport {
     public void setCondition(String condition) {
         if (waterCondition.contains(condition)) {
             this.condition = condition;
-        } else {
-            // TODO: handle this error
-        }
+        } //else {
+//            // TODO: handle this error
+//        }
     }
 
     // equals based on reporter, condition, and source
     @Override
     public boolean equals(Object o) {
+        if (!(o instanceof WaterReport)) {
+            return false;
+        }
         WaterReport wr = (WaterReport) o;
         return (wr.getId() == id
                 && wr.getReporter().equals(reporter)

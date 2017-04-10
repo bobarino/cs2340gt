@@ -1,13 +1,14 @@
 package com.cs2340gt.nick.app_android.model;
 
 /**
- * Created by SEAN on 3/7/17.
+ * the major class outline for the Location object/class
+ * produced by SEAN on 3/7/17.
  */
 
 public class Location {
 
-    private double latitude;
-    private double longitude;
+    private final double latitude;
+    private final double longitude;
 
     /**
      * constructor to create a Location (lat and long) of where
@@ -37,6 +38,9 @@ public class Location {
 
     @Override
     public boolean equals(Object o) {
+        if (!(o instanceof Location)) {
+            return false;
+        }
         Location loc = (Location) o;
         return (loc.getLongitude() == longitude && loc.getLatitude() == latitude);
     }

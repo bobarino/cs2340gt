@@ -12,7 +12,7 @@
 
 
     <Button
-        android:text="Log In"
+        android:text="@string/Log_In"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="145dp"
@@ -23,7 +23,7 @@
         android:layout_centerHorizontal="true"/>
 
     <Button
-        android:text="Register"
+        android:text="@string/Register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/loginButton"
@@ -32,7 +32,7 @@
         android:id="@+id/registerButton"/>
 
     <TextView
-        android:text="Welcome to Clean Water Report"
+        android:text="@string/Welcome_to_Clean_Water_Report"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="23dp"

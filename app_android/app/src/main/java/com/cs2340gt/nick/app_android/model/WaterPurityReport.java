@@ -25,7 +25,7 @@ public class WaterPurityReport {
     private int id;
 
     //list of all possible conditions for water
-    public static List<String> waterConditions = Arrays.asList("Safe", "Treatable", "Unsafe");
+    public static final List<String> waterConditions = Arrays.asList("Safe", "Treatable", "Unsafe");
 
     // viral PPM value
     private int viralPPM;
@@ -88,7 +88,7 @@ public class WaterPurityReport {
 
     /**
      * method to get the id of the report
-     * @return the id vlaue for the report
+     * @return the id value for the report
      */
     public int getId() { return id; }
 
@@ -141,7 +141,7 @@ public class WaterPurityReport {
     public Location getLocation() { return location; }
 
     /**
-     * method to update the lcoation of the report
+     * method to update the location of the report
      * @param location the new location
      */
     public void setLocation(Location location) { this.location = location; }
@@ -159,13 +159,16 @@ public class WaterPurityReport {
     public void setCondition(String condition) {
         if (waterConditions.contains(condition)) {
             this.condition = condition;
-        } else {
-            // TODO: handle this error
-        }
+        } //else {
+//            // TODO: handle this error
+//        }
     }
 
     @Override
     public boolean equals(Object o) {
+        if (!(o instanceof WaterPurityReport)) {
+            return false;
+        }
         WaterPurityReport wpr = (WaterPurityReport) o;
         return (wpr.getId() == id
                 && wpr.getLocation().equals(location)

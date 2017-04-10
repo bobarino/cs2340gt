@@ -1,7 +1,7 @@
 package com.cs2340gt.nick.app_android;
 
-/**
- * Created by SEAN on 4/2/17.
+/*
+  Created by SEAN on 4/2/17.
  */
 
 import com.cs2340gt.nick.app_android.model.Account;
@@ -18,10 +18,10 @@ public class ModelTest {
     /**
      * test fixture
      */
-    Model theModel;
+    private Model theModel;
     /**
      * this method runs before each test
-     *  @throws java.lang.Exception
+     *  @throws java.lang.Exception in the case that a model facade cannot be produced
      */
     @org.junit.Before
     public void setUp() throws Exception {

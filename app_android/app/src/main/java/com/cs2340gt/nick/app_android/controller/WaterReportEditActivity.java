@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,11 +30,14 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
- * Created by ArmandoGonzalez on 3/8/17.
+ * major activity for handling the editing of water reports
+ * produced by ArmandoGonzalez on 3/8/17.
  */
 
+@SuppressWarnings({"UnusedAssignment", "AccessStaticViaInstance"})
 public class WaterReportEditActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView idDisplay;
     private TextView emailDisplay;
@@ -59,7 +61,6 @@ public class WaterReportEditActivity extends AppCompatActivity implements View.O
     private DatabaseReference dbRef;
 
     private WaterReport existing;
-    private WaterReport edited;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,11 +75,11 @@ public class WaterReportEditActivity extends AppCompatActivity implements View.O
                     @Override
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                         currentUser = auth.getCurrentUser();
-                        if (currentUser == null) {
-                            // no user is signed in
-                        } else {
-                            // some user is signed in
-                        }
+//                        if (currentUser == null) {
+//                            // no user is signed in
+//                        } else {
+//                            // some user is signed in
+//                        }
                     }
                 };
             }
@@ -136,9 +137,9 @@ public class WaterReportEditActivity extends AppCompatActivity implements View.O
         auth.addAuthStateListener(authStateListener);
         Model model = Model.getInstance();
 
-        idDisplay.setText(" " + existing.getId());
-        emailDisplay.setText(" " + model.getCurrentAccount().getEmailAddress());
-        DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy, HH:mm");
+        idDisplay.setText(existing.getId());
+        emailDisplay.setText(model.getCurrentAccount().getEmailAddress());
+        DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy, HH:mm", Locale.US);
         String date = df.format(Calendar.getInstance().getTime());
         dateTimeDisplay.setText(date);
     }
@@ -165,7 +166,7 @@ public class WaterReportEditActivity extends AppCompatActivity implements View.O
                 Double.parseDouble(longInput.getText().toString()));
 
         existing = Model.getCurrentReport();
-        edited = new WaterReport(reporter, newSource, newCondition, newDateTime, newLocation);
+        WaterReport edited = new WaterReport(reporter, newSource, newCondition, newDateTime, newLocation);
 
         if (TextUtils.isEmpty(newDateTime)
                 || TextUtils.isEmpty(newSource)

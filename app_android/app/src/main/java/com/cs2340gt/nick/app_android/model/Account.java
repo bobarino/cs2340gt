@@ -7,12 +7,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by ArmandoGonzalez on 2/14/17.
+ * Account class intended to serve as the main class/outline for all users Accounts
  */
+@SuppressWarnings("SameParameterValue")
 @IgnoreExtraProperties
 public class Account {
 
-    public static int Next_Id = 0;
+    private static int Next_Id = 0;
 
     private int id;
     private String emailAddress;
@@ -23,7 +24,7 @@ public class Account {
      * no arg constructor to create a new Account
      */
     public Account() {
-        // default constructor used only for Firebase database updates
+        // default constructor used only for Fire base database updates
     }
 
     // constructor for general use with proper indexing
@@ -80,7 +81,7 @@ public class Account {
 
 
     /**
-     * mthod to get the credential for this account
+     * method to get the credential for this account
      * @return credential for the account
      */
     public Credential getCredential() {
@@ -96,7 +97,7 @@ public class Account {
     }
 
     /**
-     * method to get the id of the curernt account
+     * method to get the id of the current account
      * @return id value for account
      */
     public int getId() {
@@ -106,6 +107,9 @@ public class Account {
     // override equals and toString
     @Override
     public boolean equals(Object account) {
+        if (!(account instanceof Account)) {
+            return false;
+        }
         Account a = (Account) account;
         return a.getEmailAddress().equals(emailAddress);
     }

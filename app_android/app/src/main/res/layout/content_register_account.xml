@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
-        android:hint="Enter email address:"
+        android:hint="@string/Enter_email_address"
         android:gravity="center_vertical|center_horizontal"
         android:layout_centerHorizontal="true"/>
 
@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
-        android:hint="Enter password:"
+        android:hint="@string/Enter_password"
         android:gravity="center_vertical|center_horizontal"
         android:layout_centerHorizontal="true" />
 
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:text="Select Credentials:" />
+        android:text="@string/Select_Credentials" />
 
     <RadioGroup
         android:id="@+id/rGroupCred"
@@ -52,28 +52,28 @@
 
         <RadioButton
             android:id="@+id/rButtonUser"
-            android:text="User"
+            android:text="@string/User"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <RadioButton
             android:id="@+id/rButtonWorker"
-            android:text="Worker"
+            android:text="@string/Worker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <RadioButton
             android:id="@+id/rButtonManager"
-            android:text="Manager"
+            android:text="@string/Manager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <RadioButton
             android:id="@+id/rButtonAdmin"
-            android:text="Admin"
+            android:text="@string/Admin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
@@ -81,13 +81,13 @@
 
     <Button
         android:id="@+id/buttonAddAcc"
-        android:text="ADD"
+        android:text="@string/ADD"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <Button
-        android:id="@+id/buttonCancelRgstr"
-        android:text="Cancel"
+        android:id="@+id/buttonCancelRegister"
+        android:text="@string/Cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"/>

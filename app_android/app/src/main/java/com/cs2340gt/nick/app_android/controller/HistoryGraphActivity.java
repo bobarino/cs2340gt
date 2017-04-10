@@ -21,11 +21,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.cs2340gt.nick.app_android.R.id.cancelButton;
+
 /**
- * Created by SEAN on 4/4/17.
+ * the main activity class for the History Graph Activity
+ * produced by SEAN on 4/4/17.
  */
 
-public class HistoryGraphActivity extends AppCompatActivity {
+public class HistoryGraphActivity extends AppCompatActivity implements View.OnClickListener {
     /**
      * edit text field to take in a signed decimal representing
      * longitude of the approximate area the user is looking for
@@ -74,7 +77,6 @@ public class HistoryGraphActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Model model = Model.getInstance();
         setContentView(R.layout.content_history_graph);
 
         latInput = (EditText) findViewById(R.id.latInput);
@@ -84,12 +86,15 @@ public class HistoryGraphActivity extends AppCompatActivity {
 
         varianceSpinner = (Spinner) findViewById(R.id.varianceSpinner);
 
-        cancel = (Button) findViewById(R.id.cancelButton);
+        cancel = (Button) findViewById(cancelButton);
         search = (Button) findViewById(R.id.searchButton);
+        search.setOnClickListener(this);
+        cancel.setOnClickListener(this);
+
 
         List<String> varianceOptions = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, varianceOptions);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, varianceOptions);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         varianceSpinner.setAdapter(adapter);
 
@@ -111,15 +116,17 @@ public class HistoryGraphActivity extends AppCompatActivity {
      * button handler for the submit button
      * @param view button for report submission
      */
-    protected void onSearchButtonPressed(View view) {
-        Model model = Model.getInstance();
+
+
+private void onSearchButtonPressed(android.view.View view) {
+    Model model = Model.getInstance();
         int startYear = Integer.parseInt(startYearInput.getText().toString());
         int endYear = Integer.parseInt(endYearInput.getText().toString());
 
         double latitude = Double.parseDouble(latInput.getText().toString());
         double longitude = Double.parseDouble(longInput.getText().toString());
 
-        List<DataPoint> viralPoints = new ArrayList<DataPoint>();
+        List<DataPoint> viralPoints = new ArrayList<>();
         List<DataPoint> contaminantPoints = new ArrayList<>();
 
         double variance = Double.parseDouble((String) varianceSpinner.getSelectedItem());
@@ -153,12 +160,16 @@ public class HistoryGraphActivity extends AppCompatActivity {
         contaminantSeries.setTitle("Contaminant Data");
         graph.addSeries(contaminantSeries);
         graph.addSeries(viralSeries);
+}
 
-    }
+    @Override
+    public void onClick(View view) {
+        if (view == search) {
+            onSearchButtonPressed(view);
+        }
 
-    protected void onCancelPressed(View view) {
-        Intent intent =
-                new Intent(getBaseContext(), LoggedInActivity.class);
-        startActivity(intent);
+        if (view == cancel) {
+            startActivity(new Intent(getApplicationContext(), LoggedInActivity.class));
+        }
     }
 }

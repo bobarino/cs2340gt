@@ -26,7 +26,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 
 /**
- * Created by SEAN on 3/1/17.
+ * main activity for handling the production of the list of water reports submitted
+ * produced by SEAN on 3/1/17.
  */
 
 public class WaterReportListActivity extends AppCompatActivity implements View.OnClickListener {
@@ -69,6 +70,7 @@ public class WaterReportListActivity extends AppCompatActivity implements View.O
      *
      * In this case, we are just mapping the toString of the Course object to a text field.
      */
+    @SuppressWarnings("UnusedAssignment")
     public class SimpleReportRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleReportRecyclerViewAdapter.ViewHolder> {
 

@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by ArmandoGonzalez on 2/15/17.
+ * main class to handle the creation of the Singleton model facade for our entire application
+ * produced by ArmandoGonzalez on 2/15/17.
  */
+@SuppressWarnings("AccessStaticViaInstance")
 public class Model {
 
     // Singleton instance of the model - not sure if best option yet
@@ -13,7 +15,7 @@ public class Model {
     // getter for this model instance
     public static Model getInstance() {
         return instance;
-    };
+    }
 
     // list of accounts in the model
     private List<Account> accountList;
@@ -22,15 +24,15 @@ public class Model {
         return accountList;
     }
     //setter for accountList (accessing Firebase stuff)
-    public void setAccountList(List accounts) { accountList = accounts; }
+    public void setAccountList(List<Account> accounts) { accountList = accounts; }
 
     // list of waterReports in the model
-    private List<WaterReport> reportList;
+    private final List<WaterReport> reportList;
     //getter for reportList (read-only)
     public List<WaterReport> getReportList() { return reportList; }
 
     // list of water purity reports in the model
-    private List<WaterPurityReport> purityReportList;
+    private final List<WaterPurityReport> purityReportList;
     //getter for purity report list (read-only)
     public List<WaterPurityReport> getPurityReportList() { return purityReportList; }
 
@@ -165,11 +167,8 @@ public class Model {
      * (returns true if the input was invalid and false otherwise)
      */
     public boolean checkInvalidLocation(Location check) {
-        if (check.getLatitude() > 90 || check.getLatitude() < -90
-            || check.getLongitude() > 180 || check.getLongitude() < -180) {
-            return true;
-        }
-        return false;
+        return (check.getLatitude() > 90 || check.getLatitude() < -90
+            || check.getLongitude() > 180 || check.getLongitude() < -180);
     }
 
     /**

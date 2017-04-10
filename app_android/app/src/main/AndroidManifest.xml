@@ -111,14 +111,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.cs2340gt.nick.app_android.controller.WaterPurityEditActivity"
-            android:parentActivityName="com.cs2340gt.nick.app_android.controller.LoggedInActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
         <activity android:name=".controller.WaterPurityListActivity"
             android:parentActivityName="com.cs2340gt.nick.app_android.controller.LoggedInActivity"
             android:label="Water Purity Report List">
