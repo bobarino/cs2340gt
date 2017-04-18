@@ -33,7 +33,7 @@ public class ModelTest {
      */
     @Test
     public void testAddAccount() {
-        Assert.assertEquals("Initial size of reporter list is incorrect", 1,
+        Assert.assertEquals("Initial size of reporter list is incorrect", 0,
                 theModel.getAccountList().size());
         try {
             theModel.addAccountInfo(new Account(1, "mbills2@gmail.com", "mbills2", Credential.MANAGER));
@@ -43,7 +43,7 @@ public class ModelTest {
             e.printStackTrace();
             Assert.fail("Should not have thrown exception here");
         }
-        Assert.assertEquals("Total account list size wrong after adding", 4,
+        Assert.assertEquals("Total account list size wrong after adding", 3,
                 theModel.getAccountList().size());
     }
 
@@ -72,10 +72,11 @@ public class ModelTest {
     @Test
     public void testAccountSetPassword() {
         try {
-            Account newAcc = new Account(1, "holder", "holder", Credential.ADMIN);
-            newAcc.setPassword("newPasswordForHolder");
-            Assert.assertEquals("Incorrect updated password for account after changing",
-                    "newPasswordForHolder", newAcc.getPassword());
+            Account temp = new Account("sbills3@gatech.edu", "password", Credential.USER);
+            theModel.addAccountInfo(temp);
+            String find = "sbills3@gatech.edu";
+            Account there = theModel.findAccountByEmail(find);
+            Assert.assertEquals("Incorrect Account returned", there, temp);
         } catch (Exception e) {
             Assert.fail("Set account password should not have failed here");
             e.printStackTrace();
