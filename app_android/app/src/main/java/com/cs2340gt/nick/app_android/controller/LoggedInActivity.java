@@ -53,6 +53,8 @@ public class LoggedInActivity extends FragmentActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.logged_in);
 
+        modelFacade.setUp(Model.getInstance());
+
         auth = FirebaseAuth.getInstance();
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override

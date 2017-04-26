@@ -107,7 +107,7 @@ public class WaterReportEditActivity extends AppCompatActivity implements View.O
         waterSourceSpinner = (Spinner) findViewById(R.id.spinnerSource);
         waterConditionsSpinner = (Spinner) findViewById(R.id.conditionSpinner);
 
-        submitButton = (Button) findViewById(R.id.buttonSubmitReport);
+        submitButton = (Button) findViewById(R.id.buttonEditReport);
         cancelButton = (Button) findViewById(R.id.buttonCancelReport);
         submitButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);

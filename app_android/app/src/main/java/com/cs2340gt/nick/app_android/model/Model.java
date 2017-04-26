@@ -1,5 +1,12 @@
 package com.cs2340gt.nick.app_android.model;
 
+import com.google.firebase.auth.ActionCodeResult;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,15 +15,93 @@ import java.util.List;
  */
 public class Model {
 
+    /**
+     * A method to set up the model with all information from Firebase.
+     */
+    public void setUp(final Model model) {
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference accountsRef = dbRef.child("accounts");
+        DatabaseReference reportsRef = dbRef.child("reports");
+        DatabaseReference purityRef = dbRef.child("purity_reports");
+
+        model.setUpAccounts(accountsRef, model);
+        model.setUpWaterReports(reportsRef, model);
+        model.setUpPurityReports(purityRef, model);
+    }
+
+    /**
+     * A method to load the model with the accounts from firebase.
+     *
+     * @param reference the database reference being used.
+     * @param model the model instance.
+     */
+    private void setUpAccounts(final DatabaseReference reference, final Model model) {
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // this is called twice, once with initial value and again whenever changed
+                Account account = dataSnapshot.getValue(Account.class);
+                model.addAccountInfo(account);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // failed to read value
+            }
+        });
+    }
+
+    /**
+     * A method to load the model with the water reports from firebase.
+     *
+     * @param reference the database reference being used.
+     * @param model the model instance.
+     */
+    private void setUpWaterReports(DatabaseReference reference, final Model model) {
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // this is called twice, once with initial value and again whenever changed
+                WaterReport report = dataSnapshot.getValue(WaterReport.class);
+                model.addReport(report);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // failed to read value
+            }
+        });
+    }
+
+    /**
+     * A method to load the model with the water purity reports from firebase.
+     *
+     * @param reference the database reference being used.
+     * @param model the model instance.
+     */
+    private void setUpPurityReports(DatabaseReference reference, final Model model) {
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // this is called twice, once with initial value and again whenever changed
+                WaterPurityReport purityReport = dataSnapshot.getValue(WaterPurityReport.class);
+                model.addPurityReport(purityReport);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // failed to read value
+            }
+        });
+    }
+
     // Singleton instance of the model - not sure if best option yet
     private static final Model instance = new Model();
     // getter for this model instance
     public static Model getInstance() {
         return instance;
-    };
+    }
 
     // list of accounts in the model
     private List<Account> accountList;
+
     // getter for accountList (read-only)
     public List<Account> getAccountList() {
         return accountList;
