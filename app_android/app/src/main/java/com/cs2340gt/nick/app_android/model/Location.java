@@ -10,6 +10,13 @@ public class Location {
     private double longitude;
 
     /**
+     * no-arg constructor for creating a Location object
+     */
+    public Location() {
+        // default constructor used only for Firebase database updates
+    }
+
+    /**
      * constructor to create a Location (lat and long) of where
      * the report is being submitted from
      * @param latitude variable to hold latitude value

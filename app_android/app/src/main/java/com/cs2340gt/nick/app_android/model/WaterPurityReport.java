@@ -36,6 +36,13 @@ public class WaterPurityReport {
     private Location location;
 
     /**
+     * no-arg constructor for creating a Water Purity Report.
+     */
+    public WaterPurityReport() {
+        nextId++;
+    }
+
+    /**
      * constructor to create a WaterPurityReport object
      * @param reporter the account/user reporting the water purity
      * @param condition the string value associated with the condition of the water

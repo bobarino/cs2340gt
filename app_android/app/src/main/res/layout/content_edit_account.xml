@@ -41,42 +41,11 @@
         android:layout_marginBottom="20dp"
         android:text="Select new Credentials:"/>
 
-    <RadioGroup
-        android:id="@+id/rGroupCred"
-        android:layout_width="match_parent"
+    <Spinner
+        android:id="@+id/credSpinnerEdit"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="center_vertical|center_horizontal">
-
-        <RadioButton
-            android:id="@+id/rButtonUser"
-            android:text="User"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-
-        <RadioButton
-            android:id="@+id/rButtonWorker"
-            android:text="Worker"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <RadioButton
-            android:id="@+id/rButtonManager"
-            android:text="Manager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <RadioButton
-            android:id="@+id/rButtonAdmin"
-            android:text="Admin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-    </RadioGroup>
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/buttonEditAcc"

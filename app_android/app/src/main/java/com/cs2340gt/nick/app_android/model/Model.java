@@ -40,8 +40,9 @@ public class Model {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // this is called twice, once with initial value and again whenever changed
-                Account account = dataSnapshot.getValue(Account.class);
-                model.addAccountInfo(account);
+                for (DataSnapshot accountDBO: dataSnapshot.getChildren()) {
+                    model.addAccountInfo(accountDBO.getValue(Account.class));
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -61,8 +62,9 @@ public class Model {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // this is called twice, once with initial value and again whenever changed
-                WaterReport report = dataSnapshot.getValue(WaterReport.class);
-                model.addReport(report);
+                for (DataSnapshot reportDBO: dataSnapshot.getChildren()) {
+                    model.addReport(reportDBO.getValue(WaterReport.class));
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -82,8 +84,9 @@ public class Model {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // this is called twice, once with initial value and again whenever changed
-                WaterPurityReport purityReport = dataSnapshot.getValue(WaterPurityReport.class);
-                model.addPurityReport(purityReport);
+                for (DataSnapshot purityDBO: dataSnapshot.getChildren()) {
+                    model.addPurityReport(purityDBO.getValue(WaterPurityReport.class));
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -212,29 +215,31 @@ public class Model {
      * @return whether the add was successful
      */
     public boolean addReport(WaterReport newReport) {
-        if (checkInvalidLocation(newReport.getLocation())) {
+        if (newReport == null
+                || checkInvalidLocation(newReport.getLocation())
+                || reportList.contains(newReport)) {
             return false;
-        } else if (reportList.contains(newReport)) {
-            return false;
+        } else {
+            reportList.add(newReport);
+            return true;
         }
-        reportList.add(newReport);
-        return true;
     }
 
     /**
      * method to add a new purity report to the overall list of
      * water purity reports contained within the model
-     * @param newRep the new purity report to add to the list
+     * @param newReport the new purity report to add to the list
      * @return a boolean representing whether the report was added
      */
-    public boolean addPurityReport(WaterPurityReport newRep) {
-        if (checkInvalidLocation(newRep.getLocation())) {
+    public boolean addPurityReport(WaterPurityReport newReport) {
+        if (newReport == null
+                || checkInvalidLocation(newReport.getLocation())
+                || purityReportList.contains(newReport)) {
             return false;
-        } else if (purityReportList.contains(newRep)) {
-            return false;
+        } else {
+            purityReportList.add(newReport);
+            return true;
         }
-        purityReportList.add(newRep);
-        return true;
     }
 
     /**
@@ -246,11 +251,12 @@ public class Model {
      * (returns true if the input was invalid and false otherwise)
      */
     public boolean checkInvalidLocation(Location check) {
-        if (check.getLatitude() > 90 || check.getLatitude() < -90
-            || check.getLongitude() > 180 || check.getLongitude() < -180) {
+        if ((check != null) && (check.getLatitude() > 90 || check.getLatitude() < -90
+            || check.getLongitude() > 180 || check.getLongitude() < -180)) {
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     /**

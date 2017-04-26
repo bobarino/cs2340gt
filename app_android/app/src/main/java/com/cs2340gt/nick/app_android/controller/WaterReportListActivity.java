@@ -1,5 +1,6 @@
 package com.cs2340gt.nick.app_android.controller;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.cs2340gt.nick.app_android.R;
@@ -19,13 +21,16 @@ import java.util.List;
  * Created by SEAN on 3/1/17.
  */
 
-public class WaterReportListActivity extends AppCompatActivity {
+public class WaterReportListActivity extends AppCompatActivity implements View.OnClickListener {
+    private Button cancel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_water_report_list);
 
-
+        cancel = (Button) findViewById(R.id.buttonCancelReportList);
+        cancel.setOnClickListener(this);
 
         //Step 1.  Setup the recycler view by getting it from our layout in the main window
         View recyclerView = findViewById(R.id.water_report_list);
@@ -158,6 +163,14 @@ public class WaterReportListActivity extends AppCompatActivity {
             public String toString() {
                 return super.toString() + " '" + mContentView.getText() + "'";
             }
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == cancel) {
+            finish();
+            startActivity(new Intent(getApplicationContext(), LoggedInActivity.class));
         }
     }
 }

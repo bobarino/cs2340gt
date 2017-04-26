@@ -77,7 +77,7 @@ public class WaterPurityEditActivity extends AppCompatActivity implements View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_water_purity_submit);
+        setContentView(R.layout.activity_water_purity_edit);
 
         auth = FirebaseAuth.getInstance();
         authStateListener = new FirebaseAuth.AuthStateListener() {
@@ -111,18 +111,20 @@ public class WaterPurityEditActivity extends AppCompatActivity implements View.O
             }
         });
 
-        editButton = (Button) findViewById(R.id.editButton);
-        cancelButton = (Button) findViewById(R.id.cancelButton);
+        progressDialog = new ProgressDialog(this);
+
+        editButton = (Button) findViewById(R.id.buttonEditPurity);
+        cancelButton = (Button) findViewById(R.id.buttonCancelPurityEdit);
         editButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
 
         waterConditionsSpinner = (Spinner) findViewById(R.id.conditionSpinner);
-        reportID = (TextView) findViewById(R.id.idField);
-        emailText = (TextView) findViewById(R.id.emailText);
-        dateTimeDisplay = (TextView) findViewById(R.id.dateTimeField);
+        reportID = (TextView) findViewById(R.id.displayTextId);
+        emailText = (TextView) findViewById(R.id.textViewEmailLabel);
+        dateTimeDisplay = (TextView) findViewById(R.id.displayTextUser);
         latInput = (EditText) findViewById(R.id.latInput);
         longInput = (EditText) findViewById(R.id.longInput);
-        contaminantText = (EditText) findViewById(R.id.contamInput);
+        contaminantText = (EditText) findViewById(R.id.contaminantInput);
         viralText = (EditText) findViewById(R.id.viralInput);
 
         ArrayAdapter<String> adapter =

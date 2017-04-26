@@ -111,8 +111,10 @@ public class WaterPuritySubmitActivity extends AppCompatActivity implements View
             }
         });
 
-        submitButton = (Button) findViewById(R.id.submitButton);
-        cancelButton = (Button) findViewById(R.id.cancelButton);
+        progressDialog = new ProgressDialog(this);
+
+        submitButton = (Button) findViewById(R.id.buttonSubmitPurity);
+        cancelButton = (Button) findViewById(R.id.buttonCancelPurity);
         submitButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
 
@@ -122,11 +124,11 @@ public class WaterPuritySubmitActivity extends AppCompatActivity implements View
         dateTimeDisplay = (TextView) findViewById(R.id.dateTimeField);
         latInput = (EditText) findViewById(R.id.latInput);
         longInput = (EditText) findViewById(R.id.longInput);
-        contaminantText = (EditText) findViewById(R.id.contamInput);
+        contaminantText = (EditText) findViewById(R.id.contaminantInput);
         viralText = (EditText) findViewById(R.id.viralInput);
 
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(this,
+                new ArrayAdapter<>(this,
                         android.R.layout.simple_spinner_dropdown_item,
                         WaterPurityReport.waterConditions);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

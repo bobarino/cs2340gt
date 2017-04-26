@@ -5,20 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.cs2340gt.nick.app_android.controller.WaterReportListActivity">
+    tools:context="com.cs2340gt.nick.app_android.controller.WaterPurityListActivity">
 
 
-    <FrameLayout
-        android:id="@+id/frameLayout"
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <include
+            android:id="@+id/water_report_list"
             layout="@layout/water_report_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_above="@+id/buttonCancelReportList" />
 
-    </FrameLayout>
+        <Button
+            android:id="@+id/buttonCancelReportList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:text="@string/Cancel" />
+
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

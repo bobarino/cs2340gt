@@ -127,6 +127,14 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".controller.HistoryGraphActivity"
+            android:parentActivityName="com.cs2340gt.nick.app_android.controller.LoggedInActivity"
+            android:label="Water Purity Report List">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

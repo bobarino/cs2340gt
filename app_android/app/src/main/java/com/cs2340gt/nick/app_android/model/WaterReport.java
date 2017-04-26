@@ -38,8 +38,12 @@ public class WaterReport {
     // the Location (latitude and longitude) of the water report
     private Location location;
 
+    /**
+     * no-arg constructor to create a new water report
+     */
     public WaterReport() {
         // default constructor used only for Firebase database updates
+        nextNo++;
     }
 
     /**

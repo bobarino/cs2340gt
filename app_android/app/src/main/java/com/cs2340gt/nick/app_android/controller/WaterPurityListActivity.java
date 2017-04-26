@@ -1,5 +1,6 @@
 package com.cs2340gt.nick.app_android.controller;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -7,9 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.cs2340gt.nick.app_android.R;
+import com.cs2340gt.nick.app_android.model.Location;
 import com.cs2340gt.nick.app_android.model.Model;
 import com.cs2340gt.nick.app_android.model.WaterPurityReport;
 
@@ -19,13 +22,19 @@ import java.util.List;
  * Created by SEAN on 3/1/17.
  */
 
-public class WaterPurityListActivity extends AppCompatActivity {
+public class WaterPurityListActivity extends AppCompatActivity implements View.OnClickListener {
+    private Button cancelButton;
+    private Button graphButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_water_purity_list);
 
-
+        cancelButton = (Button) findViewById(R.id.buttonCancelPurityList);
+        graphButton = (Button) findViewById(R.id.buttonShowHistory);
+        cancelButton.setOnClickListener(this);
+        graphButton.setOnClickListener(this);
 
         //Step 1.  Setup the recycler view by getting it from our layout in the main window
         View recyclerView = findViewById(R.id.water_purity_list);
@@ -158,6 +167,17 @@ public class WaterPurityListActivity extends AppCompatActivity {
             public String toString() {
                 return super.toString() + " '" + mContentView.getText() + "'";
             }
+        }
+    }
+    @Override
+    public void onClick(View view) {
+        if (view == cancelButton) {
+            finish();
+            startActivity(new Intent(getApplicationContext(), LoggedInActivity.class));
+        }
+        if (view == graphButton) {
+            finish();
+            startActivity(new Intent(getApplicationContext(), HistoryGraphActivity.class));
         }
     }
 }

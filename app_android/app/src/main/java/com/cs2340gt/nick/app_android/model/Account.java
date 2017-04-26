@@ -23,6 +23,7 @@ public class Account {
      * no arg constructor to create a new Account
      */
     public Account() {
+        Next_Id++;
         // default constructor used only for Firebase database updates
     }
 

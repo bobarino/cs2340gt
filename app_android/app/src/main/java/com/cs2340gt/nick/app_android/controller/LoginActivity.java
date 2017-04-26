@@ -109,6 +109,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             if (task.isSuccessful()) {
                                 Toast.makeText(LoginActivity.this, "Login Successful",
                                         Toast.LENGTH_SHORT).show();
+                                model.setUp(model);
                                 model.setCurrentAcc(model.findAccountByEmail(email));
                                 finish();
                                 startActivity(new Intent(getApplicationContext(),

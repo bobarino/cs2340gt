@@ -1,5 +1,8 @@
 package com.cs2340gt.nick.app_android.model;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by ArmandoGonzalez on 2/14/17.
  */
@@ -13,6 +16,8 @@ public enum Credential {
 
     private String fullCredential;
     private String shortCredential;
+
+    public static List credentialsList = Arrays.asList(USER, WORKER, MANAGER, ADMIN);
 
     /**
      * Only constructor that should be used for this enum.
@@ -44,5 +49,6 @@ public enum Credential {
     public String toString() {
         return fullCredential;
     }
+
 
 }

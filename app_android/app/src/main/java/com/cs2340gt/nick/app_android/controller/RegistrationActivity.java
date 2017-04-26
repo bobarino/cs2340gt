@@ -9,10 +9,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,6 +33,9 @@ import com.cs2340gt.nick.app_android.model.Account;
 import com.cs2340gt.nick.app_android.model.Credential;
 import com.cs2340gt.nick.app_android.model.Model;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ArmandoGonzalez on 2/14/17.
@@ -59,6 +64,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private Account account;
     private String emailString;
     private String passwordString;
+    private Spinner credentials;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,11 +115,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         addButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
 
-        credentialsRadioGroup = (RadioGroup) findViewById(R.id.rGroupCred);
-        userRadioButton = (RadioButton) findViewById(R.id.rButtonUser);
-        workerRadioButton = (RadioButton) findViewById(R.id.rButtonWorker);
-        managerRadioButton = (RadioButton) findViewById(R.id.rButtonManager);
-        adminRadioButton = (RadioButton) findViewById(R.id.rButtonAdmin);
+        credentials = (Spinner) findViewById(R.id.credSpinnerAdd);
+
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<String>(this,
+                        android.R.layout.simple_spinner_dropdown_item,
+                        Credential.credentialsList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        credentials.setAdapter(adapter);
 
     }
 
@@ -155,7 +164,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         } else {
             progressDialog.setMessage("Registering user...");
             progressDialog.show();
-            account = new Account(emailString, passwordString, determineCredential());
+            account = new Account(emailString, passwordString, Credential.valueOf(credentials.getSelectedItem().toString()));
             register(model, account);
         }
     }
@@ -226,6 +235,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                     RegistrationActivity.this,
                                     "Registration Successful",
                                     Toast.LENGTH_SHORT).show();
+                            model.setUp(model);
                             model.setCurrentAcc(account);
                             finish();
                             startActivity(new Intent(getApplicationContext(),
@@ -237,28 +247,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         }
                     }
                 });
-    }
-
-    /**
-     * Intended to determine the credential level selected for the new user. Should
-     * determine the credential level based on the radio button that is pushed.
-     *
-     * @return the Credential value that has been selected on this screen.
-     */
-    private Credential determineCredential() {
-        if (userRadioButton.isSelected()) {
-            return Credential.USER;
-        }
-        if (workerRadioButton.isSelected()) {
-            return Credential.WORKER;
-        }
-        if (managerRadioButton.isSelected()) {
-            return Credential.MANAGER;
-        }
-        if (adminRadioButton.isSelected()) {
-            return Credential.ADMIN;
-        }
-        return Credential.USER;
     }
 
     @Override

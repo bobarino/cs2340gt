@@ -9,10 +9,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,10 +47,7 @@ public class EditExistingActivity extends AppCompatActivity implements View.OnCl
     private EditText editTextEmail, editTextPass;
 
     private Button editButton, cancelButton;
-
-    private RadioGroup credentialsRadioGroup;
-    private RadioButton userRadioButton, workerRadioButton,
-            managerRadioButton, adminRadioButton;
+    private Spinner credentials;
 
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
@@ -100,11 +99,14 @@ public class EditExistingActivity extends AppCompatActivity implements View.OnCl
         editButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
 
-        credentialsRadioGroup = (RadioGroup) findViewById(R.id.rGroupCred);
-        userRadioButton = (RadioButton) findViewById(R.id.rButtonUser);
-        workerRadioButton = (RadioButton) findViewById(R.id.rButtonWorker);
-        managerRadioButton = (RadioButton) findViewById(R.id.rButtonManager);
-        adminRadioButton = (RadioButton) findViewById(R.id.rButtonAdmin);
+        credentials = (Spinner) findViewById(R.id.credSpinnerEdit);
+
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<String>(this,
+                        android.R.layout.simple_spinner_dropdown_item,
+                        Credential.credentialsList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        credentials.setAdapter(adapter);
 
     }
 
@@ -142,7 +144,10 @@ public class EditExistingActivity extends AppCompatActivity implements View.OnCl
             return;
         } else {
             // all clear
-            editAccountInfo(existing, newPass, determineCredential());
+            editAccountInfo(existing, newPass, Credential.valueOf(credentials.getSelectedItem().toString()));
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                FirebaseAuth.getInstance().getCurrentUser().updatePassword(newPass);
+            }
 
             Map<String, Object> existingValues = existing.toMap();
             Map<String, Object> updates = new HashMap<>();
@@ -171,28 +176,6 @@ public class EditExistingActivity extends AppCompatActivity implements View.OnCl
             existing.setPassword(newPassword);
             existing.setCredential(newCredential);
         }
-    }
-
-    /**
-     * Intended to determine the credential level selected for the new user. Should determine
-     * the credential level based on the radio buttons that are pushed.
-     *
-     * @return the Credential value that has been selected on this screen.
-     */
-    private Credential determineCredential() {
-        if (userRadioButton.isSelected()) {
-            return Credential.USER;
-        }
-        if (workerRadioButton.isSelected()) {
-            return Credential.WORKER;
-        }
-        if (managerRadioButton.isSelected()) {
-            return Credential.MANAGER;
-        }
-        if (adminRadioButton.isSelected()) {
-            return Credential.ADMIN;
-        }
-        return Credential.USER;
     }
 
     @Override

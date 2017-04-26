@@ -41,7 +41,7 @@ public class WaterReportEditActivity extends AppCompatActivity implements View.O
     private TextView emailDisplay;
     private TextView dateTimeDisplay;
 
-    private Button submitButton;
+    private Button editButton;
     private Button cancelButton;
 
     private Spinner waterSourceSpinner;
@@ -107,9 +107,9 @@ public class WaterReportEditActivity extends AppCompatActivity implements View.O
         waterSourceSpinner = (Spinner) findViewById(R.id.spinnerSource);
         waterConditionsSpinner = (Spinner) findViewById(R.id.conditionSpinner);
 
-        submitButton = (Button) findViewById(R.id.buttonEditReport);
-        cancelButton = (Button) findViewById(R.id.buttonCancelReport);
-        submitButton.setOnClickListener(this);
+        editButton = (Button) findViewById(R.id.buttonEditPurity);
+        cancelButton = (Button) findViewById(R.id.buttonCancelPurity);
+        editButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
 
         latInput = (EditText) findViewById(R.id.latInput);
@@ -221,7 +221,7 @@ public class WaterReportEditActivity extends AppCompatActivity implements View.O
 
     @Override
     public void onClick(View view) {
-        if (view == submitButton) {
+        if (view == editButton) {
             onEditPressed(view);
         }
         if (view == cancelButton) {
